@@ -1,28 +1,34 @@
 # ECS 189C: Software Correctness - Spring Quarter 2024
 
-**Instructor:** [Instructor's Name]  
-**Email:** [Instructor's Email]  
-**Office Hours:** [Time and Location or Virtual Meeting Info]
-
 ## Course Information
 
-**Course Number:** ECS 189C  
-**CRN:** 57484  
-**Schedule:** Monday, Wednesday, Friday 1-2pm  
-**Location:** [Building and Room Number]
+**Instructor:** Caleb Stanford
+**CRN:** 57484
+**Listed Title:** Special Topics in Computer Science - Programming Languages and Compilers
+**Schedule:** Monday, Wednesday, Friday 1:10-2pm
+**Location:** Teaching and Learning Complex 1218
+**Office Hours:** TBD
+
+## Contact
+
+Please use the Piazza for questions related to course material.
+I encourage you to ask anonymously if you feel more comfortable.
+If you have a question that is more sensitive or unrelated to the course, please email me at (`cdstanford` `ucdavis` `edu`).
 
 ## Course Description
 
-What does it mean for software to be correct? In this upper-level undergraduate course, we explore the principles and practices behind ensuring software correctness. Through a survey of topics, including model-based verifiers, program verification tools, and advanced type systems, students will gain hands-on experience with tools used in industry at companies like Amazon and Microsoft.
+What does it mean for software to be correct?
+How can we *know* that software will function as it is intended?
 
-## Intended Audience
+In this upper-level undergraduate course, we will explore the principles and practices behind building correct software. Through a survey of topics, including model-based verifiers, program verification tools, and advanced type systems, students will gain hands-on experience with tools used in industry at companies like Amazon and Microsoft.
 
-This course is designed for upper-level undergraduates. A basic programming background (ability to write a program like FizzBuzz) and some familiarity with discrete mathematics or mathematical proofs are recommended.
+## Unofficial Prerequisites
 
-## Prerequisites
+This is a special topics course; there are no official prerequisites.
+This course is ideal for mid to upper-level undergraduate computer science majors. Specifically:
 
-- Basic programming experience in any language.
-- Some exposure to mathematical thinking (discrete math) or mathematical proofs is helpful but not required.
+- A basic programming background (for example, the ability to write a program like [FizzBuzz](https://www.hackerrank.com/challenges/fizzbuzz/problem)) will be expected. (ECS 36A/36B/36C)
+- Some familiarity with discrete mathematics or mathematical proofs (e.g. ECS 20) will be helpful, but not required.
 
 ## Learning Objectives
 
