@@ -45,9 +45,14 @@ See `schedule.md`.
 
 AI collaboration is allowed and encouraged for homework assignments. However, the final exam will be in-class and closed-book.
 
-## Disclaimer
+## Disclaimers
 
 Communication from the instructor will only be sent through official UC Davis email addresses and channels. Please be vigilant of job scams impersonating faculty members. For more information, visit [UC Davis Job Scams Prevention](https://icc.ucdavis.edu/find/scams).
+
+Please be nice to each other.
+UC Davis has [policies against harassment and discrimination](https://hr.ucdavis.edu/departments/elr/preventing-discrimination-harassment).
+Be inclusive of your teammates in group discussions.
+If you need to, you may reach me by email to report an issue with a classmate or teammate.
 
 ## Contact and office hours
 

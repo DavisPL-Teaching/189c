@@ -8,8 +8,8 @@
 |   | April 3 | What is correctness? (And why should you care) |  |  |
 |   | April 5 | Models and specifications |  |  |
 | 2 | April 8 | Property-based testing |  |  |
-|   | April 10 | Property-based testing II |  |  |
-|   | April 12 | Property-based testing III |  | HW0 due |
+|   | April 10 | Property-based testing II |  | HW0 due |
+|   | April 12 | Property-based testing III |  |  |
 | 3 | April 15 | Satisfiability in Z3 |  |  |
 |   | April 17 | Satisfiability II |  | HW1 due |
 |   | April 19 | Satisfiability III |  |  |
@@ -44,19 +44,3 @@
 | 10 | June 3 | Course review |  |  |
 |    | **Last day of class** -- June 5 | Overflow |  | HW5 due |
 | 11 | **Final** -- June 12 |  |  |  |
-
-- **Week 1:** Introduction
-- **Week 2:** Alloy 1
-- **Week 3:** Alloy 2
-- **Week 4:** Alloy 3
-- **Week 5:** Z3
-
-# Section 2: Program Verification
-- **Week 5:** Dafny 1
-- **Week 6:** Dafny 2
-- **Week 7:** Dafny 3
-
-# Section 3: Advanced Topics
-- **Week 8:** Advanced Type Systems
-- **Week 9:** Concurrent Systems
-- **Week 10:** Overflow + Review
