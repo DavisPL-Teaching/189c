@@ -2,30 +2,22 @@
 
 ## Course Information
 
-**Instructor:** Caleb Stanford
-**CRN:** 57484
-**Listed Title:** Special Topics in Computer Science - Programming Languages and Compilers
-**Schedule:** Monday, Wednesday, Friday 1:10-2pm
-**Location:** Teaching and Learning Complex 1218
-**Office Hours:** TBD
-
-## Contact
-
-Please use the Piazza for questions related to course material.
-I encourage you to ask anonymously if you feel more comfortable.
-If you have a question that is more sensitive or unrelated to the course, please email me at (`cdstanford` `ucdavis` `edu`).
+- **Instructor:** Caleb Stanford
+- **CRN:** 57484
+- **Listed Title:** Special Topics in Computer Science - Programming Languages and Compilers
+- **Schedule:** Monday, Wednesday, Friday 1:10-2pm
+- **Location:** Teaching and Learning Complex 1218
 
 ## Course Description
 
 What does it mean for software to be correct?
-How can we *know* that software will function as it is intended?
 
-In this upper-level undergraduate course, we will explore the principles and practices behind building correct software. Through a survey of topics, including model-based verifiers, program verification tools, and advanced type systems, students will gain hands-on experience with tools used in industry at companies like Amazon and Microsoft.
+In this upper-level undergraduate course, we will explore the principles and practices behind building software that functions as its intended. Through a survey of topics, including model-based verifiers, program verification tools, and advanced type systems, students will gain hands-on experience with writing program models and program specifications using tools used in industry at companies like Amazon and Microsoft.
 
-## Unofficial Prerequisites
+## Intended Audience and Prerequisites
 
-This is a special topics course; there are no official prerequisites.
-This course is ideal for mid to upper-level undergraduate computer science majors. Specifically:
+This course is ideal for mid to upper-level undergraduate computer science majors.
+While there are no official prerequisites, the following are unofficial requirements:
 
 - A basic programming background (for example, the ability to write a program like [FizzBuzz](https://www.hackerrank.com/challenges/fizzbuzz/problem)) will be expected. (ECS 36A/36B/36C)
 - Some familiarity with discrete mathematics or mathematical proofs (e.g. ECS 20) will be helpful, but not required.
@@ -41,37 +33,26 @@ By the end of the course, students will be able to:
 
 ## Course Schedule
 
-### Section 1: Models and Proofs
-- **Week 1:** Introduction
-- **Week 2:** Alloy 1
-- **Week 3:** Alloy 2
-- **Week 4:** Alloy 3
-- **Week 5:** Z3
-
-### Section 2: Program Verification
-- **Week 5:** Dafny 1
-- **Week 6:** Dafny 2
-- **Week 7:** Dafny 3
-
-### Section 3: Advanced Topics
-- **Week 8:** Advanced Type Systems
-- **Week 9:** Concurrent Systems
-- **Week 10:** Overflow + Review
+See `schedule.md`.
 
 ## Evaluation Criteria
 
 - **Homeworks (60%):** 5 assignments due bi-weekly.
 - **Participation (10%):** In-class quizzes and active involvement on Piazza.
-- **Final Exam (30%):** Closed book exam focusing on all topics covered in the course.
+- **Final Exam (30%):** covering all topics covered in the course.
 
 ## AI Policy
 
-AI collaboration is allowed and encouraged for homework assignments. However, the final exam will be closed book, with no AI assistance permitted.
+AI collaboration is allowed and encouraged for homework assignments. However, the final exam will be in-class and closed-book.
 
 ## Disclaimer
 
 Communication from the instructor will only be sent through official UC Davis email addresses and channels. Please be vigilant of job scams impersonating faculty members. For more information, visit [UC Davis Job Scams Prevention](https://icc.ucdavis.edu/find/scams).
 
-## Office Hours
+## Contact and office hours
+
+Please use the Piazza for questions related to course material.
+I encourage you to ask anonymously if you feel more comfortable.
+If you have a question that is more sensitive or unrelated to the course, please email me at (`cdstanford` `ucdavis` `edu`).
 
 The instructor and TAs will be available during office hours for additional support on course material and assignments. The schedule will be announced during the first week of class.
