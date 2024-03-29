@@ -3,6 +3,7 @@
 ## Course Information
 
 - **Instructor:** Caleb Stanford
+- **TA:** Parnian Kamran
 - **CRN:** 57484
 - **Listed Title:** Special Topics in Computer Science - Programming Languages and Compilers
 - **Schedule:** Monday, Wednesday, Friday 1:10-2pm
@@ -27,9 +28,10 @@ While there are no official prerequisites, the following are unofficial requirem
 By the end of the course, students will be able to:
 
 1. Understand the concept of software correctness and its importance.
-2. Use model-based verifiers like Alloy and Z3 for software analysis.
-3. Apply program verification tools such as Dafny to ensure the correctness of software.
-4. Explore advanced topics in software correctness, including advanced type systems and concurrency.
+2. Use random testing tools like Hypothesis for software testing.
+3. Use model-based verifiers like Z3 for software analysis.
+4. Apply program verification tools such as Dafny to ensure the correctness of software.
+5. Explore advanced topics in software correctness, including advanced type systems and concurrency.
 
 ## Course Schedule
 
@@ -37,8 +39,8 @@ See `schedule.md`.
 
 ## Evaluation Criteria
 
-- **Homeworks (60%):** 5 assignments due bi-weekly.
-- **Participation (10%):** In-class quizzes and active involvement on Piazza.
+- **Homeworks (60%):** 5 assignments (due bi-weekly).
+- **Participation (10%):** via in-class quizzes and Piazza.
 - **Final Exam (30%):** covering all topics covered in the course.
 
 ## AI Policy
