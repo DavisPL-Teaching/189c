@@ -43,9 +43,18 @@ See `schedule.md`.
 - **Participation (10%):** via in-class quizzes and Piazza.
 - **Final Exam (30%):** covering all topics covered in the course.
 
+## Attendance
+
+I encourage you to attend class, but attendance is not required.
+Lectures will be recorded, but this is a best-effort process and I cannot promise that the lecture video quality will be perfect.
+If you miss class, there will be a way to make up the in-class quizzes
+by watching the lectures and sending me your quiz responses.
+If you are sick, exercise best caution, and be considerate of your fellow students; it is usually best not to come to class.
+
 ## AI Policy
 
 AI collaboration is allowed and encouraged for homework assignments. However, the final exam will be in-class and closed-book.
+Please see also [Prof. Jason Lowe-Power's advice here](https://jlpteaching.github.io/comparch/syllabus/#using-generative-ai-tools).
 
 ## Disclaimers
 

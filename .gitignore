@@ -3,3 +3,4 @@ __pycache__
 .pytest_cache
 *.dll
 lecture0/dafny-demo-py
+.DS_Store
