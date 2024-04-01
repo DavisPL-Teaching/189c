@@ -39,22 +39,30 @@ See `schedule.md`.
 
 ## Evaluation Criteria
 
-- **Homeworks (60%):** 5 assignments (due bi-weekly).
+- **Homeworks (50%):** 5 assignments (due bi-weekly), plus homework 0
 - **Participation (10%):** via in-class quizzes and Piazza.
-- **Final Exam (30%):** covering all topics covered in the course.
+- **Final Exam (40%):** covering all topics covered in the course.
 
 ## Attendance
 
-I encourage you to attend class, but attendance is not required.
-Lectures will be recorded, but this is a best-effort process and I cannot promise that the lecture video quality will be perfect.
+To encourage class attendance, there are in class polls that are worth a small amount of credit.
+However, attendance is not strictly required;
+I plan to make lectures available to join remotely on Zoom (starting from the second lecture), and they will also be recorded for later viewing -- please note that this is a best-effort process and I cannot promise that the lecture video quality will be perfect!
+I also may not see/respond to questions and comments through Zoom.
+If you are sick, to be considerate of your fellow students, please consider joining on Zoom.
 If you miss class, there will be a way to make up the in-class quizzes
-by watching the lectures and sending me your quiz responses.
-If you are sick, exercise best caution, and be considerate of your fellow students; it is usually best not to come to class.
+by watching the lectures and sending me your quiz responses
+(I will announce how to submit this information later int he quarter).
 
 ## AI Policy
 
 AI collaboration is allowed and encouraged for homework assignments. However, the final exam will be in-class and closed-book.
 Please see also [Prof. Jason Lowe-Power's advice here](https://jlpteaching.github.io/comparch/syllabus/#using-generative-ai-tools).
+
+## Collaboration policy
+
+You may collaborate with each other on homeworks, if you do please list the names of your collaborators at the top of your submission.
+However, each person must submit their own submission.
 
 ## Disclaimers
 
