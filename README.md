@@ -8,6 +8,7 @@
 - **Listed Title:** Special Topics in Computer Science - Programming Languages and Compilers
 - **Schedule:** Monday, Wednesday, Friday 1:10-2pm
 - **Location:** Teaching and Learning Complex 1218
+- **Final exam:** June 12, 6-8pm (Please note that this is not in schedulebuilder! But it is the correct time for our class slot. 189 final exam dates are not listed because the final exam room is yet to be determined. If they are unable to get us a room, then we will do the final exam in class.)
 
 ## Course Description
 
@@ -39,30 +40,87 @@ See `schedule.md`.
 
 ## Evaluation Criteria
 
-- **Homeworks (50%):** 5 assignments (due bi-weekly), plus homework 0
-- **Participation (10%):** via in-class quizzes and Piazza.
-- **Final Exam (40%):** covering all topics covered in the course.
+- **Homeworks (55%):** 5 assignments (due bi-weekly), plus homework 0
+- **Participation (10%):** via in-class quizzes
+- **Final Exam (35%):** covering all topics covered in the course.
 
-## Attendance
+## Grade Breakdown
+
+The following are minimum cutoffs: if your grade is above the given percentage, you will definitely receive at least the given grade. However, I reserve the right to lower the cutoffs (i.e. you might get a better grade than what the table says).
+Additionally, note that the final exam will be curved (see below), and this may also positively affect your final grade.
+
+| Percentage | Minimum Grade |
+| --- | --- |
+| 94 | A  |
+| 90 | A- |
+| 87 | B+ |
+| 84 | B  |
+| 80 | B- |
+| 77 | C+ |
+| 74 | C  |
+| 70 | C- |
+| 67 | D+ |
+| 64 | D  |
+| 60 | D- |
+
+## Grading
+
+For homeworks, your assignments will be graded on the following two broad criteria.
+A rough rubric you can expect is 50 points for each of the following criteria:
+
+- **Correctness:** Does you program work? That is, does it have the right output on each input and run within a reasonable amount of time? Does it do everything that's it's supposed to, are there bugs? Missing features? etc.
+
+- **Code quality:** Does you program exhibit high code quality standards? That is, modular code, readable, not overly complex, well documents, commented, logically separated modules and functions, reasonably efficient, etc.
+
+The final exam will be curved.
+That means, for example, if 100 points are possible, it may be entered as out of a smaller number of points like 90 or 80 for the purposes of calculating your grade, if the average score of the class was low or if there were unexpectedly difficult questions.
+However, I will not announce the curving strategy ahead of time.
+
+## Homeworks and GitHub Classroom
+
+Programming cannot be learned by merely watching or reading, it must be done!
+Homeworks will consist of programming assignments designed to bring together concepts we learned in class.
+Homeworks will be posted using the class GitHub Classroom page along with the lectures, and announced on Piazza when they are finalized.
+There will be instructions for joining the GitHub Classroom when homework 1 is released.
+
+## Attendance and Participation
 
 To encourage class attendance, there are in class polls that are worth a small amount of credit.
-However, attendance is not strictly required;
-I plan to make lectures available to join remotely on Zoom (starting from the second lecture), and they will also be recorded for later viewing -- please note that this is a best-effort process and I cannot promise that the lecture video quality will be perfect!
-I also may not see/respond to questions and comments through Zoom.
-If you are sick, to be considerate of your fellow students, please consider joining on Zoom.
-If you miss class, there will be a way to make up the in-class quizzes
-by watching the lectures and sending me your quiz responses
-(I will announce how to submit this information later int he quarter).
+However, if you miss class, there will be a way to make up the in-class quizzes
+by watching the lectures or looking at slides and filling out your quiz responses offline
+(I will announce how to submit this information later in the quarter).
+
+## Lecture Recordings and Zoom
+
+**Disclaimer:** I will be broadcasting and recording lectures on Zoom, but this is a best-effort process; I can make no promises that this will work every time, or that it will be as audible/understandable as the in-person lectures.
+In particular, please note the following:
+
+- I will share screen, but I won't generally check the Zoom chat for interactions/questions
+
+- I will generally try to face the audience, so it may not be as easy to see what I am talking about through Zoom, or to see things like audience interaction, if we write something on the board, etc.
+
+Despite these caveats, my voice will be audible and you should generally be able to follow along through the slides if you need to.
+Zoom recordings will be made available on Canvas.
 
 ## AI Policy
 
 AI collaboration is allowed and encouraged for homework assignments. However, the final exam will be in-class and closed-book.
 Please see also [Prof. Jason Lowe-Power's advice here](https://jlpteaching.github.io/comparch/syllabus/#using-generative-ai-tools).
 
-## Collaboration policy
+## Collaboration Policy
 
-You may collaborate with each other on homeworks, if you do please list the names of your collaborators at the top of your submission.
+You may collaborate with each other on homeworks; if you do please list the names of your collaborators at the top of your submission.
 However, each person must submit their own submission.
+
+## Late Policy
+
+Homeworks will generally be due at 11:59pm on the due date.
+
+I cannot guarantee that late work will be graded.
+However, I encourage you to update your assignments even after the deadline -- GitHub classroom will allow us to see both the state of the code at the time of the deadline as well as any recent changes.
+At grading time, we may choose to grade the more recent version at our discretion.
+
+Also, near the end of the quarter, you will be given the opportunity to go back and pick one assignment that you lost points on, and make up the points (up to 50% of the points back).
 
 ## Disclaimers
 
@@ -77,6 +135,7 @@ If you need to, you may reach me by email to report an issue with a classmate or
 
 Please use the Piazza for questions related to course material.
 I encourage you to ask anonymously if you feel more comfortable.
+Also, please ask publicly unless there is a good reason not to.
 If you have a question that is more sensitive or unrelated to the course, please email me at (`cdstanford` `ucdavis` `edu`).
 
-The instructor and TAs will be available during office hours for additional support on course material and assignments. The schedule will be announced during the first week of class.
+The instructor and TAs will be available during office hours for additional support on course material and assignments. The schedule of office hours can be found in a pinned post on Piazza.
