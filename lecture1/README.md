@@ -4,43 +4,55 @@
 
 1. Homework 0 is out, due Monday 11:59pm
 
+Potential other option: GitHub Codespaces
+
 2. Final exam: June 12, 6-8pm
 
 3. Office hours have been posted
     - Academic Surge
 
 4. Waitlist
+    cap 60
+    currently 16
+
+5. If new to the class
+pls monitor Piazza, lecture 0 slides are available on GitHub
 
 ## Other syllabus updates
 
-[Piazza](https://piazza.com/class/lt90i40zrot3ue/post/19)
+[See Piazza](https://piazza.com/class/lt90i40zrot3ue/post/19)
 
-Reminder: please monitor Piazza for announcements
+General reminder: please monitor Piazza for announcements
 
 ## Plans for lectures going forward:
 
 - Most lectures going forward will be live coding
 
-- In-class polls
+- The end of the class (~second half) will be an extended programming
+exercise similar to what might be found on the homeworks
 
 - I will be expanding the module on type systems / Rust (to about 2 weeks -- and will include 1 homework)
 
+- Homework 1 will be released approx. Monday
+
+- New plan for in-class polls using Google Forms
+
 ## Plan for today
+
+(Overflow) Demos from last time explained in a bit more detail (~5 min)
 
 1. Components of correctness: programs, specifications, and preconditions
 
 2. Writing specifications
 
-    - Fixing specifications
-
 3. Types of specifications
 
-3. Writing preconditions
+4. Writing preconditions
 
-4. Programming project: War implementation
+5. Programming exercise: War implementation
 
 (possibly for next time)
-5. Limitations and discussion
+- Limitations and discussion
 
     - Specification is wrong
 
