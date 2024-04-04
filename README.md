@@ -86,9 +86,8 @@ There will be instructions for joining the GitHub Classroom when homework 1 is r
 ## Attendance and Participation
 
 To encourage class attendance, there are in class polls that are worth a small amount of credit.
-However, if you miss class, there will be a way to make up the in-class quizzes
-by watching the lectures or looking at slides and filling out your quiz responses offline
-(I will announce how to submit this information later in the quarter).
+However, if you miss class, you may make up the in-class quizzes
+by watching the lectures or looking at slides and filling out your quiz responses offline.
 
 ## Lecture Recordings and Zoom
 
@@ -107,10 +106,30 @@ Zoom recordings will be made available on Canvas.
 AI collaboration is allowed and encouraged for homework assignments. However, the final exam will be in-class and closed-book.
 Please see also [Prof. Jason Lowe-Power's advice here](https://jlpteaching.github.io/comparch/syllabus/#using-generative-ai-tools).
 
-## Collaboration Policy
+## Collaboration Policy and Academic Integrity
 
-You may collaborate with each other on homeworks; if you do please list the names of your collaborators at the top of your submission.
-However, each person must submit their own submission.
+This class will encourage collaboration; however, each person should complete their own version of the assignment. **You should not directly copy code from someone else, even within your study group,** but you can receive help and give help on individual parts of an assignment.
+
+You may complete homework assignments in groups of up to 3 people, as long as everyone is working on their own copy of the code. If you do this, please list the names of your collaborators at the top of your submission.
+
+Here are some examples of good (allowed) collaboration:
+
+- Sharing of resources
+- Sharing of inspiration
+- Sharing questions about the assignment on Piazza
+- Helping out classmates on Piazza
+- Collaboration at a low level (E.g., hey, what's the syntax for X, again? Why does this code print Y?)
+- Collaboration at a high level (Why did they tell us to do this in that way?)
+- As in most CS courses, the internet is your friend!
+
+And here are examples of disallowed collaboration:
+
+- Sharing large amounts of code with others within your group or others in the course.
+- Sharing the exact solution to a specific mid-level programming problem.
+- Asking a stranger to finish your work for you or copying and pasting what you find online for submission.
+
+In other words, please use common sense!
+This course strictly follows the [UC Davis Code of Academic Integrity](https://ossja.ucdavis.edu/academic-integrity).
 
 ## Late Policy
 
