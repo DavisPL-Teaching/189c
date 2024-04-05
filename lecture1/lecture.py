@@ -24,13 +24,13 @@ def average(l):
 # Usually contrasted with unit testing.
 
 # Common experience unit testing:
-def test_average_function():
+def ignore_test_average_function():
     assert average([1, 2, 3]) == 2
     assert average([1, 2, 3, 4]) == 2.5
     assert average([1, 2, 3, 4, 5]) == 3
     assert average([2.0]) == 2.0
 
-test_average_function()
+# ignore_test_average_function()
 
 # This is really tedious!
 # Hypothesis makes it easier by generating all of these tests (and more)
@@ -148,17 +148,31 @@ def test_list_product(xs):
     # matches the standard/expected implementation.
     assert list_product(xs) == reduce(lambda x, y: x * y, xs, 1)
 
-    # assert list_product(xs) == (xs)
+############## where we left off for day 1 ############
 
-############## where we left off for today ############
+######################
+###     Part 2     ###
+######################
 
-# A third example
-def apply_to_each(f, l):
-    return [f(x) for x in l]
+# Announcements
 
-def test_apply_to_each():
-    # TODO
+# Last time
+
+# Review: writing specifications
+# list product example:
+# - we test whether our impl matches the intended behavior.
+# average of a list example:
+# - we test whether our impl satisfies a property of interest.
+
+# One more example:
+def double_list(l):
+    # TODO: write impl and spec
     pass
+
+# Review: correctness requires:
+# - Model of the program
+# - Model of what should happen (in Hypothesis, we do this through assertions)
+# - Model of the input (precondition)
 
 """
 Comments
@@ -170,17 +184,33 @@ Comments
 - Unknown
 """
 
-######################
-###     Part 2     ###
-######################
+########## Poll ##########
 
-# Hypothesis syntax
+from math import sqrt
+
+def square_root(x):
+    int(sqrt(x))
+
+# POLL: Come up with a specification for the program.
+# Also, come up with a specification that does NOT hold of the program.
+# You can write either as a Python function or in words.
+
+# https://tinyurl.com/57upuhcw
+
+
+########## Hypothesis syntax ##########
 # https://hypothesis.readthedocs.io/en/latest/data.html
 
-# Writing specifications
+# Some additional useful features
 
-def list_append(l1, l2):
-    return l1 + l2
+# - Other @given strategies
+
+# - the @example syntax
+
+# Writing specifications: additional notes
+
+# Important note: the same function can have multiple specifications!
+# Examples:
 
 def list_interleave(l1, l2):
     # Return a list with the elements of l1 and l2 interleaved
@@ -200,6 +230,20 @@ def ncr(n, k):
 
 # What can we check about this function?
 
+# A more interesting one:
+
+def apply_to_each(f, l):
+    return [f(x) for x in l]
+
+def test_apply_to_each():
+    # TODO
+    pass
+
+# Also, a *different* function can satisfy the same specification
+
+def list_product_2(l):
+    # TODO
+    pass
 
 # When a specification is wrong...
 
@@ -220,32 +264,22 @@ def repeated_square(x, n):
 # def test_average_4(l1, l2):
 #     assert average(l1 + l2) == (len(l1) * average(l1) + len(l2) * average(l2)) / (len(l1) + len(l2))
 
-########## Poll ##########
-
-def do_twice(f, x):
-    return f(f(x))
-
-def test_do_twice():
-    # TODO: here
-    pass
-
-# POLL: Come up with a specification for the program.
-# (You can assume x is an integer and pick any function f.)
-#
-# Is your specification correct?
-# What are some limitations of this specification?
-
-# https://tinyurl.com/57upuhcw
-
 ######################
 ###     Part 3     ###
 ######################
 # Types of specifications
 
-# Sorting example
+def repeated_square_2(x, n):
+    # TODO: implement
+    pass
 
+# - Basic properties or patterns
+# - Functional correctness specifications
+# - Loop invariant specifications
+# - Type specifications
 
-
+# A **safety property** is...
+# Everything we have seen so far is a safety property.
 
 ######################
 ###     Part 4     ###
@@ -253,10 +287,18 @@ def test_do_twice():
 # Writing preconditions
 
 # Divide by zero example
+def divide(x, y):
+    # TODO
+    pass
 
+# - Average example from before
+def average(l):
+    pass
 
-# - Average example
-
+# You can often read off preconditions from the documentation!
+# Examples:
+# - list pop: https://docs.python.org/3/tutorial/datastructures.html
+# - file open: https://docs.python.org/3/library/functions.html#open
 
 ######################
 ###     Part 5     ###
