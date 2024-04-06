@@ -156,23 +156,53 @@ def test_list_product(xs):
 
 # Announcements
 
+# git clone https://github.com/DavisPL-Teaching/189C.git
+# 60, waitlist 12
+
 # Last time
+
+# - Defined what it means for programs to be correct
+# - Defined specifications
+# - Example specifiacations
+# - Started to get used to Python + Hypothesis syntax
 
 # Review: writing specifications
 # list product example:
+# Spec:
 # - we test whether our impl matches the intended behavior.
+
 # average of a list example:
+# Spec:
 # - we test whether our impl satisfies a property of interest.
+
+# Plan for today
+# - Short review
+# - Quiz
+# - Practice writing more complex specifications
+# - Talk about different types of specifications
+# - Talk about preconditions
+# - Do a programming exercise
 
 # One more example:
 def double_list(l):
-    # TODO: write impl and spec
-    pass
+    # Program or implementation
+    result = []
+    for x in l:
+        result.append(2 * x)
+    return result
+
+# Specification
+@given(st.lists(st.integers()))
+def test_double_list(l):
+    new_list = double_list(l)
+    # range(5) = numbers between 0 and 4
+    for i in range(len(l)):
+        assert new_list[i] == 2 * l[i]
 
 # Review: correctness requires:
-# - Model of the program
+# - Model of the program (in our case, a Python program)
 # - Model of what should happen (in Hypothesis, we do this through assertions)
-# - Model of the input (precondition)
+# - Model of the input (precondition) (in Hypothesis, we do this through @given decorators which are run using pytest)
 
 """
 Comments
@@ -189,7 +219,7 @@ Comments
 from math import sqrt
 
 def square_root(x):
-    int(sqrt(x))
+    return int(sqrt(x))
 
 # POLL: Come up with a specification for the program.
 # Also, come up with a specification that does NOT hold of the program.
@@ -197,6 +227,21 @@ def square_root(x):
 
 # https://tinyurl.com/57upuhcw
 
+# Examples
+# >>> int(sqrt(4))
+# 2
+# >>> int(sqrt(5))
+# 2
+# >>> int(sqrt(10))
+# 3
+
+@given(st.integers(min_value = 0, max_value = 1000000))
+def test_square_root(x):
+    # what should go here?
+    # Try to make it more interesting that just a specific example
+    # Ex.: Square_root(x) is a function where it returns a number, when multiplied by itself, equals x.
+    y = square_root(x)
+    assert y * y <= x and (y + 1) * (y + 1) > x
 
 ########## Hypothesis syntax ##########
 # https://hypothesis.readthedocs.io/en/latest/data.html
@@ -207,6 +252,14 @@ def square_root(x):
 
 # - the @example syntax
 
+from hypothesis import example
+
+@given(st.integers(min_value = 0, max_value = 100))
+@example(x=10000)
+def test_square_root_2(x):
+    y = square_root(x)
+    assert y * y <= x and (y + 1) * (y + 1) > x
+
 # Writing specifications: additional notes
 
 # Important note: the same function can have multiple specifications!
@@ -215,11 +268,25 @@ def square_root(x):
 def list_interleave(l1, l2):
     # Return a list with the elements of l1 and l2 interleaved
     result = []
-    for i in range(len(l1)):
+    n = min(len(l1), len(l2))
+    for i in range(n):
         result.append(l1[i])
         result.append(l2[i])
     return result
 
+# ex.: interleave([1, 4, 5], [2, 3, 6] --> [1, 2, 4, 3, 5, 6])
+
+@given(st.lists(st.integers()),st.lists(st.integers()))
+def test_list_interleave(l1, l2):
+    l = list_interleave(l1, l2)
+    # Weak spec
+    assert len(l) == min(2 * len(l1), 2 * len(l2))
+    # Stronger spec: check that the elements are as we expect
+    # for i in range(..):
+    # check that l[2 * i] = l1[i]
+    # check that l[2 * i + 1] = l2[i]
+
+# Skip
 def ncr(n, k):
     # Return the number of ways to choose k items from n items
     result = 1
@@ -232,12 +299,24 @@ def ncr(n, k):
 
 # A more interesting one:
 
-def apply_to_each(f, l):
+def functional_map(f, l):
     return [f(x) for x in l]
 
-def test_apply_to_each():
-    # TODO
-    pass
+# how to generate f?
+# Let's check the documentation
+@given(st.functions(like=lambda x: x,returns=st.integers()),st.lists(st.integers()))
+def test_functional_map(f, l):
+    result = functional_map(f, l)
+    assert len(result) == len(l)
+
+# Review:
+# - We talked more about writing specs
+# - The same function can have multiple specs, and it can have
+#   incorrect speccs
+# - The process of writing a spec can be a good tool for debugging
+#   BOTH problems with the function, and problems with the spec.
+
+############## where we left off for day 2 ############
 
 # Also, a *different* function can satisfy the same specification
 
