@@ -1,4 +1,4 @@
-# Lecture 1 -- ECS 189C
+# Lecture 1: Introduction to Correctness
 
 ## Announcements
 
@@ -37,9 +37,9 @@ exercise similar to what might be found on the homeworks
 
 - New plan for in-class polls using Google Forms
 
-## Plan for today
+## Plan for the next few lectures
 
-(Overflow) Demos from last time explained in a bit more detail (~5 min)
+(Overflow) Demos from last time explained in a bit more detail (~15 min)
 
 1. Components of correctness: programs, specifications, and preconditions
 

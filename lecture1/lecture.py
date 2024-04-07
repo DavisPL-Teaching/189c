@@ -1,12 +1,9 @@
 """
-Lecture 1
+Lecture 1: Introduction to Correctness
 ECS 189C
 April 3, 2024
 """
 
-######################
-###     Part 1     ###
-######################
 # Components of correctness: programs, specifications, and preconditions
 
 from hypothesis import given
@@ -106,7 +103,7 @@ The difference between (2) and (3) is:
 - (3) is an assumption.
 
 def divide(x, y):
-    x / y
+    return x / y
 
 Notice I haven't asserted that y != 0
 Therefore y != 0 is a precondition of this program.
@@ -150,9 +147,9 @@ def test_list_product(xs):
 
 ############## where we left off for day 1 ############
 
-######################
-###     Part 2     ###
-######################
+#####################
+###     Day 2     ###
+#####################
 
 # Announcements
 
@@ -180,8 +177,6 @@ def test_list_product(xs):
 # - Quiz
 # - Practice writing more complex specifications
 # - Talk about different types of specifications
-# - Talk about preconditions
-# - Do a programming exercise
 
 # One more example:
 def double_list(l):
@@ -312,7 +307,7 @@ def test_functional_map(f, l):
 # Review:
 # - We talked more about writing specs
 # - The same function can have multiple specs, and it can have
-#   incorrect speccs
+#   incorrect specs
 # - The process of writing a spec can be a good tool for debugging
 #   BOTH problems with the function, and problems with the spec.
 
@@ -324,85 +319,13 @@ def list_product_2(l):
     # TODO
     pass
 
-# When a specification is wrong...
-
-def repeated_square(x, n):
-    # TODO: implement
-    pass
-
 # Fixing the average function
 
-# def test_average_2(l1, l2):
-#     assert average(l1 + l2) == (average(l1) + average(l2)) / 2
-
-# def test_average_3(l1, l2):
-#     avg1 = average(l1)
-#     avg2 = average(l2)
-#     assert min(avg1, avg2) <= average(l1 + l2) <= max(avg1, avg2)
-
-# def test_average_4(l1, l2):
-#     assert average(l1 + l2) == (len(l1) * average(l1) + len(l2) * average(l2)) / (len(l1) + len(l2))
-
-######################
-###     Part 3     ###
-######################
-# Types of specifications
-
-def repeated_square_2(x, n):
-    # TODO: implement
-    pass
-
-# - Basic properties or patterns
-# - Functional correctness specifications
-# - Loop invariant specifications
-# - Type specifications
-
-# A **safety property** is...
-# Everything we have seen so far is a safety property.
-
-######################
-###     Part 4     ###
-######################
-# Writing preconditions
-
-# Divide by zero example
-def divide(x, y):
+def fixed_average(l):
     # TODO
     pass
 
-# - Average example from before
-def average(l):
+# SKIP -- a problem like this will be on the homework
+def repeated_square(x, n):
+    # TODO: implement, first with a bug
     pass
-
-# You can often read off preconditions from the documentation!
-# Examples:
-# - list pop: https://docs.python.org/3/tutorial/datastructures.html
-# - file open: https://docs.python.org/3/library/functions.html#open
-
-######################
-###     Part 5     ###
-######################
-# Live coding project: War implementation
-
-######################
-###     Part 6     ###
-######################
-# Limitations and discussion
-
-#     - Specification is wrong
-
-#     - Specification is incomplete
-
-#     - Program model is wrong
-
-#     - Precondition is wrong
-
-#     - Mutability issues
-
-#     - Techniques for validating specifications
-
-#     - Important distinctions (terminology to be aware of)
-#         + Testing vs. verification
-#         + Static/dynamic
-#         + Soundness/completeness
-#         + White-box vs. black-box
