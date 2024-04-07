@@ -6,45 +6,45 @@ I will try to keep it up to date, but please see Piazza for the latest informati
 
 ## Section 1: Models and Specifications
 
-| Week | Date | Topic | Readings | HW |
+| Week | Date | Topic | Lecture # | Readings & HW |
 | --- | --- | --- | --- | --- |
-| 1 | April 1 | Introduction, logistics, course goals, and demos |  |  |
-|   | April 3 | What is correctness? (And why you should care) -- Specifications, Models, and Proofs |  |  |
-|   | April 5 | Property-Based Testing with Hypothesis |  |  |
-| 2 | April 8 | Hypothesis II  |  | HW0 due |
-|   | April 10 | Hypothesis III |  |  |
-|   | April 12 | Hypothesis Internals |  |  |
-| 3 | April 15 | Satisfiability with the Z3 Theorem Prover |  | HW1 due |
-|   | April 17 | Z3 II |  |  |
-|   | April 19 | Z3 III |  |  |
+| 1 | April 1 | Introduction and demos | 0 |  |  |
+|   | April 3 | Hypothesis I: Introduction to correctness | 1 | [Correctness (computer science)](https://en.wikipedia.org/wiki/Correctness_(computer_science)) |  |
+|   | April 5 | Hypothesis II: Writing specifications | 1 | [Hypothesis docs](https://hypothesis.readthedocs.io/en/latest/) |
+| 2 | April 8 | Hypothesis III: Complex specifications | 2 | HW0 due |
+|   | April 10 | Hypothesis IV: Generators and Internals | 2 |  |
+|   | April 12 | Hypothesis V: Limitations | 2 |  |
+| 3 | April 15 | Z3 I: Proving Satisfiability |  |  |
+|   | April 17 | Z3 II: Data Types |  |  | HW1 due |
+|   | April 19 | Z3 III: Integers |  |  |
 | 4 | April 22 | Z3 IV: Strings and regular expressions |  |  |
-|   | April 24 | Advanced satisfiability: Z3 internals |  |  |
-|   | April 26 | Advanced satisfiability: Z3 internals |  | HW2 due |
+|   | April 24 | Z3 V: Internals |  |  |
+|   | April 26 | Z3 VI: Internals |  |  |
 
-## Section 2: Program Verification
+## Section 2: Program Verification and Type Systems
 
-| Week | Date | Topic | Readings | HW |
+| Week | Date | Topic | Lecture # | Readings and HW |
 | --- | --- | --- | --- | --- |
-| 5 | April 29 | Program Verification with Dafny |  |  |
+| 5 | April 29 | Dafny I: Program Verification |  |HW2 due |
 |   | May 1 | Dafny II |  |  |
 |   | May 3 | Dafny III |  |  |
-| 6 | May 6 | Dafny Internals: Hoare Logic |  |  |
-|   | May 8 | Hoare Logic II |  |  |
-|   | May 10 | Hoare Logic III |  | HW3 due |
-| 7 | May 13 | Extensions |  |  |
-|   | May 15 | Extensions |  |  |
-|   | May 17 | Limitations |  |  |
+| 6 | May 6 | Dafny IV: Hoare Logic |  |  |
+|   | May 8 | Dafny V: Hoare Logic |  |  |
+|   | May 10 | Dafny VI: Extensions and Limitations |  | HW3 due |
+| 7 | May 13 | Rust I: Type Systems |  |  |
+|   | May 15 | Rust II |  |  |
+|   | May 17 | Rust III |  |  |
+| 8 | May 20 | Rust IV: Polymorphism |  | HW4 due |
+|   | May 22 | Rust V |  |  |
+|   | May 24 | Rust VI: Advanced Features |  |  |
 
-## Section 3: Advanced Topics
+## Section 3: Advanced Topics and Review
 
-| Week | Date | Topic | Readings | HW |
+| Week | Date | Topic | Lecture # | Readings & HW |
 | --- | --- | --- | --- | --- |
-| 8 | May 20 | Advanced type systems I |  |  |
-|   | May 22 | Advanced type systems II |  |  |
-|   | May 24 | Concurrent systems verification |  | HW4 due |
 | 9 | **No Class** (Memorial Day) |  |  |  |
-|   | May 29 | Distributed systems verification |  |  |
-|   | May 31 | Applications to security |  |  |
+|   | May 29 | Advanced topics: Concurrency and distributed systems |  |  |
+|   | May 31 | Advanced topics: Security |  | HW5 due |
 | 10 | June 3 | Course review |  |  |
-|    | **Last day of class** -- June 5 | Overflow |  | HW5 due |
+|    | **Last day of class** -- June 5 | Overflow |  |  |
 | 11 | **Final** -- June 12 |  |  |  |
