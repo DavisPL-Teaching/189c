@@ -299,7 +299,7 @@ def functional_map(f, l):
 
 # how to generate f?
 # Let's check the documentation
-@given(st.functions(like=lambda x: x,returns=st.integers()),st.lists(st.integers()))
+@given(st.functions(like=lambda x: x,returns=st.integers()),st.lists(st.integers(), max_size=5))
 def test_functional_map(f, l):
     result = functional_map(f, l)
     assert len(result) == len(l)
@@ -323,9 +323,35 @@ def list_product_2(l):
 
 def fixed_average(l):
     # TODO
+    # (could also use a built-in)
     pass
 
-# SKIP -- a problem like this will be on the homework
-def repeated_square(x, n):
-    # TODO: implement, first with a bug
-    pass
+# @given(st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1))
+# def test_fixed_average(xs):
+#     # TODO: fix
+#     assert min(xs) <= fixed_average(xs) <= max(xs)
+
+"""
+Clearing up: Specifications
+
+I've been using the word "specification" (spec) a lot.
+What does it mean?
+
+>> It's a true-or-false property that a program should satisfy.
+
+Some programs satisfy the property (spec), others don't.
+Like a blueprint for a house, or an answer key for a test question.
+
+Some philosophy here:
+remember the car example from lecture 0?
+What does it mean for a program to be "correct"?
+Our answer is that it *can't* mean anything, unless there is some
+definition of what it *means* to be correct.
+That definition is the specification.
+
+After all, when your boss/teacher/colleague/friend asks you to
+write a program, they probably have some particular expectation
+in mind of what that program should do.
+If we write the expectation down in a precise way, then we get
+a specification.
+"""

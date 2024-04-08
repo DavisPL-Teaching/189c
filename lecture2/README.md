@@ -15,26 +15,17 @@ We've talked about components of correctness:
 
 We've learned syntax for writing specifications in Hypothesis.
 
-The technical name for Hypothesis is that it's a "property-based testing tool" (PBT). Why?
-
-## Clearing up: Specifications
-
-I've been using the word "specification" (spec) a lot.
-What does it mean?
-**It's just a requirement that a program should satisfy.**
-Some programs satisfy the spec, others don't.
-Like a blueprint for a house, or a manual for making
-
-Some philosophy here: remember the car example from lecture 0?
-What does it mean for a program to be "correct"?
-Our answer is that it *can't* mean anything, unless there is some
-definition of what it *means* to be correct.
-That definition is a specification.
-
 ## Plan
 
+- Tying up a few loose ends from lecture1
+- Poll
 - Writing preconditions
-- Revisiting our definition of correctness
+- Weaker and stronger specs
+- Weaker and stronger preconditions (if time)
+- Types of specs
+- Discussion and limitations
 
-- Talk about preconditions
-- Do a programming exercise
+## Schedule
+
+Finishing up Hypothesis this week.
+Z3 starting in one week (Monday).
