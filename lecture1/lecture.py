@@ -316,20 +316,25 @@ def test_functional_map(f, l):
 # Also, a *different* function can satisfy the same specification
 
 def list_product_2(l):
-    # TODO
-    pass
+    result = 1
+    l.reverse()
+    for x in l:
+        result *= x
+    return result
 
 # Fixing the average function
 
 def fixed_average(l):
-    # TODO
+    l_modified = [x / len(l) for x in l]
+    return sum(l_modified)
     # (could also use a built-in)
-    pass
+    # e.g. there's a statistics.mean function
 
-# @given(st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1))
-# def test_fixed_average(xs):
-#     # TODO: fix
-#     assert min(xs) <= fixed_average(xs) <= max(xs)
+ERROR = .000001
+
+@given(st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1))
+def test_fixed_average(xs):
+    assert min(xs) - ERROR <= fixed_average(xs) <= max(xs) + ERROR
 
 """
 Clearing up: Specifications
