@@ -4,7 +4,7 @@
 
 - HW0 is due today 11:59pm
 
-- HW1 is released! Due Wednesday, April 17.
+- HW1 is released! Due Friday, April 19.
 
 ## Recap
 

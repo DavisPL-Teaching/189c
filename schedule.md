@@ -15,8 +15,8 @@ I will try to keep it up to date, but please see Piazza for the latest informati
 |   | April 10 | Hypothesis IV: Generators and Internals |  | 2 |
 |   | April 12 | Hypothesis V: Limitations |  | 2 |
 | 3 | April 15 | Z3 I: Proving Satisfiability |  |  |
-|   | April 17 | Z3 II: Data Types | HW1 due |  |
-|   | April 19 | Z3 III: Integers |  |  |
+|   | April 17 | Z3 II: Data Types |  |  |
+|   | April 19 | Z3 III: Integers | HW1 due |  |
 | 4 | April 22 | Z3 IV: Strings and regular expressions |  |  |
 |   | April 24 | Z3 V: Internals |  |  |
 |   | April 26 | Z3 VI: Internals |  |  |
