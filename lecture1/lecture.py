@@ -9,6 +9,8 @@ April 3, 2024
 from hypothesis import given
 from hypothesis import strategies as st
 
+import pytest
+
 def average(l):
     return sum(l) / len(l)
 
@@ -333,6 +335,7 @@ def fixed_average(l):
 ERROR = .000001
 
 @given(st.lists(st.floats(allow_nan=False, allow_infinity=False), min_size=1))
+@pytest.mark.xfail
 def test_fixed_average(xs):
     assert min(xs) - ERROR <= fixed_average(xs) <= max(xs) + ERROR
 

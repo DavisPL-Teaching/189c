@@ -69,7 +69,7 @@ def divide(x, y):
     st.integers(min_value = -1000, max_value = 1000),
     st.integers(min_value = 1, max_value = 1000),
 )
-@settings(max_examples=10000)
+@settings(max_examples=1000)
 @pytest.mark.xfail
 def test_divide(x, y):
     # what to test here?
@@ -93,7 +93,7 @@ def test_divide(x, y):
     st.integers(min_value = -1000, max_value = 1000),
     st.integers(min_value = -1000, max_value = 1000),
 )
-@settings(max_examples=10000)
+@settings(max_examples=1000)
 def test_divide_2(x, y):
     # Assume statement!
     # Adds some constraint to the precondition.
@@ -107,10 +107,9 @@ def test_divide_2(x, y):
 # @pytest.mark.xfail
 # To mark a test as either ignored, or expected to fail.
 
-# SKIP
-# - Average example from before
-def average(l):
-    pass
+# Also useful:
+# @example(...)
+# @settings(...)
 
 """
 You can often read off preconditions from the documentation!
@@ -154,25 +153,149 @@ ways:
 
 ############## where we left off for day 3 ############
 
+"""
+Day 4
 
-# Also, some useful syntax.
+Announcements:
+- Waitlist update
+- Any questions about HW1?
 
-# Strategies:
-# - st.text()
-# - st.one_of()
+Recap: ways of writing preconditions:
+    @given constraints
+    assume
 
-# Decorators:
-# @pytest.mark.skip(reason="...")
-# @pytest.mark.xfail
-# @example(...)
+PLAN (today and next time)
+- assert vs assume
+- poll
+- more about strategies
+- a few more notes about specs (may skip)
+- discussion and limitations
 
-# Advanced:
-# the assume() statement
+Why is it called "assume"?
+
+- Assert:
+- Assume:
+
+"""
+
+####################
+###     Poll     ###
+####################
+
+# Is this program for sorting a list correct? :)
+
+def sort_list(l):
+    l = l.copy()
+    assume(l == sorted(l))
+    return l
+
+# The spec:
+@given(st.lists(st.integers()))
+def test_sort_list(l):
+    assert sort_list(l) == sorted(l)
+
+# Form:
+# https://forms.gle/fGggQAeCj8y1obnX7
+
+"""
+
+Multiverse view
+- Quantum bogosort:
+    https://wiki.c2.com/?QuantumBogoSort
+- (Based on: bogosort
+    https://en.wikipedia.org/wiki/Bogosort)
+
+
+Point:
+We can think of the precondition as part of the spec!
+Why?
+
+Recall: a spec is...
+
+In our case:
+"""
 
 ######################
 ###     Part 2     ###
 ######################
-# Weaker and stronger specifications
+# More about strategies
+
+"""
+NOT part of the spec:
+- the program
+- the strategy (generator)
+
+We've seen some strategies already:
+- st.integers()
+- st.lists()
+
+What is the difference between a strategy and a precondition?
+
+Example strategies:
+(written as Python generators)
+"""
+
+def gen_simple():
+    raise NotImplementedError
+
+def gen_smarter():
+    raise NotImplementedError
+
+def gen_simpler():
+    raise NotImplementedError
+    # https://imgur.com/uR4WuQ0
+
+"""
+Some other useful strategies:
+- st.text()
+- st.one_of()
+
+Hypothesis generators are much smarter than just generating
+random values.
+
+Minimizing examples:
+    https://hypothesis.readthedocs.io/en/latest/data.html
+
+Custom formats: (emails, dates, etc.)
+    st.text() -- UTF8 by default
+    st.datetimes()
+    st.emails()
+
+Guiding the search:
+    assumptions: https://hypothesis.readthedocs.io/en/latest/details.html#making-assumptions
+    target: https://hypothesis.readthedocs.io/en/latest/details.html#hypothesis.target
+"""
+
+@given(st.floats(0, 1e100), st.floats(0, 1e100), st.floats(0, 1e100))
+@pytest.mark.skip
+def test_associativity_with_target(a, b, c):
+    ab_c = (a + b) + c
+    a_bc = a + (b + c)
+    difference = abs(ab_c - a_bc)
+    target(difference)  # Without this, the test almost always passes
+    assert difference < 2.0
+
+"""
+How hypothesis works, roughly:
+
+1. Generate a random example
+
+2. Check if it runs and satisfies any preconditions/assume
+    - If NO, try to guide the search towards a better example
+
+3. Check if it runs and satisfies any assertions
+    - If YES, try to guide the search towards a better example
+
+4. Once a failing test is found: try to simplify the example
+    ("shrink") it to something understandable.
+"""
+
+######################
+###     Part 3     ###
+######################
+# A few more notes about specs
+# (We will probably skip most of this part for time,
+# but it may be helpful to read through it.)
 
 """
 As we have seen, there are many different specifications
@@ -181,6 +304,14 @@ We can speak about these being weaker or stronger than each other...
 
 - Weaker: Less specific, more programs satisfy it
 - Stronger: More specific, fewer programs satisfy it
+
+Similarly, preconditions affect how many programs satisfy the spec.
+
+- Weaker precondition ==> fewer programs satisfy the spec,
+                      ==> stronger spec
+
+- Stronger precondition ==> more programs satisfy the spec,
+                        ==> weaker spec
 
 The weakest possible specification is one that is always true, regardless of the
 function:
@@ -216,11 +347,7 @@ def count_unique(l):
 """
 Some properties
 
-(each one should be stronger than the last!)
-
 The output is always an integer.
-
-Trivia:
 
 The output is between 0 and the length of the input list, inclusive.
 
@@ -228,7 +355,7 @@ The output is equal to a standard implementation of the same function.
 """
 
 """
-Stronger properties??
+Even stronger properties??
 
 The output of the function is equal to len(set(l)),
 AND if the function is called again with the same input list,
@@ -248,28 +375,12 @@ Also, we have only seen safety properties.
 """
 
 ######################
-###     Part 3     ###
-######################
-# Weaker and stronger preconditions
-# (if time)
-
-def take_elems(l, n):
-    """
-    Given a list l and an integer n, returns the first n elements of l.
-    If n is greater than the length of l, returns l.
-    If n is negative, raises an error.
-    """
-    if n < 0:
-        raise ValueError("n must be nonnegative")
-    return l[:n]
-
-######################
 ###     Part 4     ###
 ######################
 # Discussion and limitations
 
 """
-The technical name for Hypothesis is that it's a "property-based testing tool" (PBT). Why?
+Hypothesis
 
 ### Advantages
 
@@ -280,7 +391,17 @@ https://news.ycombinator.com/item?id=34450736
 
 ### Disadvantages
 
-Most important limitations,
+Most important limitation:
+
+- Testing might not find the bug!
+
+Edsger Dijkstra:
+"Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence."
+
+This is not a problem with the spec itself, but with using random testing
+as a method of validating the spec.
+
+Other limitations:
 these are not specific to Hypothesis (!)
 
 - Specification could be wrong
@@ -291,10 +412,12 @@ these are not specific to Hypothesis (!)
 
 - Precondition could be wrong
 
-You will see some other limitations on HW1 (part 2).
+You will a few other limitations on HW1 (part 2).
 
-As a testing tool, Hypothesis has its own specific limitations.
-For example?
+Other limitations of Hypothesis specifically?
 
-"Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence." - Edsger Dijkstra
+- Customization
+
+- Testing can be redundant.
+
 """
