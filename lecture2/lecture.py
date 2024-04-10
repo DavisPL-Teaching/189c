@@ -160,6 +160,14 @@ Announcements:
 - Waitlist update
 - Any questions about HW1?
 
+- Reminder: you can follow along (repo is pinned at the top of Piazza)
+Commands you can run:
+```
+git fetch --all
+git branch backup-changes
+git reset --hard origin/main
+```
+
 Recap: ways of writing preconditions:
     @given constraints
     assume

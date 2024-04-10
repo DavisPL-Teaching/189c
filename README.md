@@ -1,5 +1,18 @@
 # ECS 189C: Software Correctness - Spring Quarter 2024
 
+## To follow along with lectures
+
+Clone the repo:
+```shell
+git clone git@github.com:DavisPL-Teaching/189C.git
+```
+OR backup your local changes and pull the latest version:
+```shell
+git fetch --all
+git branch backup-changes
+git reset --hard origin/main
+```
+
 ## Course Information
 
 - **Instructor:** Caleb Stanford
