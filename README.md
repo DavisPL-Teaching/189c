@@ -6,7 +6,14 @@ Clone the repo:
 ```shell
 git clone git@github.com:DavisPL-Teaching/189C.git
 ```
-OR backup your local changes and pull the latest version:
+
+If you have local changes, but haven't committed them, you can stash and then pull
+```shell
+git stash
+git pull
+```
+
+Altneratively, if you want to save your work, you can back up your local changes and pull the latest version:
 ```shell
 git fetch --all
 git branch backup-changes

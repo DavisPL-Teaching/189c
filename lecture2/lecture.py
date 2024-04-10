@@ -157,9 +157,7 @@ ways:
 Day 4
 
 Announcements:
-- Waitlist update
-- Any questions about HW1?
-
+- Waitlist update: cap increasing to 72
 - Reminder: you can follow along (repo is pinned at the top of Piazza)
 Commands you can run:
 ```
@@ -167,6 +165,8 @@ git fetch --all
 git branch backup-changes
 git reset --hard origin/main
 ```
+
+- Questions about HW1?
 
 Recap: ways of writing preconditions:
     @given constraints
@@ -181,8 +181,10 @@ PLAN (today and next time)
 
 Why is it called "assume"?
 
-- Assert:
-- Assume:
+- Assert: This property should hold, if it doesn't, that's an
+    error. I want to report a test failure.
+- Assume: This property should hold, if it doesn't, I want to
+    ignore this test.
 
 """
 
@@ -194,12 +196,12 @@ Why is it called "assume"?
 
 def sort_list(l):
     l = l.copy()
-    assume(l == sorted(l))
     return l
 
 # The spec:
 @given(st.lists(st.integers()))
 def test_sort_list(l):
+    assume(l == sorted(l))
     assert sort_list(l) == sorted(l)
 
 # Form:
@@ -213,14 +215,60 @@ Multiverse view
 - (Based on: bogosort
     https://en.wikipedia.org/wiki/Bogosort)
 
+TL;DR:
+Assume is weird
+We use it to assume certain properties are true of the input.
+Another way of thinking about this is, whose responsibility is
+it to ensure the list is sorted?
+- If I use assume, I'm saying it's the caller's responsibility.
+- If I use assert, in a specification to say that some property
+  is true, then I'm saying it's the function's responsibility
+  to guarantee that property.
 
 Point:
 We can think of the precondition as part of the spec!
 Why?
 
-Recall: a spec is...
+Recall: a spec is just a true or false property about the program.
+def example_test(x):
+    assume(P(x))
+    output = function(x)
+    assert(Q(output))
 
-In our case:
+We can think of the spec for this as the following statement:
+    "On all inputs x such that P(x) holds, Q(function(x)) holds."
+"""
+
+def divides_2(x, y):
+    return x / y
+
+ERROR = .000001
+
+@given(
+    st.integers(min_value = -100, max_value = 100),
+    st.integers(min_value = -100, max_value = 100),
+)
+def test_divides_2(x, y):
+    # could do e.g.:
+    # assume -100 <= y <= 100
+    assume(y != 0)
+    result = divides_2(x, y)
+    assert (result * y - x < ERROR)
+
+"""
+With the precondition included, the spec says:
+On all inputs x, y such that
+        -100 <= x <= 100 and
+        -100 <= y <= 100 and
+        y is not zero,
+    divides_2(x, y) * y is approximately x.
+
+General definition of specifications in Hypothesis:
+Slightly incorrect definition:
+- On all inputs such that during the execution, all assume() statements
+  hold, during that execution, all assert() statements hold.
+
+This definition assumes that assume() is called before assert().
 """
 
 ######################
@@ -235,39 +283,59 @@ NOT part of the spec:
 
 We've seen some strategies already:
 - st.integers()
-- st.lists()
+- st.lists() -- given as a parameter a base strategy
+    for generating elements of theh list.
 
 What is the difference between a strategy and a precondition?
+    st.lists(st.integers(), min_length = 1)
+The strategy is an st.lists object, the precondition is just
+the statement "l is a list of integers length at least 1."
 
 Example strategies:
 (written as Python generators)
 """
 
 def gen_simple():
-    raise NotImplementedError
+    # generate sequential inputs
+    for i in range(0, 1000):
+        yield i
+
+from random import randint
 
 def gen_smarter():
-    raise NotImplementedError
+    # generate completely random inputs
+    # import a random number generator
+    while True:
+        yield randint(-10000, 10000)
+    # Also not perfect and you can do better.
 
 def gen_simpler():
-    raise NotImplementedError
+    while True:
+        yield 7
+    # Probably not a good strategy
     # https://imgur.com/uR4WuQ0
 
 """
 Some other useful strategies:
-- st.text()
-- st.one_of()
+- st.text() -- for generating (valid) strings
+- st.one_of() -- generates one thing or the other
+    st.one_of(st.integers(), st.floats())
+- st.functions() -- generates functions with a given signature
 
 Hypothesis generators are much smarter than just generating
 random values.
 
 Minimizing examples:
     https://hypothesis.readthedocs.io/en/latest/data.html
+    Once Hypothesis finds a failing example, it doesn't give up,
+    it will continue searching to find a "minimal" example
+    to show to the user
 
 Custom formats: (emails, dates, etc.)
     st.text() -- UTF8 by default
     st.datetimes()
     st.emails()
+    (you can also write your own)
 
 Guiding the search:
     assumptions: https://hypothesis.readthedocs.io/en/latest/details.html#making-assumptions
@@ -284,17 +352,24 @@ def test_associativity_with_target(a, b, c):
     assert difference < 2.0
 
 """
+Summary:
 How hypothesis works, roughly:
 
 1. Generate a random example
 
-2. Check if it runs and satisfies any preconditions/assume
-    - If NO, try to guide the search towards a better example
+2. Run the example
 
-3. Check if it runs and satisfies any assertions
-    - If YES, try to guide the search towards a better example
+    a. If it encounters a precondition/assume:
+        does it satisfy the precondition?
+        - If NO, move on to the next test
+        - try to guide the search towards a better example
 
-4. Once a failing test is found: try to simplify the example
+    b. If it encounters an assertion:
+        does it satisfy the assertion?
+        - If YES, continue the execution
+        - try to guide the search towards a better example
+
+4. Once a failing assertion is found: try to simplify the example
     ("shrink") it to something understandable.
 """
 
