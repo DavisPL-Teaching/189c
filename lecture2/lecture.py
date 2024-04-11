@@ -263,12 +263,13 @@ On all inputs x, y such that
         y is not zero,
     divides_2(x, y) * y is approximately x.
 
-General definition of specifications in Hypothesis:
-Slightly incorrect definition:
-- On all inputs such that during the execution, all assume() statements
-  hold, during that execution, all assert() statements hold.
+Rough definition of specifications in Hypothesis:
+- On all inputs such that all assume() statements
+  hold, after executing the program all assert() statements hold.
 
 This definition assumes that assume() is called before assert().
+TRIVIA: In this case, the assume() is called a precondition
+(as we have seen), and the assert() is called a "postcondition".
 """
 
 ######################
@@ -289,7 +290,7 @@ We've seen some strategies already:
 What is the difference between a strategy and a precondition?
     st.lists(st.integers(), min_length = 1)
 The strategy is an st.lists object, the precondition is just
-the statement "l is a list of integers length at least 1."
+the statement "l is a list of integers of length at least 1."
 
 Example strategies:
 (written as Python generators)
@@ -361,17 +362,21 @@ How hypothesis works, roughly:
 
     a. If it encounters a precondition/assume:
         does it satisfy the precondition?
+        - If YES, continue
         - If NO, move on to the next test
-        - try to guide the search towards a better example
+            + on the next run, try to guide the search towards a passing example
 
     b. If it encounters an assertion:
         does it satisfy the assertion?
-        - If YES, continue the execution
-        - try to guide the search towards a better example
+        - If YES, continue
+            + on the next run, try to guide the search towards a failing example
+        - If NO, report a failure -- go to step 4
 
-4. Once a failing assertion is found: try to simplify the example
-    ("shrink") it to something understandable.
+4. Once a failing assertion is found:
+    try to simplify the example ("shrink") it to something understandable.
 """
+
+############## where we left off for day 4 ############
 
 ######################
 ###     Part 3     ###
