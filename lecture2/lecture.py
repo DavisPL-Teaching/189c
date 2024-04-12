@@ -384,11 +384,20 @@ Day 5
 Announcements:
 - HW1 due week from today
 - Waitlist
+I indicated my pref to update the cap to 72
+- one of the 3, guaranteed (up to 63)
+- up to 65, very likely
+- beyond that, I can't guarantee but joining the waitlist helps show that there is a demand!
 
 - Questions about HW1
 
+**Reminder to clone the repo**
+
 Plan:
+- POLL
+- Assume/assert recap
 - Preconditions, postconditions, and beyond
+- Limitations
 """
 
 ####################
@@ -409,17 +418,146 @@ https://tinyurl.com/3frmvxc8
 
 """
 Recall:
-...
+
+- assert means: if the property is not true,
+    raise an error.
+
+- assume means: if the property is not ture,
+    ignore this branch of computation.
+
+OR (provacatively):
+- assume as "if the property is not true, destroy the universe"
 
 Q: Why is assume useful?
 
+There are going to be cases where there is an
+invariant that should hold when a function is
+executed. It makes sense (both for the programmer
+and for the test case writer) to assume that the
+property holds so that we don't consider edge
+cases where it doesn't hold.
 
+Q: Why don't you just handle every edge case in every function?
+
+Reasons?
+
+A1: You can't.
+In Python you might be passed some weird/invalid input or type that you don't really know what it is.
+def f(x):
+    result = x + 1
+    print(result)
+    return True
+
+Python has what's called "duck typing" which means
+- if it acts like a duck and if it talks like duck,
+    then it is a duck.
+- if it has an x + 1 function, and x + 1 can be printed, then x is a valid input.
+
+Response: why not just specify the types and
+enforce them?
+You can for example do this using something like
+mypy
+Mypy is a static type checker for Python.
+
+A2: You're saving yourself work because
+you're only testing for the cases you actually
+care about rather than the edge cases where
+some error occurs.
+
+A3: It's inefficient!!!
+
+If I re-check the invariants on every single
+function call, my code will be very inefficient.
+It's a significant performance overhead
+
+In OOP it's common to have certain data invariants
+that your class enforces.
+"""
+
+class MyPerson:
+    def __init__(self, name, age):
+        # What are the invariants?
+        # Here, we assume self is an object
+        # with a name and an age field.
+        # self.name = name
+        # self.age = age
+
+        # You might even want to add other invariants, for example name should be nonempty,
+        # age should be between 0 and 120
+        # It's good OOP style to check these in the constructor.
+        if age < 0 or age > 120:
+            raise ValueError("age should be between 0 and 120")
+        self.age = age
+        if name == "":
+            raise ValueError("name should be nonempty")
+        self.name = name
+
+    def get_age(self):
+        # If you want to re-check invariants
+        # on every function call.. this is annoying!
+        # We first have to check that self.age and self.name exist
+        # assert "age" in self.__dir__ # ???
+        # We have to check that age and name
+        # satisfy the invariants
+        assert self.age >= 0
+        assert self.age <= 120
+        # ...
+        return self.age
+
+    # But this is inefficient! We have to recheck
+    # on every call, and we already know that the
+    # invariants hold.
+    # Because we checked it -- in the constructor.
+    # So if they don't hold, the user of the class
+    # probably did something terribly terribly wrong
+
+# Exercise: break the class invariant in Python
+# We can do this because Python doesn't protect us
+# from users misusing our invariants :(
+
+# However, rather than check the invariants again
+# on every method call, it's better style to
+# assume that the user of the class is using
+# your class appropriately, and it's more efficient
+# because it doesn't result in unnecessary overheads
+# on every method call.
+
+"""
+A3 (recap): assume reduces performance
+overhead on each function call
+
+A4: assume is also more efficient in compiled
+languages because it allows compiler optimizations.
+
+when I write a function like
+
+def process_bool(b):
+    if b:
+        print("everything went OK")
+    else:
+        assume(False)
+
+Another word for assume(False) is "unreachable"
+Some languages have an unreachable macro: it
+tells the compiler this branch of code should not
+be reachable
+
+That means the compiler can optimize the code!
+
+Optimize the code to:
+def process_bool(b):
+    print("Everything went OK.")
+
+We couldn't do this if the else branch
+was an assert instead of an assume.
 """
 
 ######################
 ###     Part 3     ###
 ######################
 # Preconditions, postconditions, and beyond
+# We will probably have to skip most of this
+# for time
 
 """
 As we have seen, there are many different specifications
@@ -429,7 +567,9 @@ We can speak about these being weaker or stronger than each other...
 - Weaker: Less specific, more programs satisfy it
 - Stronger: More specific, fewer programs satisfy it
 
-Similarly, preconditions affect how many programs satisfy the spec.
+Preconditions affect how many programs satisfy the spec.
+
+Recall a precondition is an assume statement on the input.
 
 - Weaker precondition ==> fewer programs satisfy the spec,
                       ==> stronger spec
@@ -454,9 +594,20 @@ always false, regardless of the function:
 This is also not very useful, as it is not true of any function.
 But again, it is a specification!
 
-Example:
+What about "postconditions"?
+
+A postcondition is an assertion after executing
+the program, on the program output.
+
+If a precondition is an assumption on the input,
+a postcondition is an assertion on the output.
+
+Most/almost all of the specs we have seen before
+are preconditions and postconditions.
+
 """
 
+# SKIP
 def count_unique(l):
     """
     Given a list l, returns the number of unique elements in l.
@@ -475,32 +626,43 @@ Preconditions and postconditions?
 Some postconditions
 
 The output is always an integer.
+(weaker postcondition)
 
 The output is between 0 and the length of the input list, inclusive.
+(slightly stronger)
 
 The output is equal to a standard implementation of the same function.
+(strongest possible postcondition)
 """
 
 """
 === Advanced ===
 
+most of what we've done is based on preconditions
+and postconditions,
+but remember that a spec is just a true or false
+property that we want the program to satisfy.
+That means that specs can be much stronger
+and more complicated than just describing
+pre/post conditions
+
+One way of doing this that we've seen is to
+add assume() and assert() throughout the body
+of the function, for example.
+
 Even stronger properties??
 
+- Behavior on multiple runs??
 - The output of the function is equal to len(set(l)),
 AND if the function is called again with the same input list,
 it returns the same output again.
 
-- The output of the function is
-
-Types of specifications:
-
-- Functional correctness:
-    ...
-- Safety properties:
-    ...
+"Behavior of the function on a single run"
+is called "functional correctness."
 
 Everything we have seen so far is just about functional correctness.
-Also, we have only seen safety properties.
+But, keep in mind we could talk about stronger
+properties if we wanted to.
 """
 
 ######################
@@ -516,7 +678,7 @@ Hypothesis
 Some more about advantages:
 https://news.ycombinator.com/item?id=34450736
 
-"I've never introduced property tests without finding a bug in either the specification or implementation. I have repeatedly spent time figuring out where the bug was in my property testing library before realising that it was correct and the obviously correct code I was testing was actually wrong."
+"I've never introduced property tests [Hypothesis specs] without finding a bug in either the specification or implementation. I have repeatedly spent time figuring out where the bug was in my property testing library before realising that it was correct and the obviously correct code I was testing was actually wrong."
 
 ### Disadvantages
 
@@ -537,10 +699,6 @@ these are not specific to Hypothesis (!)
 
 - Specification could be incomplete
 
-- Program model could be wrong
-
-- Precondition could be wrong
-
 There are a few other limitations on HW1 (part 2).
 
 Other limitations of Hypothesis specifically?
@@ -548,5 +706,18 @@ Other limitations of Hypothesis specifically?
 - Customization
 
 - Testing can be redundant.
+
+Quick recap:
+- we talked more about assert/assume
+- why is assume useful? why are invariants useful?
+- we talked about postconditions:
+    most of the specs so far have been postconditions
+    on the output.
+    A pre/post condition based spec is called
+    functional correctness
+- we talked about limitations of Hypothesis: it can't
+    prove there are no bugs.
+    That is what the remaining tools in this class
+    will be about.
 
 """
