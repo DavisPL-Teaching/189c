@@ -378,12 +378,48 @@ How hypothesis works, roughly:
 
 ############## where we left off for day 4 ############
 
+"""
+Day 5
+
+Announcements:
+- HW1 due week from today
+- Waitlist
+
+- Questions about HW1
+
+Plan:
+- Preconditions, postconditions, and beyond
+"""
+
+####################
+###     Poll     ###
+####################
+
+"""
+Which of the following has no effect? (Select all that apply)
+
+1. assert True
+2. assert False
+3. assume True
+4. assume False
+
+https://forms.gle/KQivFbEyYNfxf2d48
+https://tinyurl.com/3frmvxc8
+"""
+
+"""
+Recall:
+...
+
+Q: Why is assume useful?
+
+
+"""
+
 ######################
 ###     Part 3     ###
 ######################
-# A few more notes about specs
-# (We will probably skip most of this part for time,
-# but it may be helpful to read through it.)
+# Preconditions, postconditions, and beyond
 
 """
 As we have seen, there are many different specifications
@@ -401,15 +437,16 @@ Similarly, preconditions affect how many programs satisfy the spec.
 - Stronger precondition ==> more programs satisfy the spec,
                         ==> weaker spec
 
-The weakest possible specification is one that is always true, regardless of the
-function:
+The weakest possible specification is one that is always true,
+regardless of the function:
 
     def test_weakest_spec():
         assert True
 
 Of course, this is rather pointless, but it is a specification!
 
-Similarly, the strongest possible specification is one that is always false:
+Similarly, the strongest possible specification is one that is
+always false, regardless of the function:
 
     def test_strongest_spec():
         assert False
@@ -433,7 +470,9 @@ def count_unique(l):
     return unique
 
 """
-Some properties
+Preconditions and postconditions?
+
+Some postconditions
 
 The output is always an integer.
 
@@ -443,14 +482,16 @@ The output is equal to a standard implementation of the same function.
 """
 
 """
+=== Advanced ===
+
 Even stronger properties??
 
-The output of the function is equal to len(set(l)),
+- The output of the function is equal to len(set(l)),
 AND if the function is called again with the same input list,
 it returns the same output again.
-"""
 
-"""
+- The output of the function is
+
 Types of specifications:
 
 - Functional correctness:
@@ -500,7 +541,7 @@ these are not specific to Hypothesis (!)
 
 - Precondition could be wrong
 
-You will a few other limitations on HW1 (part 2).
+There are a few other limitations on HW1 (part 2).
 
 Other limitations of Hypothesis specifically?
 
