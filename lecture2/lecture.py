@@ -638,7 +638,7 @@ The output is equal to a standard implementation of the same function.
 """
 === Advanced ===
 
-most of what we've done is based on preconditions
+Most of what we've done is based on preconditions
 and postconditions,
 but remember that a spec is just a true or false
 property that we want the program to satisfy.
