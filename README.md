@@ -25,6 +25,7 @@ git reset --hard origin/main
 - **Instructor:** Caleb Stanford
 - **TA:** Parnian Kamran
 - **CRN:** 57484
+- **Units:** 4 (please change this in schedule builder!)
 - **Listed Title:** Special Topics in Computer Science - Programming Languages and Compilers
 - **Schedule:** Monday, Wednesday, Friday 1:10-2pm
 - **Location:** Teaching and Learning Complex 1218
@@ -153,9 +154,11 @@ This course strictly follows the [UC Davis Code of Academic Integrity](https://o
 
 ## Late Policy
 
+In-class participation points (polls) as well as HW0 can be made up at any point during the quarter, by submitting the Google form link. The forms will remain open and can be found by viewing the lecture recording or lecture notes for that day.
+
 Homeworks will generally be due at 11:59pm on the due date.
 
-I cannot guarantee that late work will be graded.
+For homeworks, I cannot guarantee that late work will be graded.
 However, I encourage you to update your assignments even after the deadline -- GitHub classroom will allow us to see both the state of the code at the time of the deadline as well as any recent changes.
 At grading time, we may choose to grade the more recent version at our discretion.
 
