@@ -14,12 +14,12 @@ I will try to keep it up to date, but please see Piazza for the latest informati
 | 2 | April 8 | Hypothesis III: Complex specifications | HW0 due | 2 |
 |   | April 10 | Hypothesis IV: Generators and Internals |  | 2 |
 |   | April 12 | Hypothesis V: Limitations |  | 2 |
-| 3 | April 15 | Z3 I: Proving Satisfiability |  |  |
-|   | April 17 | Z3 II: Data Types |  |  |
-|   | April 19 | Z3 III: Integers | HW1 due |  |
+| 3 | April 15 | Z3 I: Satisfiability | [Z3 introduction](https://ericpony.github.io/z3py-tutorial/guide-examples.htm) | 3 |
+|   | April 17 | Z3 II: Basic Data Types | [Z3 docs](https://z3prover.github.io/api/html/namespacez3py.html) | 3 |
+|   | April 19 | Z3 III: Additional Data Types | HW1 due | 3 |
 | 4 | April 22 | Z3 IV: Strings and regular expressions |  |  |
 |   | April 24 | Z3 V: Internals |  |  |
-|   | April 26 | Z3 VI: Internals |  |  |
+|   | April 26 | Z3 VI: Limitations |  |  |
 
 ## Section 2: Program Verification and Type Systems
 
