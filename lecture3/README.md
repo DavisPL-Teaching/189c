@@ -3,10 +3,26 @@
 ## Announcements
 
 - HW0 and in-class polls can be made up for full credit at any point during the quarter -- no need to email me.
-  + the Google forms will remain open
+  + go through either the lecture video (Canvas)
+    or the lecture source (GitHub)
+  + Google form will remain open
   + your grade will be automatically updated in Canvas on the next sync
 
-- HW1 is due Friday, April 19.
+- HW1 is due Friday, April 19 (11:59pm).
+
+- There's no "submit" button; you just push your code
+
+- Note: how to commit/push on GitHub Codespaces
+```
+git add .
+git commit -m "Modified files"
+git push
+```
+
+- Reminder: please push your code and load up your repository
+  online to make sure your changes are showing up.
+
+- Questions about HW1?
 
 ## Plan for the next few days
 
