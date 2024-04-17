@@ -188,7 +188,7 @@ mathematically and tries to analyze "all" examples.
 
 2. We had to rewrite the function using Z3!
 
-For absolute_value, it was just a standard Python funciton
+For absolute_value, it was just a standard Python function
 For Z3, we had to rewrite it as absolute_value_z3, using Z3 abstractions.
 
 ==> we are testing a *model* of the program, not the program itself!
@@ -196,10 +196,9 @@ For Z3, we had to rewrite it as absolute_value_z3, using Z3 abstractions.
 Why are we testing a model?
 Well, Z3 thinks about things formally and mathematically.
 So it needs a description of the program that is fully mathematical.
-In principle, any standard program can be translated to the
-right model.
-In principle, this may be possible to do automatically.
-(But that doesn't mean that the tool to do that is always easily available now.)
+- In principle, any program can be translated to the right model.
+- In principle, this is often possible to do automatically.
+But, that doesn't mean that the tool to do that is always easily available now.
 
 Example: we have z3.If, so if your program has if statements,
 we can encode it in Z3.
@@ -208,6 +207,8 @@ Python funciton. (Ex.: files, print(), ...)
 And in those cases, you would need to write your own model.
 
 Using a model is both a strength and a weakness.
+
+- Other differences? (We will see later)
 
 Recap:
 We saw that Z3 can do what Hypothesis can't do: prove that the spec
@@ -221,9 +222,96 @@ this week.
 
 ########## Where we left off for Day 6 ##########
 
-- Other differences? (We will see later)
+Day 7
 
-How does it work?
+=== Announcements ===
+
+- HW1 due Friday (in 2 days!)
+    + Start now if you haven't already! (HW1 invite link in Piazza)
+    + 1 of you still has an unlinked GitHub account -- please re-click the invite
+
+- Submit HW0 if you haven't yet (5 people)
+    + No due date but will make it difficult to complete HW1 unless you catch
+      problems now
+
+- General notice: encourage posting questions on Piazza
+
+=== Plan for today ===
+
+First part:
+- Clearing something up from last time
+- Poll
+
+Main material:
+- Satisfiability
+- z3.solve() and z3.prove()
+- Basic data types: Bool, Int, Real
+
+Questions?
+
+=== Clearing something up ===
+
+Z3 is not just useful for proving properties of "mathematical" functions.
+
+- In fact, programs in any language are just mathematical functions!
+
+- Compilers also work with a model of the program!
+    That is how they are able to optimize code prior to running it.
+
+- Applications
+"""
+
+####################
+###     Poll     ###
+####################
+
+"""
+The z3.prove function (or our custom prove function)
+returns one of three results:
+- proved
+- failed to prove (this basically means "I don't know")
+- counterexample (shows a case where the spec is not true)
+
+What would you guess is the output of the following Z3 code?
+"""
+
+@pytest.mark.skip
+def test_poll_output():
+    x = z3.Int('x')
+    y = z3.Int('y')
+    spec = z3.And(x > 100, y < 100)
+    prove(spec)
+
+"""
+A) "proved"
+B) "failed to prove"
+C) "counterexample" with no other text
+D) "counterexample" together with an example of x and y
+
+https://forms.gle/Q533T9gUhgQUabAu9
+https://tinyurl.com/bdcrceep
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+(Try running it)
+
+Key point: "proved" means it must be true for all inputs.
+
+How does Z3 work?
 
 Before we understand how Z3 works, we need to understand the concept
 of satisfiability.
@@ -234,8 +322,8 @@ of satisfiability.
 ##########################
 
 """
-A *formula* is a statement that is either true or false.
-Formulas are the subject of study in logic and they are also
+A *formula* is a logical or mathematical statement that is either true or false.
+Formulas are the main subject of study in logic and they are also
 the core objects that Z3 works with.
 Examples:
 ...
@@ -244,34 +332,55 @@ Essence of satisfiability:
 
 A formula is *satisfiable* if it is true for *at least one* input.
 
-Example:
+Examples:
 ...
 
-Let's start with Boolean formulas. Using Z3:
+Let's start with boolean variables. Using Z3:
 
 - z3.Bool
 - z3.Bools
 """
+
+a = z3.Bool('a')
+b = z3.Bool('b')
 
 """
 Creating a formula
 """
 
 """
+Variable naming
+"""
+
+"""
+Questions:
+
+- Why does the variable have to be named?
+
+- What is the type of a and b?
+
+- Why aren't a and b just normal booleans?
+
+- Why do we need to ues z3.And and z3.Or instead of just "and" and "or"?
+"""
+
+"""
 Checking satisfiability
 
 We can use the z3.solve() function to check if a formula is satisfiable.
-This is what all of Z3 is based on, including our
-prove() function from earlier.
+This is what all of Z3 is based on!
 
 There are three possible outcomes:
 - z3.sat
 - z3.unsat
 - z3.unknown
+
+Note: If this seems similar to the "prove" function from earlier, it should!
+We will discuss how prove is implemented shortly.
 """
 
 """
-What Boolean operations can we use?
+What boolean operations can we use?
 
 - z3.And
 - z3.Or
@@ -306,7 +415,11 @@ How does this help us prove specifications?
 
 """
 The power of Z3 is in its ability to work with more complex data types
-(not just Booleans).
+(not just booleans).
+
+Basic data types: Bool, Int, Real
+
+(In fact we don't really need booleans -- we can represent them as integers)
 """
 
 """
@@ -318,6 +431,8 @@ Z3 can even work with data types that are not available in Python.
 Here is an interesting one:
 
 === True Real Numbers ===
+
+z3.Real
 """
 
 """
