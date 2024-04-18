@@ -247,7 +247,7 @@ Main material:
 - z3.solve() and z3.prove()
 - Basic data types: Bool, Int, Real
 
-Questions?
+Questions about HW1?
 
 === Clearing something up ===
 
@@ -258,7 +258,11 @@ Z3 is not just useful for proving properties of "mathematical" functions.
 - Compilers also work with a model of the program!
     That is how they are able to optimize code prior to running it.
 
-- Applications
+- Many applications to real-world software, like cloud services,
+    distributed systems, compilers, system implementations, etc.
+
+The key to applying Z3 in the real world is to define the right
+mathematical domain to map your programs to.
 """
 
 ####################
@@ -268,14 +272,14 @@ Z3 is not just useful for proving properties of "mathematical" functions.
 """
 The z3.prove function (or our custom prove function)
 returns one of three results:
-- proved
+- proved (demonstrate that it's true for all inputs)
 - failed to prove (this basically means "I don't know")
-- counterexample (shows a case where the spec is not true)
+- counterexample (shows an input where the spec is not true)
 
 What would you guess is the output of the following Z3 code?
 """
 
-@pytest.mark.skip
+@pytest.mark.xfail
 def test_poll_output():
     x = z3.Int('x')
     y = z3.Int('y')
@@ -326,17 +330,42 @@ A *formula* is a logical or mathematical statement that is either true or false.
 Formulas are the main subject of study in logic and they are also
 the core objects that Z3 works with.
 Examples:
-...
+
+    - "x > 100 and y < 100"
+    - "x * x = 2"
+    - "x is an integer"
+    - "If Socrates is human, then socrates is mortal"
 
 Essence of satisfiability:
 
 A formula is *satisfiable* if it is true for *at least one* input.
 
 Examples:
-...
+
+    - first one: true, for example, for x = 101 and y = 5
+        =====> Satisfiable
+    - second one: true for x = sqrt(2) (in the real numbers)
+        never true in the integers
+        =====> Satisfiable in real numbers, not satisfiable in integers
+    - third one: true for any integer x, e.g. x = 5
+        =====> Satisfiable both in real numbers or in integers
+    - fourth one: satisfiable because we can take "Socrates" to be the actual
+        Socrates and we can take "mortal" and "human" to be the usual meanings
+        of those words, and then the statement is a true statement about
+        Socrates, humans, and being mortal
+        ^^ We're not going to encode this in Z3, but we could if we really wanted
+        =====> Satisfiable because it's true for **some** examples of the terms
+            or variables involved, i.e. true for some inputs.
+
+Key point: Satisfiable == True for at least one input.
+
+Side note:
+If you've taken ECS 120, you may have seen the Boolean satisfiability problem,
+or SAT or 3SAT, and this is an example of what I'm calling Satisfiability.
 
 Let's start with boolean variables. Using Z3:
 
+To make a Boolean variable, we use:
 - z3.Bool
 - z3.Bools
 """
@@ -344,24 +373,61 @@ Let's start with boolean variables. Using Z3:
 a = z3.Bool('a')
 b = z3.Bool('b')
 
-"""
-Creating a formula
-"""
+# This defines two boolean variables, a and b.
+# We'll see what the 'a' and 'b' mean in a moment
 
 """
-Variable naming
+Creating a formula
+
+We can take our boolean variables and combine them
 """
+
+form1 = z3.And(a, b)
+form2 = z3.Or(a, b)
+form3 = z3.Not(a)
+form4 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
+
+# We could run z3.prove() on these formulas or a new function called
+# z3.solve() -- we will do this in a moment
 
 """
 Questions:
 
 - Why does the variable have to be named?
+I.e., why did I write
+    a = z3.Bool('a')
+instead of just z = z3.Bool() ?
+
+A: this is just how z3 works -- it uses the name, NOT the Python variable name,
+to determine the identify of a variable.
+
+x = z3.Bool('a')
+y = z3.Bool('a')
+# ^^ These are actually the same variable, in Z3
+
+x = z3.Bool('y')
+# ^^ the variable name here, in Z3, is 'y', not x.
 
 - What is the type of a and b?
 
+It's a z3.Bool type, (not the same as a Python boolean)
+
 - Why aren't a and b just normal booleans?
 
+This goes to the thing about Z3 working with a model of the program.
+Z3 needs to know what are the symbols in a formula and what do they mean,
+NOT just the true-or-false output.
+
+a = True
+b = False
+a and b ====> False
+But Z3 wouldn't be able to see what the formula is and what it means.
+
+Z3 needs a formula object, not just a Python boolean.
+
 - Why do we need to ues z3.And and z3.Or instead of just "and" and "or"?
+
+Same reason: Z3 needs a formula in the end, not just the final result.
 """
 
 """
@@ -371,15 +437,65 @@ We can use the z3.solve() function to check if a formula is satisfiable.
 This is what all of Z3 is based on!
 
 There are three possible outcomes:
-- z3.sat
-- z3.unsat
-- z3.unknown
+- z3.sat =====> Yes the formula is satisfiable
+- z3.unsat =====> No the formula is not satisfiable
+- z3.unknown =====> I don't know
 
 Note: If this seems similar to the "prove" function from earlier, it should!
 We will discuss how prove is implemented shortly.
+
+Recall:
+form1 = z3.And(a, b)
+form2 = z3.Or(a, b)
+form3 = z3.Not(a)
+form4 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
 """
 
+z3.solve(form1)
+z3.solve(form2)
+z3.solve(form3)
+z3.solve(form4)
+# =====> Satisfiable, Z3 gives an example
+
+# For all four examples, the formula is satisfiable -- Z3 returns an example
+# where the formula is true.
+# What about something that's NOT satisfiable?
+
+form5 = z3.And(a, z3.Not(a))
+# A and Not A --> always false, should be never true, i.e. not satisfiable
+
+z3.solve(form5)
+# =====> Unsatisfiable, Z3 says "no solution"
+
 """
+Two functions of Z3:
+z3.prove --> ask if something can be proven
+z3.solve --> ask if something is satisfiable
+
+Actually, how does z3.prove work?
+If I run z3.prove(formula)
+it calls
+z3.solve(z3.Not(formula))
+- If satisfiable: that means there is an input where "NOT formula" is true
+    Therefore, "formula" must be false (on that input)
+    Therefore, "formula" is not necessarily true for all inputs, i.e. it's not
+    provable -- there is a counterexample.
+- If unsatisfiable: that means there are no inputs where "NOT formula" is true
+    Therefore, "NOT formula" is false for all inputs
+    Therefore, "formula" is true for all inputs
+    Therefore, formula is provable.
+- If unknown: we return unknown.
+
+In essence: provability and satisfiability are reducible to each other
+Specifically: provability of "P" and satisfiability of "Not P" are solving
+the same problem.
+
+When does z3.solve (or z3.prove) return unknown?
+Intuitively, if the formula is really mathematically complex, involves a lot
+of difficult operations and it's too hard to figure out whether it's satisfiable
+or not.
+--> Booleans are quite easy, so this will rarely happen with booleans.
+
 What boolean operations can we use?
 
 - z3.And
@@ -389,8 +505,33 @@ What boolean operations can we use?
 - z3.If
 - z3.Xor
 
+These are all standard functions on boolean numbers, but instead of evaluating
+the operation, they create a formula.
+
+The reason they have to create a formula is because Z3 wants to determine
+if the formula is true for ANY input (satisfiability) or for ALL inputs (provability)
+not necessarily just evaluate it on a single input.
+
 Examples:
+
 """
+
+print("More examples:")
+x = z3.Bool('x')
+y = z3.Bool('y')
+# What does implies do?
+z3.solve(z3.Implies(x, y))
+# Implies is basically the "if then" function and it has the following meaning:
+# if x is true then y, otherwise true.
+# arrow (-->)
+# If you like you can write z3.If(x, y, True) instead of z3.Implies(...)
+# It's reducible to if then.
+
+# XOR implies or?
+# XOR is exclusive or (exactly one, but not both of x and y are true)
+x_xor_y = z3.Xor(x, y)
+x_or_y = z3.Or(x, y)
+z3.prove(z3.Implies(x_xor_y, x_or_y))
 
 """
 Convenient shortcuts:
@@ -398,16 +539,49 @@ Convenient shortcuts:
 - Equality (==)
 - z3.And([...])
 - z3.Or([...])
+
+You can directly write x == y
+for booleans, and Z3 knows what that means
+You can also write
+z3.And([formula1, formula2, formula3, ...])
+for a list of formulas and it will create an "and" expression of all of them.
+Similarly for Or.
+
+These are just shortcuts, and can be implemented using the above operations already.
 """
 
 """
 === Recap ===
 
 We know what a formula is.
-Satisfiability is the property of a formula being true for at least one input.
+- Mathematical statement that can be true or false
 
+Satisfiability is the property of a formula being true for at least one input.
+Provability is the property of a formula being true for all inputs
+
+Z3 can try to automatically resolve satisfiability by running
+z3.solve
+or provability by running
+z3.prove
+
+A last question:
 How does this help us prove specifications?
+
+Remember that for a program my_prog, we defined preconditions and postconditions,
+and the "spec" was the property that if the precondition holds, then the postcondition
+must hold.
+
+Roughly speaking, we can translate this to a Z3 spec by writing
+
+x = Input(..)
+y = my_prog(x)
+Then we can write the formula:
+    z3.Implies(precondition(x), postcondition(y))
+
+If Z3 is able to prove this, then the spec holds -- the property is true for all inputs.
 """
+
+########## Where we left off for Day 6 ##########
 
 ########################
 ###    Data Types    ###
