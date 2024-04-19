@@ -590,14 +590,17 @@ Announcements:
 - HW1 due today
 
 - For those added from the waitlist during weeks 2-3:
-you can submit it by EOD Monday.
+you can submit it by EOD Tuesday.
 Please put a note at the top of the README with the
 date you were added to the waitlist.
+I will also announce this on Piazza
 
 - If you're having trouble with Git, please see
 [Git instructions](https://piazza.com/class/lt90i40zrot3ue/post/48)
 
-- My office hours: today 330-430
+- My office hours: today 330-430 in ASB
+
+Questions about HW1?
 
 Plan for today:
 - Recap on provable vs. satisfiable
@@ -608,13 +611,48 @@ Plan for today:
 (Time permitting)
 - Programming exercises
 
-Questions about HW1?
-
 Recall:
 - z3.prove
 - z3.solve
 
-When are these useful?
+z3.prove tries to figure out if the formula (or spec)
+is true for ALL inputs.
+
+z3.solve tries to figure out if the formula (or spec)
+is true for SOME input.
+
+What is an "input" here?
+That's where this notion of variables comes up in Z3.
+b = z3.Bool('b') <---- this is a variable, i.e. an input
+x = z3.Int('x') <---- this is a variable, i.e. an input
+
+In other words: z3.prove tries to show that the spec holds for all
+values of the variables, while z3.solve tries to show that the
+spec holds for one particular assignment of values to the variables.
+
+Finally, we also saw that these are really the same thing under the
+hood. In fact they use something called a Solver API
+Under the hood:
+z3.Solver
+which you can create to solve arbitrary formulas.
+We'll see this towards the end of today's lecture.
+
+Q: x = z3.Int('x')
+Does x have to match the string?
+A: No. Z3 will use the string to determine the variable.
+y = z3.Int('x') # This is also the same variable as x
+
+When should you use z3.prove vs z3.solve?
+
+- z3.prove is useful for proving specifications, and also when
+    you want to show that some assertion or some property always holds
+
+- z3.solve is useful for solving equations, solving puzzles, and
+    similar tasks where you have some set of constraints, and
+    you want to find a solution to those constraints.
+    E.g.: you want to solve x^2 - 3x + 2 = 0
+    or you want to solve a Sudoku puzzle
+
 """
 
 ####################
@@ -623,15 +661,19 @@ When are these useful?
 
 # What would you guess is the output of the following Z3 code?
 
-@pytest.mark.skip
 def test_poll_output_2():
     x = z3.Int('x')
     y = z3.Int('y')
     spec = z3.Implies(z3.And(x >= 10, y == x * x), y >= 100)
     prove(spec)
 
+print("Output:")
+test_poll_output_2()
+
 # https://forms.gle/KR69gCKnyofZGM8x9
 # https://tinyurl.com/5dcsxmj6
+
+# Let's try it out
 
 ########################
 ###    Data Types    ###
@@ -644,41 +686,184 @@ The power of Z3 is in its ability to work with more complex data types
 Basic data types: Bool, Int, Real
 
 (In fact we don't really need booleans -- we can represent them as integers.)
+"""
 
+# How to define a boolean using integers
+b = z3.Int('b')
+boolean_spec = z3.And(b >= 0, b <= 1)
+z3.solve(boolean_spec)
+# If you wanted to do boolean operations,
+# and, or, implies, etc. you could define these on integers.
+
+# Take-away point here: if you have a less restrictive data
+# type than you want, you can add additional invariants
+# into your formula to encode whatever additional properties you
+# want.
+# Here: we wanted b to be between 0 and 1, so we simply added
+# 0 <= b and b <= 1 into our spec.
+
+"""
 === Integers ===
 
 z3.Int
-z3.Ints
+z3.Ints -- creates multiple integers
 
 Examples
 """
+x, y = z3.Ints("x y")
+spec = z3.And(x > y, y > 5)
+z3.solve(spec)
 
 """
-For validating specifications, we have been using z3.prove.
-What about z3.solve?
-
-Q: write a function to solve the formula
-x^2 + 5x + 6 = 0
+What operations are supported here?
+You can use most built-in integer operations in Python
+on Z3 integers. BUT keep in mind it's not the same as Python
+integer arithmetic.
 """
 
+x + y # <- Z3 expression, NOT a Python integer
+print(x + y) # Prints as "x + y", not as some specific integer
+
+# Problem: find two integers whose sum and product is the same.
+print("Find two integers whose sum and product is equal:")
+z3.solve(x + y == x * y)
+
+# Operations we've seen so far: +, *, ==, <, all of these
+# work on Z3 integers.
+
 """
+We can use functions to wrap up useful functionality.
+
+For example:
+Define a Pythagorean triple as three positive integers a, b, c
+such that a^2 + b^2 = c^2.
+
+Q1: Find a pythagorean triple.
+Q2: Find a pythagorean triple with a = 5.
+
+It's often useful to define a function which abstracts the
+behavior you're interested in.
+"""
+
+def pythagorean_triple(a, b, c):
+    # We can just return the expression a^2 + b^2 = c^2
+    # return (a * a + b * b == c * c)
+    # Debugging: we can add the additional constraints
+    # that we forgot here
+    pythag_constraint = a * a + b * b == c * c
+    a_is_positive = a > 0
+    b_is_postive = b > 0
+    c_is_positive = c > 0
+    return z3.And([
+        pythag_constraint,
+        a_is_positive,
+        b_is_postive,
+        c_is_positive,
+    ])
+    # Here: the other constraints are silently ignored :(
+    # What's happening here?
+    # Python boolean operators (and/or) are defined for arbitrary
+    # data types. And "falsey" datatypes are treated as false
+    # and "truthy" datatypes are treated as true
+    # and/or are both short circuiting so they'll return
+    # the first value that is either false/true, respectively.
+    # Bottom line here: this doesn't work because "and" already
+    # has a definition in Python.
+    # This is not what we want.
+    # return (pythag_constraint and a_is_positive and b_is_postive and c_is_positive)
+    # TL;DR Python boolean operators are weird, so be careful with them.
+
+# If we want an example:
+a, b, c = z3.Ints("a b c")
+print("Example pythagorean triple:")
+z3.solve(pythagorean_triple(a, b, c))
+
+"""
+Q: what if we want more than one answer?
+
+We can try rerunning...
+
+The easiest way is a common technique where
+each time we get an answer, we add an assertion that
+that answer is excluded.
+"""
+
+# First answer: a = 6, b = 8, c = 10
+# Second answer
+new_constraint = z3.Or(
+    z3.Not(a == 6),
+    z3.Not(b == 8),
+    z3.Not(c == 10),
+)
+# ^ Force the solver to give us a new answer.
+z3.solve(z3.And([
+    pythagorean_triple(a, b, c),
+    new_constraint,
+]))
+
+# We can keep adding constraints for each new answer,
+# there is also a way to do this programmatically
+# (This will use the Solver API that we will shortly see.)
+# We will see how to write a wrapper around Solver to do this.
+
+"""
+SKIP
 Q: Write a function to determine whether a number
 is a perfect square.
 """
 
 """
-We can also use solve to find *all* solutions, instead
-of just one. How?
+Q: write a function to solve the formula
+x^2 + 5x + 6 = 0
 """
+
+x = z3.Int('x')
+print("Solution:")
+z3.solve(x * x + 5 * x + 6 == 0)
+# If we want the other answer?
+y = z3.Int('y')
+z3.solve(z3.And([
+    x * x + 5 * x + 6 == 0,
+    y * y + 5 * y + 6 == 0,
+    x != y,
+]))
 
 """
 === True Real Numbers ===
 
-Z3 can even work with data types that are not available in Python:
-real numbers.
+We've seen so far how Z3 can work with standard Python datatypes.
+
+Because Z3 is a theorem prover, and not just a testing framework,
+it can also work with data types that are not available in Python:
+for example, real numbers.
+
+In Python, there's no such thing as a "true" real number,
+there are only floating point values (floats)
+But in Z3 there is.
 
 z3.Real
+z3.Reals
 """
+
+x = z3.Real('x')
+# what happens?
+print("Square root of two:")
+z3.solve(x * x == 2)
+
+# Note: there is no floating point value x with x^2 = 2
+# It only exists as a true real number.
+
+# How does Z3 represent real numbers, when computers can't
+# represent real numbers?
+
+# Answer: they're treated as abstract symbols, not as concrete
+# values.
+# In fact, everything in Z3 is treated as abstract symbols!
+# z3.If, z3.Int, z3.Or, the reason there's a Z3 version is that
+# it treats it as an abstract formula, not a concrete value.
+# Just like when I write x = sqrt(2) on the board, I'm not actually
+# computing the exact value of x, that's the same thing that Z3
+# does.
 
 """
 More advanced data types:
