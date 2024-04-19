@@ -581,7 +581,57 @@ Then we can write the formula:
 If Z3 is able to prove this, then the spec holds -- the property is true for all inputs.
 """
 
-########## Where we left off for Day 6 ##########
+########## Where we left off for Day 7 ##########
+
+"""
+Day 8
+
+Announcements:
+- HW1 due today
+
+- For those added from the waitlist during weeks 2-3:
+you can submit it by EOD Monday.
+Please put a note at the top of the README with the
+date you were added to the waitlist.
+
+- If you're having trouble with Git, please see
+[Git instructions](https://piazza.com/class/lt90i40zrot3ue/post/48)
+
+- My office hours: today 330-430
+
+Plan for today:
+- Recap on provable vs. satisfiable
+- Poll
+- Additional data types
+- Some tricks along the way
+
+(Time permitting)
+- Programming exercises
+
+Questions about HW1?
+
+Recall:
+- z3.prove
+- z3.solve
+
+When are these useful?
+"""
+
+####################
+###     Poll     ###
+####################
+
+# What would you guess is the output of the following Z3 code?
+
+@pytest.mark.skip
+def test_poll_output_2():
+    x = z3.Int('x')
+    y = z3.Int('y')
+    spec = z3.Implies(z3.And(x >= 10, y == x * x), y >= 100)
+    prove(spec)
+
+# https://forms.gle/KR69gCKnyofZGM8x9
+# https://tinyurl.com/5dcsxmj6
 
 ########################
 ###    Data Types    ###
@@ -593,25 +643,61 @@ The power of Z3 is in its ability to work with more complex data types
 
 Basic data types: Bool, Int, Real
 
-(In fact we don't really need booleans -- we can represent them as integers)
-"""
+(In fact we don't really need booleans -- we can represent them as integers.)
 
-"""
 === Integers ===
+
+z3.Int
+z3.Ints
+
+Examples
 """
 
 """
-Z3 can even work with data types that are not available in Python.
-Here is an interesting one:
+For validating specifications, we have been using z3.prove.
+What about z3.solve?
 
+Q: write a function to solve the formula
+x^2 + 5x + 6 = 0
+"""
+
+"""
+Q: Write a function to determine whether a number
+is a perfect square.
+"""
+
+"""
+We can also use solve to find *all* solutions, instead
+of just one. How?
+"""
+
+"""
 === True Real Numbers ===
+
+Z3 can even work with data types that are not available in Python:
+real numbers.
 
 z3.Real
 """
 
 """
 More advanced data types:
+(later)
 - Functions
 - Arrays and sequences
 - Strings and regular expressions
+"""
+
+"""
+Other tips
+
+Useful guide:
+[Z3 py guide](https://ericpony.github.io/z3py-tutorial/guide-examples.htm)
+
+Documentation:
+[Z3 py docs](https://z3prover.github.io/api/html/namespacez3py.html)
+
+The Z3 solver API
+
+(see helper_functions.py)
 """
