@@ -1,6 +1,8 @@
 # ECS 189C: Software Correctness - Spring Quarter 2024
 
-## To follow along with lectures
+## Lectures
+
+To follow along with lectures:
 
 Clone the repo:
 ```shell
@@ -162,7 +164,7 @@ For homeworks, I cannot guarantee that late work will be graded.
 However, I encourage you to update your assignments even after the deadline -- GitHub classroom will allow us to see both the state of the code at the time of the deadline as well as any recent changes.
 At grading time, we may choose to grade the more recent version at our discretion.
 
-Also, near the end of the quarter, you will be given the opportunity to go back and pick one assignment that you lost points on, and make up the points (up to 50% of the points back).
+Also, near the end of the quarter, you will be given the opportunity to go back and pick one assignment that you missed points on, and make up the points (up to 50% of the points back that you missed).
 
 ## Disclaimers
 
@@ -170,14 +172,14 @@ Communication from the instructor will only be sent through official UC Davis em
 
 Please be nice to each other.
 UC Davis has [policies against harassment and discrimination](https://hr.ucdavis.edu/departments/elr/preventing-discrimination-harassment).
-Be inclusive of your teammates in group discussions.
-If you need to, you may reach me by email to report an issue with a classmate or teammate.
+Be inclusive of your classmates in group discussions.
+If you need to, you may reach me by email to report an issue with a classmate.
 
-## Contact and office hours
+## Contact and Office Hours
 
 Please use the Piazza for questions related to course material.
 I encourage you to ask anonymously if you feel more comfortable.
 Also, please ask publicly unless there is a good reason not to.
-If you have a question that is more sensitive or unrelated to the course, please email me at (`cdstanford` `ucdavis` `edu`).
+If you have a question that is more sensitive or unrelated to the course, please email me (at `cdstanford` `ucdavis` `edu`).
 
 The instructor and TAs will be available during office hours for additional support on course material and assignments. The schedule of office hours can be found in a pinned post on Piazza.
