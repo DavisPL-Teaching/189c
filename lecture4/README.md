@@ -2,7 +2,12 @@
 
 ## Announcements
 
-- HW2 is out! Due Friday, May 3.
+- HW2 is out! Due Friday, May 3 (11:59pm)
+
+- In case you haven't seen it, if you're having any GitHub Classroom issues:
+https://piazza.com/class/lt90i40zrot3ue/post/48
+
+- Any questions about HW2?
 
 ## Plan for the next few days
 
@@ -35,11 +40,11 @@ We've seen how to:
 ## Today (Day 9)
 
 Before we get into more advanced data types, let's do some
-some larger problems to see how Z3 can be used in practice.
+some larger problems.
 
 Main goal:
-- Learn how you might incorporate Z3 into a real-world
-  programming project.
+- Learn how you might incorporate Z3 into practical
+  programming tasks.
 
 Along the way, we should also learn:
 
@@ -75,14 +80,59 @@ https://tinyurl.com/yeyvks6h
 ### Brief description of the problems
 
 - Sudoku solver
-- 8 queens problem
-- Seating arrangement generator
-- Task scheduler
-- FRACTRAN program optimizer
-- Travelling salesperson problem
+  Given a 9x9 Sudoku board, find a solution to the Sudoku puzzle
 
-## Disclaimer
+- 8 queens problem
+  Famous chess puzzle (not really about chess)
+  Place 8 queens on an 8x8 chessboard so that no two queens attack each other
+  "Attack" means moving diagonally, horizontally, or vertically
+
+- Seating arrangement generator
+  Imagine you're inviting a bunch of people over for dinner
+  You want to seat them all around a round table
+  but certain pairs of them don't get along and might generate
+  heated arguments, which you want to avoid.
+  Can we automatically generate a seating arrangement?
+
+- Task scheduler
+  We have a bunch of tasks, including
+  + duration of the task
+  + deadline of the task
+  Can we schedule all the tasks so that they all get done?
+
+- FRACTRAN program optimizer
+  FRACTRAN is an "esoteric programming language"
+  Esoteric programming languages are typically minimal
+  syntax languages that make it easy to write a program
+  interpreter or compiler, and which are expressive enough
+  for arbitrary programs (Turing complete), but probably
+  don't have many practical and convenient features.
+  Designed to be extremely minimal.
+  FRACTRAN is one particular such minimal language.
+  We can use Z3 to answer questions about a program,
+  and even to optimize a program.
+
+  Two classical program optimizations:
+  + Dead code elimination
+    If there's a piece of your program that isn't needed,
+    delete it.
+  + Constant propagation
+    If you know the value of a variable at a certain point,
+    replace all uses of that variable with the constant value.
+
+- Travelling salesperson problem
+  Given a list of cities and the distances between each pair of cities,
+  what is the shortest possible route that visits each city exactly once
+  and returns to the origin city?
+
+- Other: if you want to propose something
+
+## Disclaimers/notes
 
 I didn't try solving the problems ahead of time!
 We will discover along the way if there are any unexpected
 roadblocks and how to overcome them.
+
+I'm leaving on copilot suggestions for now
+(Because this is a sort of more open-ended exploration)
+But I'll turn it off if it gets too distracting.
