@@ -6,15 +6,17 @@
 
 ## Plan for the next few days
 
-Using Z3 for some fun programming projects.
+Applications of Z3 to some fun programming problems.
 
 ## Looking ahead
 
+Try to unleash the full power of Z3:
 - Strings and regular expressions
 - Functions, arrays, etc.
 - Z3 internals
 - Z3 limitations
-- Then moving on to Dafny (HW4) and Rust (HW5).
+
+Then moving on to Dafny (HW4) and Rust (HW5).
 
 ## Recap
 
@@ -33,9 +35,13 @@ We've seen how to:
 ## Today (Day 9)
 
 Before we get into more advanced data types, let's do some
-some larger projects to see how Z3 can be used in practice.
+some larger problems to see how Z3 can be used in practice.
 
-Along the way, we should learn:
+Main goal:
+- Learn how you might incorporate Z3 into a real-world
+  programming project.
+
+Along the way, we should also learn:
 
 - How to go about encoding a problem in Z3
   1. What are the variables?
@@ -60,6 +66,23 @@ Things we won't learn (yet):
 
 ## Poll
 
-The poll will be to decide which project to do :)
+The poll will be to decide which problem to do :)
+(see the problems/ folder)
 
-See projects in the projects/ folder.
+https://forms.gle/cPFSMh2Y13nmyi1i9
+https://tinyurl.com/yeyvks6h
+
+### Brief description of the problems
+
+- Sudoku solver
+- 8 queens problem
+- Seating arrangement generator
+- Task scheduler
+- FRACTRAN program optimizer
+- Travelling salesperson problem
+
+## Disclaimer
+
+I didn't try solving the problems ahead of time!
+We will discover along the way if there are any unexpected
+roadblocks and how to overcome them.
