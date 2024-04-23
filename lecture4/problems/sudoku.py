@@ -216,8 +216,11 @@ things later.
 
 input_grid = get_input()
 
-# Z3 grid
+# 1. What are the variables?
+
 grid = [[z3.Int(f"row{i}col{j}") for j in range(9)] for i in range(9)]
+
+# 2. What are the constraints?
 
 # 1-9 in each row
 row_constraints = []
@@ -226,47 +229,12 @@ for i in range(9):
         row_constraints.append(z3.Or([grid[i][j] == d for j in range(9)]))
 
 # 1-9 in each column
-col_constraints = []
-for j in range(9):
-    for d in range(1, 10):
-        col_constraints.append(z3.Or([grid[i][j] == d for i in range(9)]))
 
 # 1-9 in each box
-box_constraints = []
-for i in range(3):
-    for j in range(3):
-        for d in range(1, 10):
-            box_constraints.append(z3.Or([
-                grid[i*3 + ii][j*3 + jj] == d
-                for ii in range(3)
-                for jj in range(3)
-            ]))
 
 # Input constraints
-input_constraints = []
-for i in range(9):
-    for j in range(9):
-        if input_grid[i][j] != 0:
-            input_constraints.append(grid[i][j] == input_grid[i][j])
 
-# Combine everything
-constraints = row_constraints + col_constraints + box_constraints + input_constraints
-
-solutions = get_solution(constraints)
-
-output_grid = [[solutions[grid[i][j]] for j in range(9)] for i in range(9)]
-
-print(output_grid)
-
-assert output_grid == [[5, 3, 4, 6, 7, 8, 9, 1, 2],
- [6, 7, 2, 1, 9, 5, 3, 4, 8],
- [1, 9, 8, 3, 4, 2, 5, 6, 7],
- [8, 5, 9, 7, 6, 1, 4, 2, 3],
- [4, 2, 6, 8, 5, 3, 7, 9, 1],
- [7, 1, 3, 9, 2, 4, 8, 5, 6],
- [9, 6, 1, 5, 3, 7, 2, 8, 4],
- [2, 8, 7, 4, 1, 9, 6, 3, 5],
- [3, 4, 5, 2, 8, 6, 1, 7, 9]]
+# 3. What are the properties we want to check?
 
 """
 === Discussion ===
