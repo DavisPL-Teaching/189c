@@ -132,59 +132,159 @@ def get_input():
 
     return grid
 
-# 1: what are our variables
-def setup_grid():
-    # Let's make one Integer variable for each of the 81 entries
-    # in the grid.
-    grid_vars = [
-        [
-            z3.Int(f"row{i}col{j}")
-            for j in range(9)
-        ]
-        for i in range(9)
-    ]
-    # ^^ This is called a list comprehension
-    # Python syntax that basically wraps up a for loop
-    # inside a single line of code.
-    # We could have done this with a for loop too.
-    # Draw what we get:
-    """
-    grid == [
-        [z3.Int("row0col0"), z3.Int("row0col1), ..., z3.Int("row0col8")],
-        [],
-        [],
-        ...
-    ]
-    """
-    return grid_vars
+### Unfinished
+# # 1: what are our variables
+# def setup_grid():
+#     # Let's make one Integer variable for each of the 81 entries
+#     # in the grid.
+#     grid_vars = [
+#         [
+#             z3.Int(f"row{i}col{j}")
+#             for j in range(9)
+#         ]
+#         for i in range(9)
+#     ]
+#     # ^^ This is called a list comprehension
+#     # Python syntax that basically wraps up a for loop
+#     # inside a single line of code.
+#     # We could have done this with a for loop too.
+#     # Draw what we get:
+#     """
+#     grid == [
+#         [z3.Int("row0col0"), z3.Int("row0col1), ..., z3.Int("row0col8")],
+#         [],
+#         [],
+#         ...
+#     ]
+#     """
+#     return grid_vars
 
-# 2. Constraints
-# Input grid: z3.Ints, NOT python integers.
-# Return value: a Z3 formula
-def grid_constraints(grid):
-    # 1-9 in each row
-    constraints = []
-    for i in range(9): # row index 0..8
-        for d in range(1, 10): # digit d is 1..9
-            # digit d is in column 0 OR column 1 OR column 2 ...
-            # so this is an OR statement.
-            constraint.append(z3.Or([grid[i][j] == d for j in range(9)]))
+# # 2. Constraints
+# # Input grid: z3.Ints, NOT python integers.
+# # Return value: a Z3 formula
+# def grid_constraints(grid):
+#     # 1-9 in each row
+#     constraints = []
+#     for i in range(9): # row index 0..8
+#         for d in range(1, 10): # digit d is 1..9
+#             # digit d is in column 0 OR column 1 OR column 2 ...
+#             # so this is an OR statement.
+#             constraint.append(z3.Or([grid[i][j] == d for j in range(9)]))
 
-    ##### Where we left off for day 9 #####
-
-    # 1-9 in each column
-    for
-    # 1-9 in each box
-
-
-
-# def is_valid(grid):
-
-
-
+############### Where we left off for day 9 ###############
 
 """
-=== Generalizations ===
+Day 10
+
+Notes about solving problems with Z3
+
+Z3 requires thinking about problems in a very different way!
+
+Normal process: think about the input and output of the problem,
+divide the problem into smaller parts, and solve each part.
+
+Z3 process: think about the output as a set of abstract variables.
+
+- "abstract" = we don't know what the variables are yet!
+
+And think about what constraints those variables have to satisfy.
+
+Construct a formula that represents the constraints, and pass it
+to Z3 to solve the problem for you!
+
+- We aren't trying to solve the problem ourselves; we ask Z3 to do it.
+- "What" instead of "how": we think about what the solution looks like, not how to solve the problem.
+
+Recall, steps:
+    1. What are the variables?
+    2. What are the constraints?
+    3. What are the properties we want to check?
+
+(1) is talking about Z3 variables, not Python variables.
+How are they different?
+
+=== POLL ===
+
+https://forms.gle/7PZfussjfQKyJdjx9
+https://tinyurl.com/3fj6jt4x
+
+=== Returning to our problem ===
+
+Let's clean up the previous code, we will think about how to abstract
+things later.
+"""
+
+input_grid = get_input()
+
+# Z3 grid
+grid = [[z3.Int(f"row{i}col{j}") for j in range(9)] for i in range(9)]
+
+# 1-9 in each row
+row_constraints = []
+for i in range(9):
+    for d in range(1, 10):
+        row_constraints.append(z3.Or([grid[i][j] == d for j in range(9)]))
+
+# 1-9 in each column
+col_constraints = []
+for j in range(9):
+    for d in range(1, 10):
+        col_constraints.append(z3.Or([grid[i][j] == d for i in range(9)]))
+
+# 1-9 in each box
+box_constraints = []
+for i in range(3):
+    for j in range(3):
+        for d in range(1, 10):
+            box_constraints.append(z3.Or([
+                grid[i*3 + ii][j*3 + jj] == d
+                for ii in range(3)
+                for jj in range(3)
+            ]))
+
+# Input constraints
+input_constraints = []
+for i in range(9):
+    for j in range(9):
+        if input_grid[i][j] != 0:
+            input_constraints.append(grid[i][j] == input_grid[i][j])
+
+# Combine everything
+constraints = row_constraints + col_constraints + box_constraints + input_constraints
+
+solutions = get_solution(constraints)
+
+output_grid = [[solutions[grid[i][j]] for j in range(9)] for i in range(9)]
+
+print(output_grid)
+
+assert output_grid == [[5, 3, 4, 6, 7, 8, 9, 1, 2],
+ [6, 7, 2, 1, 9, 5, 3, 4, 8],
+ [1, 9, 8, 3, 4, 2, 5, 6, 7],
+ [8, 5, 9, 7, 6, 1, 4, 2, 3],
+ [4, 2, 6, 8, 5, 3, 7, 9, 1],
+ [7, 1, 3, 9, 2, 4, 8, 5, 6],
+ [9, 6, 1, 5, 3, 7, 2, 8, 4],
+ [2, 8, 7, 4, 1, 9, 6, 3, 5],
+ [3, 4, 5, 2, 8, 6, 1, 7, 9]]
+
+"""
+=== Discussion ===
+
+How would we do this without Z3?
+
+What are the advantages of using Z3?
+
+How is Z3 different from Hypothesis?
+
+What are the drawbacks of using Z3?
+
+"""
+
+"""
+=== Follow up ===
+
+- Can we reorganize our code to be better?
 
 - Can we check that there is only one solution?
 
