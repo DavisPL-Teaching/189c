@@ -66,8 +66,7 @@ board is valid
     (*) used here?
 - Print output
 
-Remember:
-How to go about encoding a problem in Z3
+How to go about encoding a problem in Z3:
   1. What are the variables?
   2. What are the constraints?
   3. What are the properties we want to check?
@@ -176,31 +175,53 @@ def get_input():
 """
 Day 10
 
-Notes about solving problems with Z3
+Announcements:
 
-Z3 requires thinking about problems in a very different way!
+- Homework 2 is due in 9 days
+
+- Keep the Piazza questions coming!
+
+Last time:
+
+- We started working on a Sudoku solver using Z3
+
+Plan for today:
+
+- Clarify how solving problems with Z3 is different from normal programming
+
+- Finish the Sudoku solver
+
+=== Clarification ===
+
+Some people were confused last time!
+Let's review the approach we want to take here.
+
+===== Solving problems without Z3 =====
 
 Normal process: think about the input and output of the problem,
 divide the problem into smaller parts, and solve each part.
 
-Z3 process: think about the output as a set of abstract variables.
+How would we solve the Sudoku problem without Z3?
 
-- "abstract" = we don't know what the variables are yet!
+===== Solving problems with Z3 =====
 
-And think about what constraints those variables have to satisfy.
+Z3 requires thinking about problems in a very different way!
 
-Construct a formula that represents the constraints, and pass it
-to Z3 to solve the problem for you!
+Z3 process: think about "what" instead of "how":
+    - we define the *output* as a set of abstract variables
+    - we think about what constraints the output must satisfy
+    - we pass the constraints to Z3 to solve the problem for us.
 
-- We aren't trying to solve the problem ourselves; we ask Z3 to do it.
-- "What" instead of "how": we think about what the solution looks like, not how to solve the problem.
+In particular: Z3 integers are not Python integers!
 
-Recall, steps:
+(aside: quick terminal demo)
+
+Steps:
     1. What are the variables?
     2. What are the constraints?
     3. What are the properties we want to check?
 
-(1) is talking about Z3 variables, not Python variables.
+(1) is talking about Z3 variables, not Python variables!
 How are they different?
 
 === POLL ===
