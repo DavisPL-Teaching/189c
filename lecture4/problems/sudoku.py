@@ -177,9 +177,9 @@ Day 10
 
 Announcements:
 
-- Homework 2 is due in 9 days
+- HW 2 is due in 9 days
 
-- Keep the Piazza questions coming!
+- Mistake in HW2 part 3
 
 Last time:
 
@@ -194,7 +194,7 @@ Plan for today:
 === Clarification ===
 
 Some people were confused last time!
-Let's review the approach we want to take here.
+Solving problems with Z3 is very different from the programming you are used to.
 
 ===== Solving problems without Z3 =====
 
@@ -212,7 +212,7 @@ Z3 process: think about "what" instead of "how":
     - we think about what constraints the output must satisfy
     - we pass the constraints to Z3 to solve the problem for us.
 
-In particular: Z3 integers are not Python integers!
+Z3 integers: not the same as Python integers!
 
 (aside: quick terminal demo)
 
