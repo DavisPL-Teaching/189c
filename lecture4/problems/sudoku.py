@@ -191,6 +191,10 @@ Plan for today:
 
 - Finish the Sudoku solver
 
+- Task scheduler (2nd place with 24 votes)
+
+- Any questions?
+
 === Clarification ===
 
 Some people were confused last time!
@@ -201,7 +205,32 @@ Solving problems with Z3 is very different from the programming you are used to.
 Normal process: think about the input and output of the problem,
 divide the problem into smaller parts, and solve each part.
 
-How would we solve the Sudoku problem without Z3?
+How would we solve the Sudoku problem *without* Z3?
+
+- Maintain the squares that are unknown (0s) and the squares
+are known?
+
+- Maintain a set of possible numbers for each square?
+
+- If there's only one number possible, we could fill in
+  that number.
+
+- What if there are >= 2 numbers possible at every square?
+
+  + If we don't care about doing it quickly, pick one?
+    and then check if it works out!
+
+  + If it doesn't work out, rollback the whole thing
+    and pick the other.
+
+Essentially: "try every combination"
+Naive / "brute force" solution.
+
+That doesn't sound very good!
+- If we pick the wrong number, we could go down a long
+path of trying things that don't work out.
+
+Is there a better way?
 
 ===== Solving problems with Z3 =====
 
@@ -210,11 +239,23 @@ Z3 requires thinking about problems in a very different way!
 Z3 process: think about "what" instead of "how":
     - we define the *output* as a set of abstract variables
     - we think about what constraints the output must satisfy
-    - we pass the constraints to Z3 to solve the problem for us.
+    - (Magic part)
+      we pass the constraints to Z3 to solve the problem for us.
 
 Z3 integers: not the same as Python integers!
 
 (aside: quick terminal demo)
+
+- In Z3, everything is an abstract expression
+  Integer values are not known, they're abstract variables
+  "x" and "y", not specific integers
+- Z3 integers support +, *, ==, and some other operations,
+  but don't assume that every Python operator is automatically
+  going to work on Z3 integers.
+- In Z3, everything proceeds in two stages: first, we create
+  a Z3 expression or formula for what we want, and then
+  we pass it to z3.solve or z3.prove to actually solve the
+  problem.
 
 Steps:
     1. What are the variables?
@@ -241,6 +282,9 @@ input_grid = get_input()
 
 grid = [[z3.Int(f"row{i}col{j}") for j in range(9)] for i in range(9)]
 
+# e.g.: Row 3, column 4 is the variable z3.Int("row3col4")
+# and I can get it with grid[3][4]
+
 # 2. What are the constraints?
 
 # 1-9 in each row
@@ -250,12 +294,84 @@ for i in range(9):
         row_constraints.append(z3.Or([grid[i][j] == d for j in range(9)]))
 
 # 1-9 in each column
+col_constraints = []
+for j in range(9):
+    for d in range(1, 10):
+
+        # col_possibilities = []
+        # for i in range(9):
+        #     col_possibilities.append(grid[i][j] == d)
+        # col_constraints.append(z3.Or(col_possibilities))
+
+        col_constraints.append(z3.Or([
+            grid[i][j] == d
+            for i in range(9)
+        ]))
 
 # 1-9 in each box
+# 3x3 grid of windows or boxes to go over
+box_constraints = []
+for box_i in range(3):
+    for box_j in range(3):
+        # This is one of our windows or boxes
+        for d in range(1, 10):
+            box_possibilities = []
+            for i in range(3 * box_i, 3 * box_i + 3):
+                for j in range(3 * box_j, 3 * box_j + 3):
+                    box_possibilities.append(grid[i][j] == d)
+            box_constraints.append(
+                z3.Or(box_possibilities)
+            )
 
 # Input constraints
 
+input_grid = get_input()
+input_constraints = []
+for i in range(9):
+    for j in range(9):
+        if input_grid[i][j] != 0:
+            input_constraints.append(grid[i][j] == input_grid[i][j])
+
 # 3. What are the properties we want to check?
+
+# collect all of our constraints together:
+constraints = row_constraints + col_constraints + box_constraints + input_constraints
+
+# solve(z3.And(constraints))
+
+# Make this a bit more readable?
+
+solution = get_solution(z3.And(constraints))
+
+output_grid = [
+    [
+        solution[grid[i][j]]
+        for j in range(9)
+    ]
+    for i in range(9)
+]
+
+# print(output_grid)
+
+# Pretty print the grid
+for i in range(9):
+    print(" ".join([str(output_grid[i][j]) for j in range(9)]))
+
+# for i in range(9):
+#     print(" ".join(output_grid[i]))
+
+# Is the answer correct?
+assert output_grid == [
+ [5, 3, 4, 6, 7, 8, 9, 1, 2],
+ [6, 7, 2, 1, 9, 5, 3, 4, 8],
+ [1, 9, 8, 3, 4, 2, 5, 6, 7],
+ [8, 5, 9, 7, 6, 1, 4, 2, 3],
+ [4, 2, 6, 8, 5, 3, 7, 9, 1],
+ [7, 1, 3, 9, 2, 4, 8, 5, 6],
+ [9, 6, 1, 5, 3, 7, 2, 8, 4],
+ [2, 8, 7, 4, 1, 9, 6, 3, 5],
+ [3, 4, 5, 2, 8, 6, 1, 7, 9]]
+
 
 """
 === Discussion ===
