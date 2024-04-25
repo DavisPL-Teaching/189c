@@ -343,22 +343,11 @@ constraints = row_constraints + col_constraints + box_constraints + input_constr
 
 solution = get_solution(z3.And(constraints))
 
-output_grid = [
-    [
-        solution[grid[i][j]]
-        for j in range(9)
-    ]
-    for i in range(9)
-]
-
-# print(output_grid)
+output_grid = [[solution[grid[i][j]] for j in range(9)] for i in range(9)]
 
 # Pretty print the grid
 for i in range(9):
     print(" ".join([str(output_grid[i][j]) for j in range(9)]))
-
-# for i in range(9):
-#     print(" ".join(output_grid[i]))
 
 # Is the answer correct?
 assert output_grid == [
@@ -372,9 +361,12 @@ assert output_grid == [
  [2, 8, 7, 4, 1, 9, 6, 3, 5],
  [3, 4, 5, 2, 8, 6, 1, 7, 9]]
 
+############### Where we left off for day 10 ###############
 
 """
-=== Discussion ===
+(Skipped -- Day 11 continued in task-scheduler.py.)
+
+=== Discussion questions ===
 
 How would we do this without Z3?
 
@@ -384,9 +376,6 @@ How is Z3 different from Hypothesis?
 
 What are the drawbacks of using Z3?
 
-"""
-
-"""
 === Follow up ===
 
 - Can we reorganize our code to be better?
