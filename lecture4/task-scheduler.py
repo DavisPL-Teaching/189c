@@ -42,7 +42,7 @@ If so, what's an example schedule?
 
 === Example input ===
 
-Time: 8am
+Current time: 8am (8)
 Task: 1, 3 hours, 12 hours, 8am to 8pm
 Task: 2, 2 hours, 10 hours, 8am to 8pm
 Task: 3, 1 hour, 5 hours, 8am to 8pm
@@ -141,6 +141,19 @@ Questions?
 Some of you have already figured out: Hypothesis and Z3 are very different.
 They work differently and they are used differently.
 
+Hypothesis methodology:
+- Write a program
+- I want to make sure it's correct -- write a test with
+  a spec for that program
+- Then run hypothesis to find out if the program passes the spec
+
+Z3 methodology:
+- Think about what problem I'm using Z3 to solve, and what
+  is the *output* to the problem
+- What Z3 variables I can use to describe the output and
+  constraints on the output (3 steps that we've been using)
+- Then encode the problem and pass it to Z3 to solve
+
 Poll:
 Which of the following are key differences between Hypothesis and Z3?
 
@@ -156,20 +169,51 @@ class Task:
     """
     Task model
     """
-    def __init__(self, name, duration, deadline, available_hours):
-        # Input parameters (regular Python variables)
+    def __init__(self, current_time, name, duration, deadline):
+        """
+        Input parameters (regular Python variables)
+        name: the name of the task
+        duration: time it takes to complete
+        deadline: time until task is due
+        """
+        self.current_time = current_time
         self.name = name
         self.duration = duration
         self.deadline = deadline
-        self.available_hours = available_hours
-        # Output parameters (Z3 variables)
+
+        """
+        Output parameters (Z3 variables)
+        schedule_start: the time we start the task (time of day)
+        schedule_end: the time we end the task (time of day)
+        """
+        self.schedule_start = z3.Int(f"{self.name} start")
+        self.schedule_end = z3.Int(f"{self.name} end")
+
+    def get_constraints(self):
+        """
+        Constraints that an individual task should satisfy.
+
+        Return: Z3 formula
+        """
+        duration_constraint = self.schedule_end == (
+            self.schedule_start + self.duration
+        )
+        deadline_constraint = (
+            self.schedule_end <= self.current_time + self.deadline
+        )
+        duration_constraint = self.duration > 0
+        start_time_constraint = self.schedule_start >= self.current_time
+
+    # Recap: we've written down the constraints for one individual task.
+    # Next up: we also need to ensure that different tasks interact, and
+    # in particular asesrt that different tasks do not overlap.
 
 class Scheduler:
     """
     Scheduler interface
     """
-    def __init__(self, start_time):
-        self.start_time = start_time
+    def __init__(self, current_time):
+        self.current_time = current_time
 
         self.task_names = []
         self.task_durations = []
