@@ -74,13 +74,8 @@ What are we optimizing for here?
 (For simplicity, let's set aside this q for now,
 but we could add it if we wanted to in a future update to our app.)
 
-"""
+=== 3 Steps ===
 
-import z3
-import pytest
-from helper import solve, get_solution, SAT, UNSAT, UNKNOWN
-
-"""
 Let's first consider our three steps:
 
 Remember: Think about the output, not the input.
@@ -118,9 +113,61 @@ API we have in mind:
     scheduler.add_task(...)
     scheduler.get_solution() # print solution
 
+########################################
+
+=== Day 12 ===
+
+Announcements:
+
+- HW1 has been graded
+
+- HW2 due this Friday
+
+- HW3 early release -- due next Friday
+
+Plan:
+
+- Go over a few of the HW1 problems
+
+- A bit on differences between Hypothesis and Z3
+  (we will also discuss this more in the future)
+
+- Continue with our task scheduler
+
+Questions?
+
+=== Hypothesis vs Z3 ===
+
+Some of you have already figured out: Hypothesis and Z3 are very different.
+They work differently and they are used differently.
+
+Poll:
+Which of the following are key differences between Hypothesis and Z3?
+
+https://forms.gle/AASYVNim69Q7dPur8
+https://tinyurl.com/5y5afus3
 """
 
+import z3
+import pytest
+from helper import solve, get_solution, SAT, UNSAT, UNKNOWN
+
+class Task:
+    """
+    Task model
+    """
+    def __init__(self, name, duration, deadline, available_hours):
+        # Input parameters (regular Python variables)
+        self.name = name
+        self.duration = duration
+        self.deadline = deadline
+        self.available_hours = available_hours
+        # Output parameters (Z3 variables)
+
 class Scheduler:
+    """
+    Scheduler interface
+    """
     def __init__(self, start_time):
         self.start_time = start_time
 
@@ -148,6 +195,5 @@ class Scheduler:
         )
         self.schedule.append(z3.Int(f"task{n}"))
 
-        # TODO next: add in the constraints here.
-
-############### Where we left off for day 11 ###############
+        ##### Where we left off for day 11
+        # To do next: add in the constraints here.
