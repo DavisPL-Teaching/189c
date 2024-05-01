@@ -231,7 +231,7 @@ class Task:
 
     # Recap: we've written down the constraints for one individual task.
     # Next up: we also need to ensure that different tasks interact, and
-    # in particular asesrt that different tasks do not overlap.
+    # in particular assert that different tasks do not overlap.
 
     ##### Where we left off for day 12
 

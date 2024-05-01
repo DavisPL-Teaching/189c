@@ -20,9 +20,9 @@ I will try to keep it up to date, but please see Piazza for the latest informati
 | 4 | April 22 | Z3 IV: Applications |  | 4 |
 |   | April 24 | Z3 V: Applications |  | 4 |
 |   | April 26 | Z3 VI: Applications |  | 4 |
-| 5 | April 29 | Z3 VII: Internals |  |  |
-|   | May 1 | Z3 VIII: Limitations |  |  |
-|   | May 3 | Section 1 Review | HW2 due |  |
+| 5 | April 29 | Z3 VII: Applications |  | 4 |
+|   | May 1 | Z3 VIII: Complex Data Types |  | 5 |
+|   | May 3 | Z3 IX: Internals, Limitations, Review | HW2 due | 5 |
 
 ## Section 2: Program Verification and Type Systems
 
