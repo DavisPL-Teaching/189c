@@ -42,7 +42,7 @@ If so, what's an example schedule?
 
 === Example input ===
 
-Current time: 8am (8)
+Start time: 8am (8)
 Task: 1, 3 hours, 12 hours, 8am to 8pm
 Task: 2, 2 hours, 10 hours, 8am to 8pm
 Task: 3, 1 hour, 5 hours, 8am to 8pm
@@ -113,8 +113,6 @@ API we have in mind:
     scheduler.add_task(...)
     scheduler.get_solution() # print solution
 
-########################################
-
 === Day 12 ===
 
 Announcements:
@@ -159,6 +157,27 @@ Which of the following are key differences between Hypothesis and Z3?
 
 https://forms.gle/AASYVNim69Q7dPur8
 https://tinyurl.com/5y5afus3
+
+=== Day 13 ===
+
+Announcements:
+
+- HW2 due Friday
+
+- HW3 due next Friday
+
+Plan:
+
+- Finish up the task scheduler
+
+- Move on to Lecture 5: Advanced Z3
+
+Questions?
+
+Poll:
+https://forms.gle/UpfGQeWJkFVwoyzF8
+https://tinyurl.com/yanyt88d
+
 """
 
 import z3
@@ -169,25 +188,30 @@ class Task:
     """
     Task model
     """
-    def __init__(self, current_time, name, duration, deadline):
+    def __init__(self, schedule_start, name, duration, deadline):
         """
         Input parameters (regular Python variables)
+
+        schedule_start: the start time for the entire schedule
         name: the name of the task
         duration: time it takes to complete
         deadline: time until task is due
+
+        (Review: why are these regular Python variables?)
         """
-        self.current_time = current_time
+        self.schedule_start = schedule_start
         self.name = name
         self.duration = duration
         self.deadline = deadline
 
         """
         Output parameters (Z3 variables)
-        schedule_start: the time we start the task (time of day)
-        schedule_end: the time we end the task (time of day)
+
+        task_start: the time we start the task (time of day)
+        task_end: the time we end the task (time of day)
         """
-        self.schedule_start = z3.Int(f"{self.name} start")
-        self.schedule_end = z3.Int(f"{self.name} end")
+        self.task_start = z3.Int(f"{self.name} start")
+        self.task_end = z3.Int(f"{self.name} end")
 
     def get_constraints(self):
         """
@@ -195,18 +219,21 @@ class Task:
 
         Return: Z3 formula
         """
-        duration_constraint = self.schedule_end == (
-            self.schedule_start + self.duration
+        duration_constraint = self.task_end == (
+            self.task_start + self.duration
         )
         deadline_constraint = (
-            self.schedule_end <= self.current_time + self.deadline
+            self.task_end <= self.schedule_start + self.deadline
         )
         duration_constraint = self.duration > 0
-        start_time_constraint = self.schedule_start >= self.current_time
+        schedule_start_constraint = self.task_start >= self.schedule_start
+        # Return:
 
     # Recap: we've written down the constraints for one individual task.
     # Next up: we also need to ensure that different tasks interact, and
     # in particular asesrt that different tasks do not overlap.
+
+    ##### Where we left off for day 12
 
 class Scheduler:
     """
