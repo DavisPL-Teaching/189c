@@ -42,7 +42,7 @@ If so, what's an example schedule?
 
 === Example input ===
 
-Start time: 8am (8)
+Schedule start time: 8am (8)
 Task: 1, 3 hours, 12 hours, 8am to 8pm
 Task: 2, 2 hours, 10 hours, 8am to 8pm
 Task: 3, 1 hour, 5 hours, 8am to 8pm
@@ -163,6 +163,7 @@ https://tinyurl.com/5y5afus3
 Announcements:
 
 - HW2 due Friday
+    + Extra office hour on Friday at noon
 
 - HW3 due next Friday
 
@@ -219,15 +220,22 @@ class Task:
 
         Return: Z3 formula
         """
-        duration_constraint = self.task_end == (
+        duration_constraint_1 = self.task_end == (
             self.task_start + self.duration
         )
+        duration_constraint_2 = self.duration > 0
         deadline_constraint = (
             self.task_end <= self.schedule_start + self.deadline
         )
-        duration_constraint = self.duration > 0
         schedule_start_constraint = self.task_start >= self.schedule_start
+
         # Return:
+        return z3.And(
+            duration_constraint_1,
+            duration_constraint_2,
+            deadline_constraint,
+            schedule_start_constraint,
+        )
 
     # Recap: we've written down the constraints for one individual task.
     # Next up: we also need to ensure that different tasks interact, and
@@ -239,32 +247,64 @@ class Scheduler:
     """
     Scheduler interface
     """
-    def __init__(self, current_time):
-        self.current_time = current_time
+    def __init__(self, schedule_start):
+        self.schedule_start = schedule_start
 
-        self.task_names = []
-        self.task_durations = []
-        self.task_deadlines = []
-        self.task_available_hours = []
+        self.tasks = []
+        self.constraints = []
 
-        self.schedule = []
+    def get_constraints(self):
+        # For each pair of tasks, check that the tasks do not overlap
+        # --> i.e. the begin time of task1 is after the end time of task2,
+        #     or vice versa.
+        num_tasks = len(self.tasks)
+        constraints = []
+        for i in range(num_tasks):
+            for j in range(i + 1, num_tasks):
+                task1 = self.tasks[i]
+                task2 = self.tasks[j]
+                constraints.append(z3.Or(
+                    task2.task_start >= task1.task_end,
+                    task1.task_start >= task2.task_end,
+                ))
+        return constraints
 
     def add_task(
         self,
         task_name,
         task_duration,
         task_deadline,
-        available_hours_start, # between 0 and 24
-        available_hours_end, # between 0 and 24
+        # Ignore these fields
+        # available_hours_start, # between 0 and 24
+        # available_hours_end, # between 0 and 24
     ):
-        n = len(self.tasks) + 1
-        self.task_names.append(task_name)
-        self.task_durations.append(task_duration)
-        self.task_deadlines.append(task_deadline)
-        self.task_available_hours.append(
-            (available_hours_start, available_hours_end)
-        )
-        self.schedule.append(z3.Int(f"task{n}"))
+        task = Task(self.schedule_start, task_name, task_duration, task_deadline)
+        self.tasks.append(task)
+        self.constraints.append(task.get_constraints())
 
         ##### Where we left off for day 11
         # To do next: add in the constraints here.
+
+    def solve(self):
+        # Combine all our constraints
+        all_constraints = z3.And(self.constraints + self.get_constraints())
+        result = solve(all_constraints)
+        if result == SAT:
+            print("A schedule was found!")
+            # Not pretty printed -- but let's see what
+            # it shows us
+            print(get_solution(all_constraints))
+        else:
+            print("No schedule found")
+
+# Example input
+# Schedule start time: 8am (8)
+# Task: 1, 3 hours, 12 hours, 8am to 8pm
+# Task: 2, 2 hours, 10 hours, 8am to 8pm
+# Task: 3, 1 hour, 5 hours, 8am to 8pm
+
+schedule = Scheduler(8)
+schedule.add_task("Go on hike", 3, 12)
+schedule.add_task("Eat dinner", 2, 10)
+schedule.add_task("Eat lunch", 1, 5)
+schedule.solve()

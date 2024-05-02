@@ -29,7 +29,9 @@ We do the same thing with these complex data types.
 
 Q: why do we need all these data types and operations?
 
-A:
+A: We need these data types to be able to model real programs,
+since real programs use strings, arrays, fixed-width integers,
+etc.
 
 Security reasons:
 
@@ -41,7 +43,7 @@ Top 5 web application vulnerabilities:
   https://owasp.org/www-community/Injection_Flaws
 
 String length issues are also a common problem:
-- Hearbleed: https://xkcd.com/1354/
+- Heartbleed: https://xkcd.com/1354/
 """
 
 """
