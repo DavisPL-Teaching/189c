@@ -44,10 +44,22 @@ Top 5 web application vulnerabilities:
 
 String length issues are also a common problem:
 - Heartbleed: https://xkcd.com/1354/
-"""
 
-"""
-Z3 Strings
+########## Where we left off for Day 13 ##########
+
+=== Day 14 ===
+
+- HW2 due today!
+- HW3 due in 1 week
+
+Plan:
+- Strings and regular expressions in Z3
+- Advanced Z3 techniques
+- Z3 review
+
+Questions?
+
+===== Z3 Strings =====
 
 - z3.String
 - z3.Length
@@ -118,23 +130,81 @@ Q: only the first letter of the name should be capitalized.
 """
 
 """
+Q: what if we want to allow spaces?
+"""
+
+"""
 CSV example from HW1
 """
 
+"""
+===== Other data types =====
+
+(Very brief)
+Some of the other most useful types:
+- Z3 arrays
+- Z3 functions
+"""
+
+# Function example
+# x = Int('x')
+# y = Int('y')
+# f = Function('f', IntSort(), IntSort())
+# solve(f(f(x)) == x, f(x) == y, x != y)
+
+# Array example
+
+# A = Array('A', I, I)
+# x = Int('x')
 
 """
-========================================
-========================================
-========================================
-========================================
-========================================
-========================================
-========================================
-========================================
-========================================
-========================================
+You can even create your own datatypes:
+"""
 
-Z3 REVIEW:
+# TreeList = Datatype('TreeList')
+# Tree     = Datatype('Tree')
+# Tree.declare('leaf', ('val', IntSort()))
+# Tree.declare('node', ('left', TreeList), ('right', TreeList))
+# TreeList.declare('nil')
+# TreeList.declare('cons', ('car', Tree), ('cdr', TreeList))
+
+# Tree, TreeList = CreateDatatypes(Tree, TreeList)
+
+"""
+===== Poll =====
+
+What are some reasons that Z3 might return UNKNOWN?
+
+https://forms.gle/Af8sYHsSmenHU6it6
+https://tinyurl.com/5fe9k3ee
+
+===== Z3 techniques =====
+
+What do we do if Z3 is having trouble with a problem?
+
+1. Bound the variables
+
+2. Add additional constraints
+
+3. Use a different encoding
+- use Bool, Int, Float instead of more complex types
+- avoid Array, Functions
+
+Example: Sudoku
+"""
+
+# Array example
+# We want an array with 3 elements.
+# 1. Bad solution
+# X = Array('x', IntSort(), IntSort())
+# # Example using the array
+# print (X[0] + X[1] + X[2] >=0)
+
+# 2. More efficient solution
+
+"""
+===== Z3 Review =====
+
 Proofs and satisfiability
 
 We should now be comfortable with using Z3 to set up a problem:
@@ -167,5 +237,5 @@ How?
 
 We saw that the main limitation of Hypothesis was?
 
-Main limitation of Z3?
+Main limitations of Z3?
 """
