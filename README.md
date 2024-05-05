@@ -88,12 +88,13 @@ Additionally, note that the final exam will be curved (see below), and this may 
 
 ## Grading
 
-For homeworks, your assignments will be graded on the following two broad criteria.
-A rough rubric you can expect is 50 points for each of the following criteria:
+For homeworks, your assignments will be graded on the following two broad criteria: correctness and code quality.
+The majority of the grade will be based on correctness.
+Starting with HW2, you can expect a rough rubric of 90% of the points for correctness and 10% for code quality.
 
-- **Correctness:** Does you program work? That is, does it have the right output on each input and run within a reasonable amount of time? Does it do everything that's it's supposed to, are there bugs? Missing features? etc.
+- **Correctness:** Does you program work? That is, does it have the right output on each input and run within a reasonable amount of time? Are your answers to individual questions correct? Does it do everything that's it's supposed to, are there bugs?
 
-- **Code quality:** Does you program exhibit high code quality standards? That is, modular code, readable, not overly complex, well documents, commented, logically separated modules and functions, reasonably efficient, etc.
+- **Code quality:** Does you program exhibit high code quality standards? That is, modular code, readable, not overly complex, well documents, commented, logically separated modules and functions, and reasonably efficient? Are your free response answers thoughtful?
 
 The final exam will be curved.
 That means, for example, if 100 points are possible, it may be entered as out of a smaller number of points like 90 or 80 for the purposes of calculating your grade, if the average score of the class was low or if there were unexpectedly difficult questions.
