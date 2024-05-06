@@ -266,15 +266,84 @@ Recap:
 ############# Where we left off for day 14
 
 """
-Q: only the first letter of the name should be capitalized.
+=== Day 15 ===
+
+Announcements:
+
+- Mid-quarter survey!
+  https://forms.gle/x4z5mtJCU51X2qBb6
+
+  + Counts for 1 point of extra credit
+
+- REU application:
+  https://forms.gle/VEAyBAMWWHfUwQY8A
+
+- I will be moving the HW3 deadline to Monday (May 13)
+
+  + I will announce this on Piazza later today
+
+  + Future homeworks will be due on Mondays so that you
+    have both Friday and Monday office hours to ask questions.
+
+Today:
+
+- Start with poll we didn't get to last time
+- Continue with regexes in Z3
+
+This week:
+
+- Finish up Z3 (either today or today + next time)
+
+- Start on Dafny
+
+Questions?
+
+===== Poll =====
+
+What are some reasons that Z3 might return UNKNOWN?
+
+https://forms.gle/Af8sYHsSmenHU6it6
+https://tinyurl.com/5fe9k3ee
+
 """
 
 """
-Q: what if we want to allow spaces?
+Recall:
+Last class, we used Z3 regexes to define a string 'name' that only
+contains lowercase letters. What else can we do with regexes?
+
+Q: Define a string 'name' such that only the first letter
+   is capitalized.
+"""
+
+"""
+Q: Modify the string to allow spaces.
 """
 
 """
 CSV example from HW1
+
+Recall: On HW1 part 2, you were asked to write a simple
+serialization and deserialization function for a User class.
+It looked like this:
+
+def to_csv(user):
+  ...
+
+def from_csv(csv):
+  ...
+
+It was possible to show using Hypothesis that some inputs can
+cause to_csv and from_csv to break.
+
+Q: How could we use Z3 to model this scenario?
+"""
+
+"""
+Q: How could we use Z3 to validate our solution?
+
+- Restrict the name to not contain commas?
+- Change the deserialization function to handle commas?
 """
 
 """
@@ -286,16 +355,28 @@ Some of the other most useful types:
 - Z3 functions
 """
 
+# More complex types have to be parameterized by a "Sort"
+# Ignore this for now
+I = z3.IntSort()
+
 # Function example
-# x = Int('x')
-# y = Int('y')
-# f = Function('f', IntSort(), IntSort())
-# solve(f(f(x)) == x, f(x) == y, x != y)
+# x = z3.Int('x')
+# y = z3.Int('y')
+# f = z3.Function('f', I, I)
+# constraints = [f(f(x)) == x, f(x) == y, x != y]
+# solve(z3.And(constraints))
 
 # Array example
 
-# A = Array('A', I, I)
+# A = z3.Array('A', I, I)
+# solve(A[0] + A[1] + A[2] >=0)
+
+# we can store things in the array
 # x = Int('x')
+# print(A[x])
+# print(Store(A, x, 10))
+
+# Q: how is the array different from a list of integers?
 
 """
 You can even create your own datatypes:
@@ -311,12 +392,6 @@ You can even create your own datatypes:
 # Tree, TreeList = CreateDatatypes(Tree, TreeList)
 
 """
-===== Poll =====
-
-What are some reasons that Z3 might return UNKNOWN?
-
-https://forms.gle/Af8sYHsSmenHU6it6
-https://tinyurl.com/5fe9k3ee
 
 ===== Z3 techniques =====
 
