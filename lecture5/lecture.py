@@ -288,6 +288,7 @@ Announcements:
 Today:
 
 - Start with poll we didn't get to last time
+
 - Continue with regexes in Z3
 
 This week:
@@ -309,16 +310,174 @@ https://tinyurl.com/5fe9k3ee
 
 """
 Recall:
-Last class, we used Z3 regexes to define a string 'name' that only
-contains lowercase letters. What else can we do with regexes?
+Last class, we used Z3 regexes to define a string variable 'name'
+that only contains lowercase letters. What else can we do with regexes?
 
 Q: Define a string 'name' such that only the first letter
    is capitalized.
 """
 
+capital_letter = z3.Range("A", "Z")
+
+# We already have our lowercase character regex... so let's combine them!
+# How do we combine two regex constraints?
+# If you want pattern1 **followed by** pattern 2, we use
+# z3.Concat
+
+name_regex = z3.Concat(capital_letter, lowercase_letters)
+regex_constraint = z3.InRe(name, name_regex)
+
+z3.solve(z3.And(
+  length_constraint,
+  regex_constraint,
+))
+
+"""
+How does Z3 regex differ from practical regexes?
+
+Some operations present in practical regex libraries may not
+be present in Z3 and will require encoding them in some way,
+for example:
+  - capture groups
+  - anchors like ^ and $
+  - case-insensitivity, where we want to automatically consider
+    'a' and 'A' to be the same
+  - matching any alphanumeric character
+
+While there are more advanced solutions, the easiest way
+to do these sorts of constraints is to write your own Ranges and
+similar for the different characters you're interested in.
+"""
+
 """
 Q: Modify the string to allow spaces.
+
+But: we don't spaces at the beginning or end of the string, we want
+something like
+  Firstname Lastname
+  or
+  Firstname Middle Lastname
+
+So how can we do this?
 """
+
+# Let's reuse what we already have!
+# How do we convert " " to a Regex (from a Python string)?
+# We could use z3.Range, but there's a simpler way
+# Let's refer to regex_help.md
+# We can use z3.Re
+full_name_regex = z3.Concat(
+  name_regex,
+  z3.Re(" "),
+  name_regex,
+)
+
+solve(z3.And(
+  length_constraint,
+  z3.InRe(name, full_name_regex),
+))
+
+# Middle names?
+# We could do one for 3 names, one for 2 names,
+# and z3.Or them
+# Let's actually use z3.Union: basically OR for regexes
+
+full_name_regex = z3.Concat(
+  # Firstname
+  name_regex,
+  z3.Re(" "),
+  # Middlename
+  z3.Union(
+    z3.Re(""),
+    z3.Concat(name_regex, z3.Re(" "))
+  ),
+  # Lastname
+  name_regex,
+)
+
+solve(z3.And(
+  length_constraint,
+  z3.InRe(name, full_name_regex),
+))
+
+# What if we want to allow more than just 3 names?
+# (Real names can have any number of parts)
+# Use z3.Star?
+# Generalization of z3.Concat for any number
+# of parts.
+
+full_name_regex_generalized = z3.Concat(
+  # Firstname
+  name_regex,
+  z3.Star(
+    # Any further names here (Middle name, last name, etc.)
+    z3.Concat(z3.Re(" "), name_regex)
+  ),
+)
+
+solve(z3.And(
+  length_constraint,
+  z3.InRe(name, full_name_regex),
+))
+
+# Q: How do length_constraint and z3.InRe both know to
+# constraint the entire string?
+# A: because they both refer to the 'name' variable.
+
+"""
+Q: We know that full_name_regex_generalized
+refers to a name with any number of spaces
+and full_name_regex refers to a name with
+exactly 2 or 3 parts.
+
+Is full_name_regex_generalized actually more general?
+In other words,
+does full_name_regex **imply** full_name_regex_generalized?
+
+(Useful for HW problem 11)
+
+How would we do this?
+
+Use z3.Implies! We've seen this pattern
+several times:
+
+    z3.Implies(precondition, postcondition)
+
+To show that R2 is more general than R1,
+we could show that
+
+    precondition: s matches R1
+    postcondition: s matches R2
+
+How we write that in Z3?
+
+    z3.Implies(z3.InRe(s, r1), z3.InRe(s, r2))
+"""
+
+from helper import prove, PROVED
+
+# This should pass
+# assert prove(z3.Implies(
+#     z3.InRe(name, full_name_regex),
+#     z3.InRe(name, full_name_regex_generalized),
+# )) == PROVED
+
+# Z3 hangs! :O
+
+# What do we do to fix this?
+# Tip: bound your variables.
+# Add a constraint that the string is at most, e.g.
+# 25 or 100 characters.
+
+assert prove(z3.Implies(
+    z3.And(
+      z3.InRe(name, full_name_regex),
+      z3.Length(name) <= 100
+    ),
+    z3.InRe(name, full_name_regex_generalized),
+)) == PROVED
+
+########## where we left off for day 15 ##########
 
 """
 CSV example from HW1
