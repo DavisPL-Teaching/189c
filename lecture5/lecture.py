@@ -472,7 +472,7 @@ from helper import prove, PROVED
 assert prove(z3.Implies(
     z3.And(
       z3.InRe(name, full_name_regex),
-      z3.Length(name) <= 100
+      z3.Length(name) <= 50
     ),
     z3.InRe(name, full_name_regex_generalized),
 )) == PROVED
@@ -480,7 +480,60 @@ assert prove(z3.Implies(
 ########## where we left off for day 15 ##########
 
 """
+=== Day 16 ===
+
+- HW2 has been graded
+
+- Reminder: Fill out the mid-quarter survey!
+  https://forms.gle/x4z5mtJCU51X2qBb6
+
+- HW3 due Monday, OH on Friday (x2) and Monday
+
+Plan:
+
+- Go over a couple of problems from HW2
+
+- Poll
+
+- Finishing up regexes
+
+- Advanced data types + Z3 techniques
+
+===== HW2 review =====
+
+- Part 1: rectangle collision and extra credit
+
+- Part 2: some approaches that work, some that don't
+
+- Style: code duplication
+
+===== Poll =====
+
+What regex operators would be useful to write a Z3 regex to match phone numbers?
+
+https://forms.gle/UQPebaxeH813LC4x7
+https://tinyurl.com/yytvmk5m
+"""
+
+"""
+===== Finishing up strings and regexes =====
+
+Other Regex operators we haven't seen in class (see regex_help.md):
+- z3.Plus
+- z3.IntToStr
+- z3.CharIsDigit
+
+There are others!
+- z3.Intersect
+- z3.Complement
+
+Example:
+Q: Use a regex to define a string that is NOT equal to the empty string.
+"""
+
+"""
 CSV example from HW1
+(Optional or skip for time)
 
 Recall: On HW1 part 2, you were asked to write a simple
 serialization and deserialization function for a User class.
@@ -508,7 +561,7 @@ Q: How could we use Z3 to validate our solution?
 """
 ===== Other data types =====
 
-(Very brief)
+(Briefly)
 Some of the other most useful types:
 - Z3 arrays
 - Z3 functions
@@ -554,6 +607,9 @@ You can even create your own datatypes:
 
 ===== Z3 techniques =====
 
+Recall that last time, we saw that Z3 had trouble with proving one regex
+constraint implies another!
+
 What do we do if Z3 is having trouble with a problem?
 
 1. Bound the variables
@@ -566,6 +622,16 @@ What do we do if Z3 is having trouble with a problem?
 
 Example: Sudoku
 """
+
+# Regex example from earlier
+
+# assert prove(z3.Implies(
+#     z3.And(
+#       z3.InRe(name, full_name_regex),
+#       z3.Length(name) <= 50
+#     ),
+#     z3.InRe(name, full_name_regex_generalized),
+# )) == PROVED
 
 # Array example
 # We want an array with 3 elements.
