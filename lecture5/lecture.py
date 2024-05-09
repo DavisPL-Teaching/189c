@@ -472,7 +472,7 @@ from helper import prove, PROVED
 assert prove(z3.Implies(
     z3.And(
       z3.InRe(name, full_name_regex),
-      z3.Length(name) <= 50
+      z3.Length(name) <= 20
     ),
     z3.InRe(name, full_name_regex_generalized),
 )) == PROVED
@@ -482,7 +482,7 @@ assert prove(z3.Implies(
 """
 === Day 16 ===
 
-- HW2 has been graded
+- HW2 has been graded!
 
 - Reminder: Fill out the mid-quarter survey!
   https://forms.gle/x4z5mtJCU51X2qBb6
@@ -495,9 +495,13 @@ Plan:
 
 - Poll
 
-- Finishing up regexes
+- Finishing up strings and regexes
 
 - Advanced data types + Z3 techniques
+
+(Advanced data types will not be on final)
+
+Questions:
 
 ===== HW2 review =====
 
@@ -509,27 +513,105 @@ Plan:
 
 ===== Poll =====
 
-What regex operators would be useful to write a Z3 regex to match phone numbers?
+What regex operators would be useful to write a Z3 regex to match US phone numbers?
+  555-555-5555
 
 https://forms.gle/UQPebaxeH813LC4x7
 https://tinyurl.com/yytvmk5m
 """
 
+phone_number = z3.String("phone_number")
+number = z3.Range("0","9")
+hyphen = z3.Re("-")
+
+length_constraint = z3.Length(phone_number) >= 12
+
+# Start to concatenate them!
+regex_constraint = z3.Concat(
+  number,
+  number,
+  number,
+  hyphen,
+  number,
+  number,
+  number,
+  hyphen,
+  number,
+  number,
+  number,
+  number,
+)
+
+z3.solve(z3.InRe(phone_number, regex_constraint))
+
+# Four numbers?
+z3.Concat(number, number, number, number)
+
+last_part = z3.String("last_part")
+z3.And(
+  z3.Length(last_part) == 4,
+  z3.InRe(last_part, z3.Star(number))
+)
+
+# Would also have to use string concatenation like...
+# phone_number = first_part + "-" + second_part + "-" + last_part
+
+# What is star? 0 or more repetitions.
+# "" or number or number, number or number, number, number or
+#      number, number, number, number, ....
+
 """
 ===== Finishing up strings and regexes =====
 
+Recap: we have seen:
+  Concat, Union, Star, Range, Re
+and the fundamental operation
+  InRe(s, R)
+to assert that a string matches a regex R.
+
 Other Regex operators we haven't seen in class (see regex_help.md):
 - z3.Plus
+  Like Star but one or more times, insetad of zero or more times.
 - z3.IntToStr
+  z3.IntToStr(9) to get the digit 9
+  z3.IntToStr(n) to get the string corresponding to the Z3 int n.
 - z3.CharIsDigit
+"""
 
+n = z3.Int("n")
+s = z3.String("n_to_string")
+spec = z3.And(
+  n >= 123,
+  s == z3.IntToStr(n),
+)
+solve(spec)
+
+# Q: why a special operation for IntToStr? I didn't learn about this
+# in my previous regex tutorial/class
+# A: It's a complex operation and it's totally not obvious how to do it
+# without built-in support.
+# Basically, serializing a number using its base 10 representation.
+
+"""
 There are others!
-- z3.Intersect
-- z3.Complement
+Union is like OR.
+What about AND and NOT? Those also have regex equivalents.
+
+- z3.Intersect(R1, R2): a regex
+  matching all strings that match both R1 and R2
+- z3.Complement(R)
+  matches all strings that DON'T match R.
 
 Example:
 Q: Use a regex to define a string that is NOT equal to the empty string.
 """
+
+not_empty = z3.String("s")
+regex_constraint = z3.Complement(z3.Re(""))
+
+solve(z3.InRe(not_empty, regex_constraint))
+
+# We could have also done this with z3.Length(s) >= 1.
 
 """
 CSV example from HW1
@@ -548,14 +630,24 @@ def from_csv(csv):
 It was possible to show using Hypothesis that some inputs can
 cause to_csv and from_csv to break.
 
-Q: How could we use Z3 to model this scenario?
-"""
+Bug: where the user sets their name to "Hi,My,Name,Has,Commas"
+  age: 50
+serialization returns:
+  Hi,My,Name,Has,Commas,50
+deserialization gets confused!
 
-"""
+Q: How could we use Z3 to model this scenario?
+
+Problems to validate with Z3:
+- the deserialization doesn't match the original user!
+- there are 2 different deserializations for the same string!
+
 Q: How could we use Z3 to validate our solution?
 
 - Restrict the name to not contain commas?
 - Change the deserialization function to handle commas?
+
+Z3 could be used to prove that both of these work.
 """
 
 """
@@ -572,23 +664,36 @@ Some of the other most useful types:
 I = z3.IntSort()
 
 # Function example
-# x = z3.Int('x')
-# y = z3.Int('y')
-# f = z3.Function('f', I, I)
-# constraints = [f(f(x)) == x, f(x) == y, x != y]
-# solve(z3.And(constraints))
+x = z3.Int('x')
+y = z3.Int('y')
+f = z3.Function('f', I, I)
+constraints = [f(f(x)) == x, f(x) == y, x != y]
+solve(z3.And(constraints))
+
+# Z3 is actually able to come up with a function! Not just integer
+# and string values.
+# We've already seen an example of this:
+# Some of you noticed this div0 function on hw2. That's an example
+# of Z3 coming up with a function to represent division by 0.
+# x / 0 => div0(x)
 
 # Array example
+# Arrays are basically functions that take integers and return
+# a value.
 
-# A = z3.Array('A', I, I)
-# solve(A[0] + A[1] + A[2] >=0)
+A = z3.Array('A', I, I)
+solve(A[0] + A[1] + A[2] >=0)
 
 # we can store things in the array
-# x = Int('x')
-# print(A[x])
-# print(Store(A, x, 10))
+x = z3.Int('x')
+print(A[x])
+print(z3.Store(A, x, 10))
 
 # Q: how is the array different from a list of integers?
+# [z3.Int("x1"), z3.Int("x2"), z3.Int("x3")]
+# We can only define a fixed finite number of Z3 variables this way.
+# Arrays (and functions) have infinitely many possible indices
+# and so can be used to model very general scenarios.
 
 """
 You can even create your own datatypes:
@@ -604,6 +709,16 @@ You can even create your own datatypes:
 # Tree, TreeList = CreateDatatypes(Tree, TreeList)
 
 """
+Recap:
+- Showed some of the remaining Z3 regex operators
+- Encourage to read regex_help.md as you're using Z3 regex, in
+  addition to the lecture material to remind yourself about
+  what each regex constructor does.
+- Advanced data types: Functions and Arrays.
+
+Next time: advanced techniques (if your code hangs or returns Unknown)
+and wrap up with advantages/disadvantages of Z3 overall
+to move on to the next part of the class.
 
 ===== Z3 techniques =====
 
