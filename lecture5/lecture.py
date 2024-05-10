@@ -720,22 +720,40 @@ Next time: advanced techniques (if your code hangs or returns Unknown)
 and wrap up with advantages/disadvantages of Z3 overall
 to move on to the next part of the class.
 
+=== Day 17 ===
+
+Last day of Z3!
+
+Announcements:
+
+- HW3 due Monday
+
+- It's not too late to fill out the mid-quarter survey for 1 point of extra credit!
+  https://forms.gle/x4z5mtJCU51X2qBb6
+
+  You need to fill out the second form (link provided if you finish the survey) to
+  get credit!
+  I will close the poll at EOD Monday.
+
+Plan:
+
+- Start with the poll
+
+- Finish Z3 techniques
+
+- First half of the course review
+
+===== Poll =====
+
+Oh no, Z3 is hanging! What are some things to try?
+
+https://forms.gle/stE1qUhWKY7yrZdn7
+https://tinyurl.com/mr2frdvd
+
 ===== Z3 techniques =====
 
-Recall that last time, we saw that Z3 had trouble with proving one regex
+Recall that on Monday, we saw that Z3 had trouble with proving one regex
 constraint implies another!
-
-What do we do if Z3 is having trouble with a problem?
-
-1. Bound the variables
-
-2. Add additional constraints
-
-3. Use a different encoding
-- use Bool, Int, Float instead of more complex types
-- avoid Array, Functions
-
-Example: Sudoku
 """
 
 # Regex example from earlier
@@ -748,16 +766,121 @@ Example: Sudoku
 #     z3.InRe(name, full_name_regex_generalized),
 # )) == PROVED
 
-# Array example
-# We want an array with 3 elements.
-# 1. Bad solution
-# X = Array('x', IntSort(), IntSort())
-# # Example using the array
-# print (X[0] + X[1] + X[2] >=0)
-
-# 2. More efficient solution
+# (You will need this on HW3 problem 11!)
 
 """
+What do we do if Z3 is having trouble with a problem?
+
+1. Bound the variables
+
+2. Add additional constraints
+- bounds on the variables are one form of this!
+- add lemmas!
+
+3. Use a different encoding
+- use Bool, Int, Real instead of more complex types
+- avoid Array, Functions
+
+4. Do some enumeration or search outside of Z3,
+  for example using itertools.
+
+Examples:
+
+===== The full power of Z3 =====
+
+I just want to briefly mention some of the powerful features available
+in Z3 that we haven't covered in this class, in case you want to use
+Z3 for your own projects.
+Some of the most powerful use cases are when combining general data types
+(functions and arrays) with quantifiers.
+
+What are quantifiers?
+
+- z3.ForAll
+- z3.Exists
+
+Let's see an example:
+
+Q: Prove that if the sum of an array is positive, then an array has
+   an element that is positive.
+"""
+
+# # Define the array variable
+# I = z3.IntSort()
+# array = z3.Array('array', I, I)
+
+# # First we have to express the sum of the array.
+# # How do we do that?
+# array_sum = z3.Function('array_sum', I, I)
+# constraints = []
+
+# # Base case
+# constraints.append(array_sum(-1) == 0)
+
+# # Inductive step -- using a ForAll constraint
+# # See: https://stackoverflow.com/a/31119239/2038713
+# i = z3.Int('i')
+# constraints.append(z3.ForAll(i, z3.Implies(
+#     z3.And(i >= 0),
+#     array_sum(i) == array_sum(i - 1) + array[i]
+# )))
+
+# # Now define our problem
+# N = z3.Int('N')
+# constraints.append(N > 0)
+# constraints.append(array[N] > 0)
+# precond = z3.And(constraints)
+# postcond = z3.Exists(i, array[i] > 0)
+
+# # Prove
+# prove(z3.Implies(precond, postcond))
+
+"""
+It works!
+
+If it didn't work?
+"""
+
+"""
+===== Z3 internals =====
+
+So how does Z3 work anyway?
+Z3 is known as an "SMT solver": Satisfiability Modulo Theories.
+
+- We know what "satisfiability" means
+
+A traditional Satisfiability solver (SAT solver) just deals with boolean
+variables. So the second part is:
+
+- The "theories" part is the fact that it can handle different data types:
+  each data type, like integers, Reals, and Strings, comes with its own
+  *theory* of how to process constraints on that data type.
+
+Example:
+Boolean satisfiability:
+
+(p or q or r) and (~p or ~q or ~s) and (s)
+"""
+
+"""
+How does this generalize to "theories"?
+
+Example:
+  x = z3.Int("x")
+  x < 2 and x > 2
+
+What does this look like as a Boolean formula?
+"""
+
+"""
+There are two algorithms,
+we will not go over them in detail:
+- DPLL: Davis-Putnam-Logemann-Loveland
+  https://en.wikipedia.org/wiki/DPLL_algorithm
+
+- CDCL: Conflict-Driven Clause Learning
+  https://en.wikipedia.org/wiki/Conflict-driven_clause_learning
+
 ===== Z3 Review =====
 
 Proofs and satisfiability
@@ -793,4 +916,12 @@ How?
 We saw that the main limitation of Hypothesis was?
 
 Main limitations of Z3?
+(There are two)
+
+And that's where we are going next!
+
+===== Mid quarter review =====
+
+This concludes the first half of the course!
+See the file `mid_quarter_review.md`.
 """
