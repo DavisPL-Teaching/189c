@@ -1,26 +1,32 @@
 # Lecture 6: Formal Verification
 
-(To follow along: `lecture6/README.md`
-[repo](https://github.com/DavisPL-Teaching/189C/))
+This lecture begins the second half of the course!
+We will start with some slides.
+Then, we will continue with this file.
 
-## Review
+To follow along:
+- `lecture6/README.md`
+- `lecture6/Slides.pdf`
+- [Repo](https://github.com/DavisPL-Teaching/189C/)
+
+(Switch to slides)
+
+## Summary from the slides
 
 We know about:
 - Writing code
 - Writing specifications (Hypothesis and Z3)
 - Proving specifications correct (Z3)
 
-## What is formal verification?
+## Poll link (if you missed it)
+
+https://forms.gle/MashpCJkwJc64teNA
+
+### What is formal verification?
 
 Combination of all of the above!
 
-## Why use formal verification?
-
-So, you've written your code. You've tested it, and it seems to be
-working the way you expect.
-It's a lot of work to write specifications!
-It's a lot of work to prove specifications!
-So when might you want to go the extra mile and do all this extra work?
+### Why use formal verification?
 
 Answer:
 Formal verification is especially useful in cases where:
@@ -31,7 +37,9 @@ Formal verification is especially useful in cases where:
 - **A bug is very expensive or catastrophic** for your
   company/organization
 
-## Examples
+### Examples
+
+(These were covered in the slides)
 
 - Pentium FDIV bug: affected Intel Pentium processors in 1994.
 
@@ -44,11 +52,10 @@ Formal verification is especially useful in cases where:
   + Under seemingly random conditions it would give 100+x the intended
     radiation dose to patients, manufacturers repeatedly denied it
     was
-  + 6 patients died
-  + 3 patients were severely injured
+  + 6 incidents of overdose, 3 deaths, 3 serious injuries
 
   + Not verified! Would verification have caught this bug?
-    (One can hope -- it would have been worth investing in.)
+    (One can hope)
 
 - Low-level cryptographic libraries
 
@@ -81,19 +88,14 @@ Formal verification is especially useful in cases where:
 
   + [Veridise](https://veridise.org/) blockchain verification tools
 
-## Verification in practice!
+## Why Dafny?
 
-## Verification tools
-
-In this course, we will be using Dafny, a verification-aware programming language from Microsoft Research (now developed, funded, and widely used internally at Amazon).
-
-Why Dafny?
 - It's modern (actively developed)
-- It's used in real industry applications
+- It's used in real industry applications (Microsoft, Amazon)
 - It can *cross-compile* to other languages: such as C#, Go, Python, Java, and JavaScript.
 - It has a good IDE (VSCode extension)
 
-Verification tools for popular programming languages:
+## Verification tools for popular programming languages:
 
 - [CMBC](https://www.cprover.org/cbmc/) for C and C++
   [CPROVER manual](https://www.cprover.org/cprover-manual/)
@@ -128,7 +130,7 @@ Verification tools for popular programming languages:
 
 - If you don't see your favorite programming language here, write your own! :)
 
-## A practical approach to verification
+## A different approach
 
 A different appraoch is to separate the verification into two steps:
 
@@ -144,6 +146,36 @@ For example:
 Main idea: only write the code once and verify it within the same system!
 Then integrate the transpiled code with your existing libraries
 and workflow.
+
+## Getting started: isntalling Dafny
+
+You will need to have Dafny installed.
+
+- If you are on Mac, see [Homework 0](https://github.com/DavisPL-Teaching/189c-hw0) for instructions:
+```
+brew install dotnet
+brew install dafny
+```
+Then, in VSCode, install the Dafny extension -- link here:
+https://marketplace.visualstudio.com/items?itemName=dafny-lang.ide-vscode
+
+As with the previous homeworks, you will submit your homework through GitHub Classroom. Please see [this Piazza post](https://piazza.com/class/lt90i40zrot3ue/post/48) for further instructions.
+
+## In a GitHub codespace?
+
+Just install the Dafny extension in VSCode!
+It should work, you may need to re-open / refresh the file
+or the browser tab.
+
+## Checking that installation worked
+
+If you are running locally:
+To double check, run `dafny --version`, you should get something like:
+```
+4.6.0
+```
+
+In Codespaces/vscode: Just make sure the green checkmarks are showing up.
 
 ## Resources
 
