@@ -2,10 +2,16 @@
     Simple Dafny program
 
     (To check your installation)
+
+    Feature:
+    No need to rewrite the function!
+
+    Both the program and the spec are in the
+    same file.
 */
 
 method Abs(x: int) returns (y: int)
-  requires x >= 0
+  requires true
   ensures y >= 0
 {
   if x >= 0 {

@@ -1,13 +1,14 @@
 # Lecture 6: Formal Verification
 
 This lecture begins the second half of the course!
-We will start with some slides.
-Then, we will continue with this file.
 
 To follow along:
 - `lecture6/README.md`
 - `lecture6/Slides.pdf`
 - [Repo](https://github.com/DavisPL-Teaching/189C/)
+
+We will start with some general motivational slides.
+Then, we will continue with this file.
 
 (Switch to slides)
 
@@ -21,6 +22,7 @@ We know about:
 ## Poll link (if you missed it)
 
 https://forms.gle/MashpCJkwJc64teNA
+https://tinyurl.com/49vatd6f
 
 ### What is formal verification?
 
