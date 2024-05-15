@@ -4,8 +4,8 @@
   Introduction to Dafny!
 
   Last time:
-  - We gave a high-level overview of formal verification and why
-    it matters (when you might want to use it for a project)
+  - We gave a high-level overview of formal verification and why it matters
+    (when you might want to use it for a project)
   - We saw that many formal verification tools exist -- for different languages
     and purposes. In this class, we will use the Dafny verification language.
   - Key point: Dafny is both a programming language and a verification tool.
@@ -164,12 +164,12 @@ method MultipleReturns(x: int, y: int) returns (more: int, less: int)
   What kind of pre and postconditions would we like to have here?
 */
 
-method Max(a: int, b: int) returns (c: int)
-  // What postcondition should go here, so that the function operates as expected?
-{
-  // fill in the code here
-  assume false; // remove this line when implemented
-}
+// method Max(a: int, b: int) returns (c: int)
+//   // What postcondition should go here, so that the function operates as expected?
+// {
+//   // fill in the code here
+//   assume false; // remove this line when implemented
+// }
 
 // Let's test to see if our method is working!
 
@@ -346,8 +346,8 @@ method StrongestPostconditionEx2(x: int) returns (y: int)
 
 method Main()
 {
-  var x: int := Abs(5);
-  var y: int := Abs(-5);
+  var x: int := -5;
+  var y: int := Abs(x);
   print "x = ", x, ", y = ", y, "\n";
 }
 
@@ -365,10 +365,11 @@ method Main()
 
   3. `dafny run lecture.dfy` -- to run the code!
 
-  If we have warnings in the code, we have to allow them with
-  --allow-warnings.
-  (In fact, the warnings are because we have some unimplemented stuff;
-  really we should remove all warnings before running the code!)
+  If we have warnings in the code, Dafny will refuse to compile the code;
+  however, you can turn this off by adding the flag
+    --allow-warnings
+  You will get warnings if you use `assume` for example! (Why?)
+  In general, it's best to remove all warnings before running the code.
 */
 
 // Here's another example from the Dafny reference:
