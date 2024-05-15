@@ -1,5 +1,7 @@
 # Lecture 6: Formal Verification
 
+(Day 18 and the following days)
+
 This lecture begins the second half of the course!
 
 To follow along:

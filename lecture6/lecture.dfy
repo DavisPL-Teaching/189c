@@ -1,18 +1,44 @@
 /*
-    Introduction to Dafny!
+  ===== Day 19 =====
 
-    This is modified version of the official Dafny tutorial:
-    https://dafny-lang.github.io/dafny/OnlineTutorial/guide
+  Introduction to Dafny!
 
-    With thanks to Konstantinos Kallas at UPenn for an earlier
-    version of this file.
-    https://github.com/angelhof/penn-cis673-hw-dafny
+  Last time, we gave a high-level overview of formal verification and why
+  it matters (when you might want to use it for a project).
+  Many formal verificaiton tools exist, for different languages and purposes.
+  In this class, we will focus on the Dafny verification language.
+
+  Plan for today: jump into Dafny syntax and examples!
+
+  Announcements:
+
+  - None!
+
+  Questions?
+
+  ===== Resources =====
+
+  This file is a modified version of the official Dafny tutorial:
+  https://dafny-lang.github.io/dafny/OnlineTutorial/guide
+
+  Also, thanks to Konstantinos Kallas for an earlier version of the file!
+  https://github.com/angelhof/penn-cis673-hw-dafny
+
+  There are many additional resources about Dafny that are useful online.
+  I often reference the reference manual:
+  https://dafny.org/latest/DafnyRef/DafnyRef
+
+  Rustan Leino, the creator of Dafny, also wrote an excellent textbook, Program Proofs
+  (if you can find a copy of it).
+
+  Finally, there are some excellent PDF tutorials as well, such as
+  (the slightly out of date):
+  https://leino.science/papers/krml221.pdf
 */
 
-// Here is a simple Dafny program:
+// Here is the simple Dafny program that we introduced last time:
 
 method Abs(x: int) returns (y: int)
-  requires x >= 0
   ensures y >= 0
 {
   if x >= 0 {
@@ -22,16 +48,84 @@ method Abs(x: int) returns (y: int)
   }
 }
 
-// Methods are functions in standard languages,
-// we have standard programming constructs (ifs, fors, etc).
-//
-// In addition to those, we have postconditions (`ensures`) that
-// allow specifying what needs to hold after the method finishes executing.
-//
-// Return values are named so that we can refer to them in postconditions.
+/*
+  ===== Syntax =====
 
-// Let's see if our Dafny installation is working by modifying the `ensures` to something that does not hold,
-//   e.g., `1 <= y`.
+  Let's go over the syntax of the code above:
+
+  - "Methods" are functions in standard languages.
+
+    A method is something that you can execute.
+
+    (Note: Dafny also has something called a function, which is a "pure function",
+    we will see an example of that later.)
+
+  - We have standard programming constructs (ifs, while loops, etc).
+
+  - The input and output are typed!
+    Values have specific types in Dafny.
+
+  - We use `returns` above to indicate that the method returns a value;
+    we can also return directly by setting the value y:
+*/
+
+method Abs2(x: int) returns (y: int)
+  ensures y >= 0
+{
+  if x >= 0 {
+    y := x;
+  } else {
+    y := -x;
+  }
+}
+
+/*
+  ===== Preconditions and postconditions =====
+
+  We use `requires` to indicate a precondition, and
+  `ensures` to indicate a postcondition.
+
+  Last time, we saw that if we modify the code to do something wrong,
+  Dafny will catch the error:
+  - modifying ensures to a postcondition that is wrong?
+  - modifying the return value to return -1 (e.g.)?
+
+  Some design questions:
+
+    Q: Why are return values (like y) named?
+
+    Q: Why are values (like x and y) typed?
+*/
+
+/*
+  ===== Assume and assert =====
+
+  Remember assume and assert?
+
+  - We can use assumptions to tell Dafny we only care about executions that
+    satisfy some condition.
+
+  - We can also use assertions to tell Dafny to prove
+    that some condition holds at a certain point in the code.
+
+  As we learned with Hypothesis, preconditions and postconditions are
+  just special cases of assumptions and assertions!
+
+  What assumptions and assertions might we want to add to Abs?
+*/
+
+method Abs3(x: int) returns (y: int)
+  ensures y >= 0
+{
+  if x >= 0 {
+    y := x;
+    // TODO: what assertion could we check here?
+  } else {
+    y := -x;
+    // TODO: what assertion could we check here?
+    // TODO: what assumption + assertion could we add here?
+  }
+}
 
 // Methods can also have multiple return values, and multiple postconditions.
 method MultipleReturns(x: int, y: int) returns (more: int, less: int)
@@ -41,57 +135,100 @@ method MultipleReturns(x: int, y: int) returns (more: int, less: int)
 {
   more := x + y;
   less := x - y;
-  // comments: are not strictly necessary, duh!
+  // comments: are not strictly necessary, of course!
 }
 
-// Let's now do a mini-exercise. What kind of pre and postconditions would we like to have in a `Max` function?
-//   There are many ways to write them.
+/*
+  Mini-exercise:
+
+  Implement a Max function that returns the maximum of two integers,
+  and write pre- and post-conditions for it.
+
+  What kind of pre and postconditions would we like to have here?
+*/
 
 method Max(a: int, b: int) returns (c: int)
   // What postcondition should go here, so that the function operates as expected?
-  ensures c >= a
-  ensures c >= b
-  ensures c == a || c == b
 {
-  if a > b {
-    c := a;
-  }
-  else {
-    return b;
-  }
   // fill in the code here
+  assume false; // remove this line when implemented
 }
 
-// Let's now try to use `Abs`, a previously defined method,
-//   in another method, and assert something about it.
+// Let's test to see if our method is working!
 
-method Testing()
+method TestMax()
 {
-  var  x : int := Abs(5);
+  // TODO
+}
+
+/*
+  ===== Interfaces and abstraction =====
+
+  The idea of preconditions/postconditions is a useful way to think about
+  code in any programming language! But fundamentally, it is a form of
+  abstraction:
+
+  - Precondition: what does the method need to do its job?
+  - Postcondition: what does the method guarantee to do when it's done?
+
+  Fun fact: the idea of preconditions/postconditions is also known as
+  "Design by Contract". The idea is that you can think of a method as
+  a contract between the caller who wants something from the method, and the
+  method, which provides that thing.
+
+  There's a bit of a problem with Abs, though.
+  To see what it is,
+  in Dafny, let's see what happens when we try to use a test with Abs!
+*/
+
+method TestAbs()
+{
+  // What should we assert about Abs?
+
+  var x: int := Abs(5);
   // var x := 5;
   assert x >= 0;
-  //   assert x == 5;
+  // Uncomment this line, what happens?
+  // assert x == 5;
 }
 
-// What is a reasonable thing to assert here?
+/*
+  Why didn't this work?
 
-// Note that Dafny is typed but can often infer variable types so we don't need to be explicit about them
+  This is because Dafny abstracts methods away by their pre and postconditions
+  to simplify verification. This means that it doesn't look inside Abs' definition
+  to verify the assertion, but rather uses the knowledge that it has of Abs' model.
 
-// Dafny cannot prove 1 <= v even though it is true.
-//
-// This is because Dafny abstracts functions away by their pre and postconditions
-//   to simplify verification. This means that it doesn't look inside Abs' definition
-//   to verify the assertion, but rather uses the knowledge that it has of Abs' model.
-//
-// This is a pretty standard scenario when trying to verify software verification,
-//   where we need to strengthen the model by making the postcondition stronger.
+  What's left of the method i sonly the pre and postconditions!
 
-// What postconditions should we add to Abs to be able to prove that `1 <= Abs(5)`?
+  This is a common scenario in formal verification: it often happens
+  that the verifier doesn't have enough information to prove a property.
+  And, we need to strengthen the model by making the postcondition stronger.
 
-// However, our spec now describes exactly the body of the method, which is a bit redundant.
-//
-// Dafny has a solution for this, and allows us to define mathematical functions
-//   that are not opaque when Dafny verifies.
+  What postconditions should we add to Abs to fix it?
+*/
+
+method AbsFixed(x: int) returns (y: int)
+  // TODO: fix postcondition
+{
+  if x >= 0 {
+    y := x;
+  } else {
+    y := -x;
+  }
+}
+
+method TestAbsFixed()
+{
+  // TODO
+}
+
+/*
+  However, our spec now describes exactly the body of the method, which is a bit redundant.
+
+  Dafny has a solution for this, and allows us to define mathematical functions
+  that are not opaque when Dafny verifies.
+*/
 
 // During demo: Insert a function for abs
 function abs(x: int): int
@@ -99,20 +236,144 @@ function abs(x: int): int
   if x >= 0 then x else -x
 }
 
-// Let's now try to write the same test to assert something *stronk* about the return value of `abs`.
-
-method TestAbs() returns (y: int)
+method TestAbsEasier()
 {
-  var x := abs(5);
-  assert x == 5;
-  return abs(5);
+  // TODO
 }
 
+/*
+  We've already learned the basics of verifying simple Dafny code!
+  Methods, functions, preconditions, postconditions, and assume/assert (if desired).
 
+  Before we continue, I have a couple of digressions to make before
+  we continue with more complex examples.
+*/
 
-// Note that functions support recursion and can appear in expressions.
-//
-// Let's define a function that computes a given fibonaci number
+/*
+  ===== Digression 1: strongest postconditions and weakest preconditions =====
+
+  We saw above that in order to prove properties about the method Abs,
+  we needed to strengthen the postcondition to be stronger
+  (or use a function instead of a method.)
+  Is the new postcondition really as strong as it can be?
+
+  On HW1, part 1B, you were asked to write specifications that are the
+  *strongest possible* description of what the function does.
+  What does that mean?
+
+  Let's define:
+
+  - The *strongest postcondition* of a statement is the strongest condition
+    that is guaranteed to hold after executing the statement, given that the
+    precondition holds.
+
+  - The *weakest precondition* of a statement is the weakest condition
+    that guarantees that the postcondition will hold after executing the statement.
+
+  Here are some examples based on the Abs function;
+  we will see more about this later!
+*/
+
+method StrongestPostconditionEx(x: int) returns (y: int)
+  requires x >= 5
+  // TODO: what ensures statement should go here?
+{
+  y := Abs(x + x);
+}
+
+method WeakestPreconditionEx(x: int) returns (y: int)
+  // TODO: what requires statement should go here?
+  requires false // Replace this line
+  ensures y >= 10
+{
+  y := Abs(x + x);
+}
+
+/*
+  The process of fixing Abs is basically about finding the strongest postcondition
+  for the function.
+  Strongest postconditions and weakest preconditions are actually key to how
+  Dafny works internally -- it is calculating them implicitly all the time!
+
+  We will see more about these soon!
+*/
+
+/*
+  ===== Digression 2: Running the code? =====
+
+  You may have noticed something odd: we haven't run any code yet!
+  In fact, even in our Tests, all we did was ask Dafny to verify that the test
+  would pass.
+
+  But that doesn't mean Dafny can't run the code!
+
+  Dafny is a *verification-aware* programming language.
+  That means, it can verify your code, but it can also compile/run it!
+
+  To run the code, we just need a Main() function:
+*/
+
+method Main()
+{
+  var x: int := Abs(5);
+  var y: int := Abs(-5);
+  print "x = ", x, ", y = ", y, "\n";
+}
+
+/*
+  To run from the command line, we can use the `dafny` command.
+  Here are some of the options:
+
+  1. `dafny verify lecture.dfy` -- to run the verifier only.
+      This is equivalent to what we've been doing so far (checking the green
+      bar on the left in VSCode).
+
+  2. `dafny build lecture.dfy` -- to compile to a library, dafny.dll
+     (This is also run by default with `dafny lecture.py`)
+     We won't use this option much in this class.
+
+  3. `dafny run lecture.dfy` -- to run the code!
+
+  If we have warnings in the code, we have to allow them with
+  --allow-warnings.
+  (In fact, the warnings are because we have some unimplemented stuff;
+  really we should remove all warnings before running the code!)
+*/
+
+// Here's another example from the Dafny reference:
+// datatype Tree = Empty | Node(left: Tree, data: int, right: Tree)
+// method Main()
+// {
+//   var x : Tree := Node(Node(Empty, 1, Empty), 2, Empty);
+//   print "x=", x, "\n";
+// }
+
+/*
+  There's also a fourth option to run Dafny!
+  Perhaps you remember from last time, that one of the advantages of Dafny
+  is that it can produce output in other languages, so it can integrate
+  with your existing workflow.
+  Try this:
+
+  4. `dafny build --target:py lecture.dfy`
+
+  This produces output in: lecture-py/module_.py.
+  (You can ignore the other files.)
+*/
+
+/*
+  ===== Recursion and loops =====
+
+  So far, the examples we've seen are quite simple; we could have done any
+  of this in Z3 pretty easily!
+
+  Where program verifiers generally shine is in verifying more complex code,
+  where there are loops and recursion.
+
+  Functions support recursion and can appear in expressions!
+
+  Let's define a function that computes a given fibonaci number:
+*/
 function fib(n: nat): nat
   decreases n
 {
