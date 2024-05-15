@@ -477,7 +477,14 @@ method ComputeFib(n: nat) returns (b: nat)
   Yet, Dafny is able to determine not just that all the programs halt,
   but that they are correct (satisfy the spec) on all inputs!
 
-  And people have built entire software projects: like cryptographic libraries,
+  Let's take a minute to appreciate what that means: using just some math
+  equations and formulas, and a fancy verification tool (which uses Z3),
+  we know (without running it) that the program
+  will give the correct answer on **all possible inputs.** Not just some particular
+  inputs that we tried. It's a way to completely fool-proof all future uses
+  of the code.
+
+  People have even built entire software projects: like cryptographic libraries,
   operating system kernels, and (famously) an optimizing C compiler (CompCert)
   entirely in formally verified programming languages.
     https://sel4.systems/About/
