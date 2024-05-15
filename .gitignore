@@ -4,3 +4,4 @@ __pycache__
 *.dll
 lecture0/dafny-demo-py
 .DS_Store
+*.runtimeconfig.json
