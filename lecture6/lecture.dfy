@@ -56,7 +56,7 @@
 // Here is the simple Dafny program that we introduced last time:
 
 method Abs(x: int) returns (y: int)
-  ensures y >= 0
+  ensures y >= 0 // <-- specification! (postcondition)
 {
   if x >= 0 {
     return x;
@@ -84,8 +84,12 @@ method Abs(x: int) returns (y: int)
 
   - We use `returns` above to indicate that the method returns a value;
     we can also return directly by setting the value y:
+
+  - Dafny uses `:=` for assignment, and `==` for equality of values
+    There is no single `=`.
 */
 
+// Equivalent example
 method Abs2(x: int) returns (y: int)
   ensures y >= 0
 {
@@ -106,12 +110,23 @@ method Abs2(x: int) returns (y: int)
   Dafny will catch the error:
   - modifying ensures to a postcondition that is wrong?
   - modifying the return value to return -1 (e.g.)?
+  - modifying requires to a precondition that is wrong?
+
+  Summary: Dafny checks whether the spec holds:
+  - for *all* inputs satisfying the precondition, after the program
+    is run, the output satisfies the postcondition.
 
   Some design questions:
 
     Q: Why are return values (like y) named?
 
+    - So that we can refer to them in the postcondition
+
     Q: Why are values (like x and y) typed?
+
+    - Dafny needs to know the type of a value to be able to
+      verify anything about it (and to convert it to a corresponding
+      Z3 type).
 */
 
 /*
@@ -119,8 +134,8 @@ method Abs2(x: int) returns (y: int)
 
   Remember assume and assert?
 
-  - We can use assumptions to tell Dafny we only care about executions that
-    satisfy some condition.
+  - We can use assumptions to tell Dafny we only care about
+    executions that satisfy some condition.
 
   - We can also use assertions to tell Dafny to prove
     that some condition holds at a certain point in the code.
@@ -136,13 +151,29 @@ method Abs3(x: int) returns (y: int)
 {
   if x >= 0 {
     y := x;
-    // TODO: what assertion could we check here?
+    // What assertion could we check here?
+    assert y == x;
   } else {
     y := -x;
-    // TODO: what assertion could we check here?
-    // TODO: what assumption + assertion could we add here?
+    // What assertion could we check here?
+    assert y == -x;
+    // What assumption + assertion could we add here?
+    // assume x == -3;
+    // assert y == 3;
+    // What else?
+    // assume x == -2;
+    // assert false; // unreachable
+    // ^ Assume is dangerous!
   }
 }
+
+// Once the code gets compiled, assume and assert statements go away
+// in the final binary. That means that assume() statements are like
+// cheating, and they are dangerous.
+
+// Q: are integers bounded or unbounded?
+// A: They are like in Python, they are unbounded.
+//    Dafny does have a bounded int type as well.
 
 // Methods can also have multiple return values, and multiple postconditions.
 method MultipleReturns(x: int, y: int) returns (more: int, less: int)
@@ -164,18 +195,32 @@ method MultipleReturns(x: int, y: int) returns (more: int, less: int)
   What kind of pre and postconditions would we like to have here?
 */
 
-// method Max(a: int, b: int) returns (c: int)
-//   // What postcondition should go here, so that the function operates as expected?
-// {
-//   // fill in the code here
-//   assume false; // remove this line when implemented
-// }
+method Max(a: int, b: int) returns (c: int)
+  // What postcondition should go here, so that the function operates as expected?
+  ensures c == a || c == b
+  ensures c >= a
+  ensures c >= b
+{
+  // fill in the code here
+  // assume false; // remove this line when implemented
+  if a <= b {
+    c := b;
+  } else {
+    c := a;
+  }
+}
 
 // Let's test to see if our method is working!
 
 method TestMax()
 {
-  // TODO
+  var a: int := 5; // The 'int' annotation is optional (it is inferred)
+  var b: int := 50;
+  var c := Max(a, b);
+  assert c == 50;
+
+  // Note that we've "tested" the code without actually running it!
+  // We will circle back to that soon as well.
 }
 
 /*
@@ -202,10 +247,10 @@ method TestAbs()
 {
   // What should we assert about Abs?
 
-  var x: int := Abs(5);
-  // var x := 5;
-  assert x >= 0;
-  // Uncomment this line, what happens?
+  // var x: int := Abs(5);
+  // assert x >= 0;
+  // Uncomment these lines, what happens?
+  // var x := Abs(5);
   // assert x == 5;
 }
 
@@ -216,7 +261,7 @@ method TestAbs()
   to simplify verification. This means that it doesn't look inside Abs' definition
   to verify the assertion, but rather uses the knowledge that it has of Abs' model.
 
-  What's left of the method i sonly the pre and postconditions!
+  What's left of the method is only the pre and postconditions!
 
   This is a common scenario in formal verification: it often happens
   that the verifier doesn't have enough information to prove a property.
@@ -226,7 +271,11 @@ method TestAbs()
 */
 
 method AbsFixed(x: int) returns (y: int)
-  // TODO: fix postcondition
+  // TODO: Fixed postcondition:
+  ensures y >= 0
+  ensures y == x || y == -x
+  // The interface is complete! The contract fully specifies
+  // what the output should be on every input.
 {
   if x >= 0 {
     y := x;
@@ -237,11 +286,22 @@ method AbsFixed(x: int) returns (y: int)
 
 method TestAbsFixed()
 {
-  // TODO
+  var x := AbsFixed(5);
+  assert x == 5;
 }
 
 /*
   However, our spec now describes exactly the body of the method, which is a bit redundant.
+
+  That's what functions are for! We will see this next time.
+
+  Recap:
+  - We saw how to define basic methods (procedures) in Dafny
+  - We saw the basic syntax for preconditions, postconditions,
+    assume/assert, and how to write tests.
+  - We will continue with more Dafny features next time!
+
+  ***** Where we left off for Day 19 *****
 
   Dafny has a solution for this, and allows us to define mathematical functions
   that are not opaque when Dafny verifies.
