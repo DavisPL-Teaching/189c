@@ -21,14 +21,14 @@ We know about:
 - Writing specifications (Hypothesis and Z3)
 - Proving specifications correct (Z3)
 
+### What is formal verification?
+
+Combination of all of the above!
+
 ## Poll link (if you missed it)
 
 https://forms.gle/MashpCJkwJc64teNA
 https://tinyurl.com/49vatd6f
-
-### What is formal verification?
-
-Combination of all of the above!
 
 ### Why use formal verification?
 
@@ -92,14 +92,18 @@ Formal verification is especially useful in cases where:
 
   + [Veridise](https://veridise.org/) blockchain verification tools
 
-## Why Dafny?
+## Approaches to verification
+
+Most of this part was not covered in the slides, but may be of general interest to some of you!
+
+### Why Dafny?
 
 - It's modern (actively developed)
 - It's used in real industry applications (Microsoft, Amazon)
 - It can *cross-compile* to other languages: such as C#, Go, Python, Java, and JavaScript.
 - It has a good IDE (VSCode extension)
 
-## Verification tools for popular programming languages:
+### Verification tools for popular programming languages
 
 - [CMBC](https://www.cprover.org/cbmc/) for C and C++
   [CPROVER manual](https://www.cprover.org/cprover-manual/)
@@ -134,7 +138,7 @@ Formal verification is especially useful in cases where:
 
 - If you don't see your favorite programming language here, write your own! :)
 
-## A different approach
+### A different approach (that Dafny uses)
 
 A different appraoch is to separate the verification into two steps:
 
@@ -151,7 +155,7 @@ Main idea: only write the code once and verify it within the same system!
 Then integrate the transpiled code with your existing libraries
 and workflow.
 
-## Getting started: isntalling Dafny
+## Getting started: installing Dafny
 
 You will need to have Dafny installed.
 
@@ -165,13 +169,13 @@ https://marketplace.visualstudio.com/items?itemName=dafny-lang.ide-vscode
 
 As with the previous homeworks, you will submit your homework through GitHub Classroom. Please see [this Piazza post](https://piazza.com/class/lt90i40zrot3ue/post/48) for further instructions.
 
-## In a GitHub codespace?
+### In a GitHub codespace?
 
 Just install the Dafny extension in VSCode!
 It should work, you may need to re-open / refresh the file
 or the browser tab.
 
-## Checking that installation worked
+### Checking that installation worked
 
 If you are running locally:
 To double check, run `dafny --version`, you should get something like:

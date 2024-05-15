@@ -3,35 +3,52 @@
 
   Introduction to Dafny!
 
-  Last time, we gave a high-level overview of formal verification and why
-  it matters (when you might want to use it for a project).
-  Many formal verificaiton tools exist, for different languages and purposes.
-  In this class, we will focus on the Dafny verification language.
+  Last time:
+  - We gave a high-level overview of formal verification and why
+    it matters (when you might want to use it for a project)
+  - We saw that many formal verification tools exist -- for different languages
+    and purposes. In this class, we will use the Dafny verification language.
+  - Key point: Dafny is both a programming language and a verification tool.
 
   Plan for today: jump into Dafny syntax and examples!
 
-  Announcements:
+  Announcements: None!
 
-  - None!
+  Misc:
+
+  - Results of Hypothesis vs Z3 vote:
+    Hypothesis: 12
+    Z3: 27
 
   Questions?
+
+  ===== Poll =====
+
+  1. What is formal verification?
+  2. Which of the following are the best reasons to use formal verification tools to prove that your code is correct?
+
+  https://forms.gle/12rQLQfZZHUnmDBk6
+  https://tinyurl.com/3srvuyt6
 
   ===== Resources =====
 
   This file is a modified version of the official Dafny tutorial:
   https://dafny-lang.github.io/dafny/OnlineTutorial/guide
 
-  Also, thanks to Konstantinos Kallas for an earlier version of the file!
+  Thanks to Konstantinos Kallas for an earlier version of the file!
+  That version (and a homework) can be found here:
   https://github.com/angelhof/penn-cis673-hw-dafny
 
   There are many additional resources about Dafny that are useful online.
   I often reference the reference manual:
   https://dafny.org/latest/DafnyRef/DafnyRef
 
-  Rustan Leino, the creator of Dafny, also wrote an excellent textbook, Program Proofs
+  Rustan Leino, the creator of Dafny, also wrote an excellent textbook,
+    *Program Proofs*
+    https://mitpress.mit.edu/9780262546232/program-proofs/
   (if you can find a copy of it).
 
-  Finally, there are some excellent PDF tutorials as well, such as
+  Finally, there are some good PDF tutorials as well, such as
   (the slightly out of date):
   https://leino.science/papers/krml221.pdf
 */
@@ -289,11 +306,25 @@ method WeakestPreconditionEx(x: int) returns (y: int)
   y := Abs(x + x);
 }
 
+// What about this? (A harder one)
+method StrongestPostconditionEx2(x: int) returns (y: int)
+  requires x >= 5
+  // TODO: what ensures statement should go here?
+  // Let's figure it out!
+{
+  if x <= 10 {
+    y := Abs(x +  x + x);
+  } else {
+    y := Abs(x + x);
+  }
+}
+
 /*
-  The process of fixing Abs is basically about finding the strongest postcondition
-  for the function.
-  Strongest postconditions and weakest preconditions are actually key to how
+  Strongest postconditions and weakest preconditions are a key part of how
   Dafny works internally -- it is calculating them implicitly all the time!
+
+  The process of fixing Abs (that we did above) is basically about finding the
+  strongest postcondition for the function.
 
   We will see more about these soon!
 */
@@ -367,7 +398,7 @@ method Main()
   So far, the examples we've seen are quite simple; we could have done any
   of this in Z3 pretty easily!
 
-  Where program verifiers generally shine is in verifying more complex code,
+  Where program verifiers like Dafny truly shine is in verifying more complex code,
   where there are loops and recursion.
 
   Functions support recursion and can appear in expressions!
@@ -375,28 +406,31 @@ method Main()
   Let's define a function that computes a given fibonaci number:
 */
 function fib(n: nat): nat
-  decreases n
 {
   if n == 0 then 0
   else if n == 1 then 1
   else fib(n-1) + fib(n-2)
 }
 
-// This function would be really slow due to recomputations if implemented as is,
-//   so let's implement a fast method, and prove that it is equivalent.
-//
-// We first need a loop, and then we will see one of the main very important notions of verification, i.e., loop invariants.
-//
-// Refresher on loop invariants:
-//
-// Loop invariants hold in the beginning and end of the loop, and therefore are used
-//   to model the behavior of a loop. Finding invariants is the hardest part, since we need to "guess" an invariant that both
-//   (i) is satisfied at the beginning of the loop
-//   (ii) is preserved by the loop
-//   (iii) is strong enough to prove what we want after the loop
+/*
+  This function would be really slow due to recomputations if implemented as is,
+  so let's implement a fast method, and prove that it is equivalent.
+
+  We first need a loop, and then we will see one of the main very important notions of verification: loop invariants.
+
+  ===== Loop invariants =====
+
+  What is a loop invariant?
+
+  Loop invariants hold in the beginning and end of the loop, and therefore are used
+    to model the behavior of a loop. Finding invariants is the hardest part, since we need to "guess" an invariant that both
+    (i) is satisfied at the beginning of the loop
+    (ii) is preserved by the loop
+    (iii) is strong enough to prove what we want after the loop
+*/
 
 method ComputeFib(n: nat) returns (b: nat)
-  ensures b == fib(n)
+  // ensures b == fib(n)
 {
   if (n <= 0)
   {
@@ -409,10 +443,7 @@ method ComputeFib(n: nat) returns (b: nat)
 
     var i := 1;
     while i < n
-      decreases n - i
-      invariant curr == fib(i)
-      invariant prev == fib(i-1)
-      invariant i <= n
+      // invariant ...
     {
       curr, prev := curr + prev, curr;
       i := i + 1;
@@ -421,11 +452,50 @@ method ComputeFib(n: nat) returns (b: nat)
   }
 }
 
-//
-// Arrays
-//
+/*
+  ===== Termination =====
 
-// Dafny supports imperative arrays. The only difference with C is that the array has its length in the data structure.
+  There's another thing that's implicitly going on with recursion and while loops:
+  program termination.
+
+  Exercise: add a decreases clause to both functions.
+
+  What does the decreases clause ensure?
+*/
+
+/*
+  ===== Taking a step back =====
+
+  Let's take a step back and consider the remarkability of what we've done so far.
+  Some of you may have heard that proving general properties about programs
+  is supposed to be impossible! (It's OK if you haven't heard this.) For example,
+  we know that the halting problem is impossible to decide:
+
+    HALT(x) = "Does program x halt?"
+
+  There's no program which decides the above!
+  Yet, Dafny is able to determine not just that all the programs halt,
+  but that they are correct (satisfy the spec) on all inputs!
+
+  And people have built entire software projects: like cryptographic libraries,
+  operating system kernels, and (famously) an optimizing C compiler (CompCert)
+  entirely in formally verified programming languages.
+    https://sel4.systems/About/
+    https://compcert.org/
+
+  This should be a bit mind-blowing! What's going on here?
+
+  Any ideas? :)
+
+  Answer:
+*/
+
+
+/*
+  ===== Arrays =====
+
+  Dafny supports imperative arrays. The only difference with C is that the array has its length in the data structure.
+*/
 
 method Find(a: array<int>, key: int) returns (index: int)
   ensures 0 <= index < a.Length ==> (index < a.Length && a[index] == key)
