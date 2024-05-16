@@ -247,8 +247,8 @@ method TestAbs()
 {
   // What should we assert about Abs?
 
-  // var x: int := Abs(5);
-  // assert x >= 0;
+  var x: int := Abs(5);
+  assert x >= 0;
   // Uncomment these lines, what happens?
   // var x := Abs(5);
   // assert x == 5;
@@ -303,8 +303,32 @@ method TestAbsFixed()
 
   ***** Where we left off for Day 19 *****
 
+  ===== Day 20 =====
+
+  Announcements:
+
+  - HW4 is released!
+
+  Plan:
+
+  - Continue with Dafny concepts:
+    + functions and expressions
+    + running the code
+    + strongest postconditions and weakest preconditions
+    + recursion and loops
+
+  Questions?
+
+  ===== Poll =====
+
+  TODO
+*/
+
+/*
+  Functions
+
   Dafny has a solution for this, and allows us to define mathematical functions
-  that are not opaque when Dafny verifies.
+  that are not opaque when the Dafny verifier runs.
 */
 
 // During demo: Insert a function for abs
@@ -319,78 +343,46 @@ method TestAbsEasier()
 }
 
 /*
+  Functions expose another important concept in Dafny:
+  only functions can be used in expressions!
+  What happens when we try to call AbsFixed(5) in an expression?
+  What happens when we try to call abs(5) in an expression?
+*/
+
+method TestAbsExpression()
+{
+  var x := AbsFixed(5); // This is fine
+  // assert AbsFixed(5) == 5; // Error
+  var y := abs(5); // This is fine
+  assert abs(5) == 5; // This is fine
+}
+
+/*
+  What's the reason for this?
+
+  Functions represent mathematical functions: every time the function is called
+  on the same input, it will return the same output.
+
+  (If you've heard of the idea of "functional programming" or "pure functions",
+  that's what functions in Dafny are like. There are whole languages dedicated to
+  this, like Haskell.)
+
+  Methods represent procedures: they can have side effects, and can return different
+  results on the same input (in theory).
+
+  That means that it's not a valid thing to use in an assertion.
+  Why?
+
+  Recap:
   We've already learned the basics of verifying simple Dafny code!
   Methods, functions, preconditions, postconditions, and assume/assert (if desired).
 
-  Before we continue, I have a couple of digressions to make before
-  we continue with more complex examples.
+  Before we continue with more complex examples,
+  I have a couple of digressions to make.
 */
 
 /*
-  ===== Digression 1: strongest postconditions and weakest preconditions =====
-
-  We saw above that in order to prove properties about the method Abs,
-  we needed to strengthen the postcondition to be stronger
-  (or use a function instead of a method.)
-  Is the new postcondition really as strong as it can be?
-
-  On HW1, part 1B, you were asked to write specifications that are the
-  *strongest possible* description of what the function does.
-  What does that mean?
-
-  Let's define:
-
-  - The *strongest postcondition* of a statement is the strongest condition
-    that is guaranteed to hold after executing the statement, given that the
-    precondition holds.
-
-  - The *weakest precondition* of a statement is the weakest condition
-    that guarantees that the postcondition will hold after executing the statement.
-
-  Here are some examples based on the Abs function;
-  we will see more about this later!
-*/
-
-method StrongestPostconditionEx(x: int) returns (y: int)
-  requires x >= 5
-  // TODO: what ensures statement should go here?
-{
-  y := Abs(x + x);
-}
-
-method WeakestPreconditionEx(x: int) returns (y: int)
-  // TODO: what requires statement should go here?
-  requires false // Replace this line
-  ensures y >= 10
-{
-  y := Abs(x + x);
-}
-
-// What about this? (A harder one)
-method StrongestPostconditionEx2(x: int) returns (y: int)
-  requires x >= 5
-  // TODO: what ensures statement should go here?
-  // Let's figure it out!
-{
-  if x <= 10 {
-    y := Abs(x +  x + x);
-  } else {
-    y := Abs(x + x);
-  }
-}
-
-/*
-  Strongest postconditions and weakest preconditions are a key part of how
-  Dafny works internally -- it is calculating them implicitly all the time!
-
-  The process of fixing Abs (that we did above) is basically about finding the
-  strongest postcondition for the function.
-
-  We will see more about these soon!
-*/
-
-/*
-  ===== Digression 2: Running the code? =====
+  ===== Digression 1: Running the code? =====
 
   You may have noticed something odd: we haven't run any code yet!
   In fact, even in our Tests, all we did was ask Dafny to verify that the test
@@ -451,6 +443,69 @@ method Main()
 
   This produces output in: lecture-py/module_.py.
   (You can ignore the other files.)
+*/
+
+/*
+  ===== Digression 2: strongest postconditions and weakest preconditions =====
+
+  We saw above that in order to prove properties about the method Abs,
+  we needed to strengthen the postcondition to be stronger
+  (or use a function instead of a method.)
+  Is the new postcondition really as strong as it can be?
+
+  On HW1, part 1B, you were asked to write specifications that are the
+  *strongest possible* description of what the function does.
+  What does that mean?
+
+  Let's define:
+
+  - The *strongest postcondition* of a statement is the strongest condition
+    that is guaranteed to hold after executing the statement, given that the
+    precondition holds.
+
+  - The *weakest precondition* of a statement is the weakest condition
+    that guarantees that the postcondition will hold after executing the statement.
+
+  Here are some examples based on the Abs function;
+  we will see more about this later!
+*/
+
+method StrongestPostconditionEx(x: int) returns (y: int)
+  requires x >= 5
+  // TODO: what ensures statement should go here?
+{
+  y := Abs(x + x);
+}
+
+method WeakestPreconditionEx(x: int) returns (y: int)
+  // TODO: what requires statement should go here?
+  requires false // Replace this line
+  ensures y >= 10
+{
+  y := Abs(x + x);
+}
+
+// What about this? (A harder one)
+method StrongestPostconditionEx2(x: int) returns (y: int)
+  requires x >= 5
+  // TODO: what ensures statement should go here?
+  // Let's figure it out!
+{
+  if x <= 10 {
+    y := Abs(x +  x + x);
+  } else {
+    y := Abs(x + x);
+  }
+}
+
+/*
+  Strongest postconditions and weakest preconditions are a key part of how
+  Dafny works internally -- it is calculating them implicitly all the time!
+
+  The process of fixing Abs (that we did above) is basically about finding the
+  strongest postcondition for the function.
+
+  We will see more about these soon!
 */
 
 /*
