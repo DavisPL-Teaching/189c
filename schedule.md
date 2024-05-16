@@ -9,45 +9,49 @@ I will try to keep it up to date, but please see Piazza for the latest informati
 | Week | Date | Topic | Readings & HW | Lecture # |
 | --- | --- | --- | --- | --- |
 | 1 | April 1 | Introduction and demos |  | 0 |
-|   | April 3 | Hypothesis I: Introduction to correctness | [Correctness (computer science)](https://en.wikipedia.org/wiki/Correctness_(computer_science)) | 1 |
-|   | April 5 | Hypothesis II: Writing specifications | [Hypothesis docs](https://hypothesis.readthedocs.io/en/latest/) | 1 |
+|   | April 3 | Hypothesis I: Specifications and correctness | [Correctness (computer science)](https://en.wikipedia.org/wiki/Correctness_(computer_science)) | 1 |
+|   | April 5 | Hypothesis II | [Hypothesis docs](https://hypothesis.readthedocs.io/en/latest/) | 1 |
 | 2 | April 8 | Hypothesis III: Complex specifications | HW0 due | 2 |
-|   | April 10 | Hypothesis IV: Generators and Internals |  | 2 |
+|   | April 10 | Hypothesis IV |  | 2 |
 |   | April 12 | Hypothesis V: Limitations |  | 2 |
-| 3 | April 15 | Z3 I: Introduction | [Z3 introduction](https://ericpony.github.io/z3py-tutorial/guide-examples.htm) | 3 |
-|   | April 17 | Z3 II: Satisfiability | [Z3 docs](https://z3prover.github.io/api/html/namespacez3py.html) | 3 |
-|   | April 19 | Z3 III: Basic Data Types | HW1 due | 3 |
+| 3 | April 15 | Z3 and Satisfiability | [Z3 introduction](https://ericpony.github.io/z3py-tutorial/guide-examples.htm) | 3 |
+|   | April 17 | Z3 II | [Z3 docs](https://z3prover.github.io/api/html/namespacez3py.html) | 3 |
+|   | April 19 | Z3 III | HW1 due | 3 |
 | 4 | April 22 | Z3 IV: Applications |  | 4 |
-|   | April 24 | Z3 V: Applications |  | 4 |
-|   | April 26 | Z3 VI: Applications |  | 4 |
-| 5 | April 29 | Z3 VII: Applications |  | 4 |
-|   | May 1 | Z3 VIII: Complex Data Types |  | 5 |
-|   | May 3 | Z3 IX: Internals, Limitations, Review | HW2 due | 5 |
+|   | April 24 | Z3 V |  | 4 |
+|   | April 26 | Z3 VI |  | 4 |
+| 5 | April 29 | Z3 VII |  | 4 |
+|   | May 1 | Z3 VIII: Advanced |  | 5 |
+|   | May 3 | Z3 IX | HW2 due | 5 |
+| 6 | May 6 | Z3 X |  | 5 |
+|   | May 8 | Z3 XII |  | 5 |
+|   | May 10 | Z3 XIII: Internals and Limitations |  | 5 |
 
 ## Section 2: Program Verification and Type Systems
 
 | Week | Date | Topic | Readings & HW | Lecture # |
 | --- | --- | --- | --- | --- |
-| 6 | May 6 | Dafny I: Program Verification |  |  |
-|   | May 8 | Dafny II |  |  |
-|   | May 10 | Dafny III | HW3 due |  |
-| 7 | May 13 | Dafny IV: Hoare Logic |  |  |
-|   | May 15 | Dafny V: Hoare Logic |  |  |
-|   | May 17 | Dafny VI: Extensions and Limitations |  |  |
-| 8 | May 20 | Rust I: Type Systems |  |  |
-|   | May 22 | Rust II |  |  |
-|   | May 24 | Rust III | HW4 due |  |
+| 7 | May 13 | Dafny I: Formal Verification | HW3 due | 6 |
+|   | May 15 | Dafny II |  | 6 |
+|   | May 17 | Dafny III |  | 6 |
+| 8 | May 20 | Dafny IV |  | 7 |
+|   | May 22 | Dafny V |  | 7 |
+|   | May 24 | Dafny VI |  | 7 |
 | 9 | **No Class** (Memorial Day) |  |  |  |
-|   | May 29 | Rust IV / Advanced topics[^1] |  |  |
-|   | May 31 | Rust V / Advanced topics[^1] |  |  |
+|   | May 29 | Rust I: Types and Safety Properties |  | 8 |
+|   | May 31 | Rust II | HW4 due | 8 |
 
 ## Section 3: Advanced Topics and Review
 
 | Week | Date | Topic | Readings & HW | Lecture # |
 | --- | --- | --- | --- | --- |
-| 10 | June 3 | Course review |  |  |
-|    | **Last day of class** -- June 5 | Overflow |  |  |
-|    | June 7 |  | HW5 due; make-up assignments due |  |
-| 11 | **Final** -- June 12 |  |  |  |
+| 10 | June 3 | Rust III |  | 8 |
+|    | **Last day of class** -- June 5 | Rust IV / Course review |  | 9 |
+| 11 | June 10 |  | HW5 due; make-up assignments due |  |
+|    | **Final** -- June 12 |  |  |  |
+
+## Notes
+
+Advanced topics[^1] was skipped due to time.
 
 [^1]: Possible advanced topics: polymorphism, concurrency, distributed systems, security properties
