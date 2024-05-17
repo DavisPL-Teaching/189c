@@ -307,9 +307,17 @@ method TestAbsFixed()
 
   Announcements:
 
+  - Dafny installation instructions:
+    installation instructions on Windows/Linux/Codespaces
+    are posted in the README.md
+    (These will also be made available with HW4.)
+
+  - HW4 release will be posted on Piazza when ready;
+    you will have at least 2 weeks to complete once released.
+
   Plan:
 
-  - Continue with Dafny concepts:
+  - Continue with more Dafny concepts:
     + functions and expressions
     + running the code
     + strongest postconditions and weakest preconditions
