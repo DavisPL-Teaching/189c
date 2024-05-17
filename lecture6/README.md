@@ -194,10 +194,18 @@ You will need to have Dafny installed.
   ```
   extracting Dafny to /home/codespace/.vscode-remote/extensions/dafny-lang.ide-vscode-3.3.0/out/resources/4.6.0/github
   ```
-  Copy the above path and add `/dafny` at the end
-  (or `\dafny` on Windows), and run the following command:
+  Copy the above path and add `/dafny` at the end, and run the
+  following command (on Windows, this only works in WSL or a linux-style
+  shell):
   ```
   export PATH=$PATH:/home/vscode/.vscode-remote/extensions/dafny-lang.ide-vscode-3.3.0/out/resources/4.6.0/github/dafny
+  ```
+
+  You can also call the dafny executable directly,
+  it's `<path above>/dafny` or `<path>\Dafny.exe` on Windows.
+  For example on Windows you can just use:
+  ```
+  C:\Users\user_name\.vscode\extensions\dafny-lang.ide-vscode-3.3.0\out\resources\3.10.0\github\dafny\Dafny.exe --version
   ```
 
   That's it!
@@ -238,19 +246,14 @@ You will need to have Dafny installed.
   C:\Users\user_name\.vscode\extensions\dafny-lang.ide-vscode-3.3.0\out\resources\3.10.0\github\dafny\Dafny.exe
   ```
 
-  That's where your `Dafny.exe` is! You can run it directly in the command
-  line:
-  ```
-  C:\Users\user_name\.vscode\extensions\dafny-lang.ide-vscode-3.3.0\out\resources\3.10.0\github\dafny\Dafny.exe --version
-  ```
-
-  Or add it to your PATH first.
+  That's where your `Dafny.exe` is! You can use it by specifying
+  the full path or add it to your PATH first.
 
 **Checking that installation worked:**
 Check that the green checkmarks are showing up on the side in VSCode.
 If they are not, you may need to refresh the file or restart VSCode.
 
-For the command line, run `dafny --version`, you should get something like:
+For the command line, run `dafny --version` (or `<full_path>\Dafny.exe --version` on Windows), you should get something like:
 ```
 4.6.0
 ```
