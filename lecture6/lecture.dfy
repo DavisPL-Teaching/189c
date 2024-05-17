@@ -307,8 +307,6 @@ method TestAbsFixed()
 
   Announcements:
 
-  - HW4 is released!
-
   Plan:
 
   - Continue with Dafny concepts:
@@ -321,17 +319,58 @@ method TestAbsFixed()
 
   ===== Poll =====
 
-  TODO
+  Consider the following Double method:
+*/
+
+method Double(x: int) returns (y: int)
+  // requires ... ensures ...
+{
+  y := x + x;
+}
+
+// Which of the following pre/postconditions can we add
+// to get the following test to pass?
+
+method TestDouble()
+{
+  var x := Double(5);
+  // assert x == 10; // Uncomment this line
+}
+
+/*
+  1. nothing (the test will pass as is)
+  2. requires x == 5
+  3. ensures y == 10
+  4. ensures y == x + x
+  5. requires x == 0 ensures y == x + x
+  6. requires x == 5 ensures y == 10
+  7. requires false
+  8. ensures false
+  9. requires (x == 5 ==> y == 10)
+  10. ensures (x == 5 ==> y == 10)
+
+  https://forms.gle/dV3uswiZnvz7BRdt7
+  https://tinyurl.com/wk6fvfvm
+
+  (After poll: try it out)
 */
 
 /*
-  Functions
+  ===== Functions =====
 
-  Dafny has a solution for this, and allows us to define mathematical functions
-  that are not opaque when the Dafny verifier runs.
+  Last time, we saw that we can't prove that Abs(5) == 10
+  unless we give it a strong postcondition.
+  This same problem occurs with options (1) and (2) above:
+  (Why?)
+
+  The reason? *Abstraction:* A Dafny method is considered abstracted
+  by only its pre/postcondition behavior.
+
+  Dafny has a solution for this, and allows us to define
+  mathematical functions
+  that are not opaque when the Dafny verifier runs:
 */
 
-// During demo: Insert a function for abs
 function abs(x: int): int
 {
   if x >= 0 then x else -x
@@ -345,8 +384,11 @@ method TestAbsEasier()
 /*
   Functions expose another important concept in Dafny:
   only functions can be used in expressions!
+
   What happens when we try to call AbsFixed(5) in an expression?
   What happens when we try to call abs(5) in an expression?
+
+  (We ran into this problem last time!)
 */
 
 method TestAbsExpression()
@@ -375,7 +417,8 @@ method TestAbsExpression()
 
   Recap:
   We've already learned the basics of verifying simple Dafny code!
-  Methods, functions, preconditions, postconditions, and assume/assert (if desired).
+  Methods (and tests), functions, preconditions, postconditions,
+  tests, and assert/assume.
 
   Before we continue with more complex examples,
   I have a couple of digressions to make.
@@ -448,7 +491,8 @@ method Main()
 /*
   ===== Digression 2: strongest postconditions and weakest preconditions =====
 
-  We saw above that in order to prove properties about the method Abs,
+  We saw above that in order to prove properties about
+  methods like Abs and Double,
   we needed to strengthen the postcondition to be stronger
   (or use a function instead of a method.)
   Is the new postcondition really as strong as it can be?
@@ -502,10 +546,12 @@ method StrongestPostconditionEx2(x: int) returns (y: int)
   Strongest postconditions and weakest preconditions are a key part of how
   Dafny works internally -- it is calculating them implicitly all the time!
 
-  The process of fixing Abs (that we did above) is basically about finding the
-  strongest postcondition for the function.
+  The way it does it is basically the process we did above.
 
-  We will see more about these soon!
+  The process of fixing Abs and Double -- in order to make the
+  postcondition as strong as possible, so the test passes --
+  was basically about finding the strongest postcondition for the
+  method.
 */
 
 /*
@@ -514,9 +560,10 @@ method StrongestPostconditionEx2(x: int) returns (y: int)
   So far, the examples we've seen are quite simple; we could have done any
   of this in Z3 pretty easily!
 
-  Where program verifiers like Dafny truly shine is in verifying more complex code,
-  where there are loops and recursion.
+  Loops and recursion is where program verifiers become both
+  much more powerful (expressive) -- and more effort-intensive.
 
+  Let's start with recursion:
   Functions support recursion and can appear in expressions!
 
   Let's define a function that computes a given fibonaci number:
@@ -538,11 +585,21 @@ function fib(n: nat): nat
 
   What is a loop invariant?
 
-  Loop invariants hold in the beginning and end of the loop, and therefore are used
-    to model the behavior of a loop. Finding invariants is the hardest part, since we need to "guess" an invariant that both
-    (i) is satisfied at the beginning of the loop
-    (ii) is preserved by the loop
-    (iii) is strong enough to prove what we want after the loop
+  A loop invariant is an assertion that must hold
+  after *every* loop iteration. Like this:
+
+    assert <invariant>;
+    while P {
+      <loop body>
+      assert <invariant>;
+    }
+
+  Loop invariants are the key to verifying real-world code,
+  and they are often the hardest part to come up with.
+  We need to "guess" an invariant that both
+  (i) is satisfied before the loop runs
+  (ii) is preserved by the loop
+  (iii) is strong enough to prove what we want after the loop
 */
 
 method ComputeFib(n: nat) returns (b: nat)
@@ -580,25 +637,44 @@ method ComputeFib(n: nat) returns (b: nat)
 */
 
 /*
-  ===== Taking a step back =====
+  ===== Another digression: the limits of verification? =====
 
-  Let's take a step back and consider the remarkability of what we've done so far.
-  Some of you may have heard that proving general properties about programs
-  is supposed to be impossible! (It's OK if you haven't heard this.) For example,
+  Let's take a step back and consider what we've done so far.
+  - We managed to write a function to calculate Fibonacci numbers and
+    *prove* that it's always correct, on all inputs. Without ever running
+    the code.
+
+  - It was a bit difficult though: we had to come up with a special "loop invariant"
+    and (in theory) a "decreases" clause to make it work,
+    and the code wouldn't verify otherwise.
+    So is this always possible?
+
+  There's sort of an argument for NO and an argument for YES.
+
+  NO: Some of you may have heard that proving general properties
+  about programs is supposed to be impossible!
+  (It's OK if you haven't heard this.) For example,
   we know that the halting problem is impossible to decide:
 
     HALT(x) = "Does program x halt?"
 
   There's no program which decides the above!
   Yet, Dafny is able to determine not just that all the programs halt,
-  but that they are correct (satisfy the spec) on all inputs!
+  but that they are correct (satisfy the spec) on all inputs.
+  So in Dafny, we could decide the halting problem this way:
+
+    HALT(x): return true;
 
   Let's take a minute to appreciate what that means: using just some math
   equations and formulas, and a fancy verification tool (which uses Z3),
-  we know (without running it) that the program
-  will give the correct answer on **all possible inputs.** Not just some particular
+  we know (without running it) that the program will give the correct
+  answer on **all possible inputs.** Not just some particular
   inputs that we tried. It's a way to completely fool-proof all future uses
   of the code.
+
+  YES: The surprising thing (at least if you've taken theory of computation)
+  is that in practice, yes, it is almost always possible to prove that
+  programs correct.
 
   People have even built entire software projects: like cryptographic libraries,
   operating system kernels, and (famously) an optimizing C compiler (CompCert)
@@ -606,13 +682,13 @@ method ComputeFib(n: nat) returns (b: nat)
     https://sel4.systems/About/
     https://compcert.org/
 
-  This should be a bit mind-blowing! What's going on here?
+  If program termination and correctness is undecidable in general, then how
+  are these projects possible?
 
   Any ideas? :)
 
   Answer:
 */
-
 
 /*
   ===== Arrays =====
@@ -714,7 +790,7 @@ method BinarySearch(a: array<int>, value: int) returns (index: int)
 
 // Until now for simplicity we haven't shown any array allocation, but Dafny allows that too with the `new` keyword.
 
-method copy(a: array<int>) returns (b: array<int>)
+method Copy(a: array<int>) returns (b: array<int>)
 {
   b := new int[a.Length];
 }
@@ -748,7 +824,7 @@ predicate sorted_seq(a: seq<int>)
 
 // And let's use it
 
-method test_seq(a: array<int>)
+method TestSeq(a: array<int>)
   // requires sorted_seq(a[0..10])
 {
 
