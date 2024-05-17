@@ -175,7 +175,7 @@ You will need to have Dafny installed.
   Make sure that the green checkmarks are showing up in VSCode before
   continuing!
 
-  **Note:** I am having some trouble running Codespaces on Firefox,
+  **Note:** I have had some trouble running Codespaces on Firefox,
   so if you get an "unable to connect" error try using a different
   browser, like Safari or Chrome.
 
@@ -191,6 +191,11 @@ You will need to have Dafny installed.
   ```
   find /home -type f -name dafny
   ```
+  If neither of those worked, try the (more exhaustive but will take much longer to run)
+  ```
+  find / -type f -name dafny 2>/dev/null
+  ```
+
   Then, add that path to your PATH, **without** the last `dafny` at the end. For example, if the path is
   `home/vscode/.vscode-remote/extensions/dafny-lang.ide-vscode-3.3.0/out/resources/4.6.0/github/dafny/dafny`:
   ```
