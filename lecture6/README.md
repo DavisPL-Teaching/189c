@@ -191,7 +191,13 @@ You will need to have Dafny installed.
   ```
   find /home -type f -name dafny
   ```
-  If neither of those worked, try the (more exhaustive but will take much longer to run)
+  On Windows, you should be able to run these in a linux/bash terminal if you have WSL.
+  Although Powershell is not recommended, here is the Powershell equivalent:
+  ```
+  Get-ChildItem -Recurse | Where-Object { $_.Name -like "Dafny.exe" }
+  ```
+
+  If none of those worked, try the (more exhaustive but will take much longer to run)
   ```
   find / -type f -name dafny 2>/dev/null
   ```
