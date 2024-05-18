@@ -12,48 +12,52 @@ If you are on Mac, [Homework 0](https://github.com/DavisPL-Teaching/189c-hw0) ha
 
 ## On GitHub Codespaces, Windows, or Linux
 
-In VSCode, install the Dafny extension (link above).
+There are two steps:
+install the VSCode extension, then add
+dafny to your path.
+
+1. In VSCode, install the Dafny extension (link above).
 Open up a Dafny file and wait for the extension to prompt
 you to confirm installing Dafny 4.6.0.
 
-**Linux only:** Before running the VSCode extension, you may need to
+  **Linux only:** Before running the VSCode extension, you may need to
 run `sudo apt install dotnet-sdk-6.0` to make sure dotnet is installed.
 
-**Codespaces only:** If you're getting an "unable to connect" error when
-opening the codespace, try switching browsers - I have been
-encountering this error in Firefox, but not on Safari.
+  **Codespaces only:** If you're getting an "unable to connect" error when
+  opening the codespace, try switching browsers - I have been
+  encountering this error in Firefox, but not on Safari.
 
-Make sure that the green checkmarks are showing up in VSCode before
+  Make sure that the green checkmarks are showing up in VSCode before
 continuing!
 
-Once the green checkmarks show up, that means Dafny is installed,
+2. Once the green checkmarks show up, that means Dafny is installed,
 so you are 90% of the way there! The remaining part is just to
 tell your terminal where `dafny` is on your system.
 To do that, you need to add `dafny` to your PATH.
 
-The easiest way to find the path to Dafny is by looking at
-the output when Dafny is installed in VSCode, you should see
-a line in the output like this:
-```
-extracting Dafny to /home/codespace/.vscode-remote/extensions/dafny-lang.ide-vscode-3.3.0/out/resources/4.6.0/github
-```
-Copy the above path and add `/dafny` at the end, and run the
-following command (on Windows, this only works in WSL or a linux-style
-shell):
-```
-export PATH=$PATH:/home/vscode/.vscode-remote/extensions/dafny-lang.ide-vscode-3.3.0/out/resources/4.6.0/github/dafny
-```
+  The easiest way to find the path to Dafny is by looking at
+  the output when Dafny is installed in VSCode, you should see
+  a line in the output like this:
+  ```
+  extracting Dafny to /home/codespace/.vscode-remote/extensions/dafny-lang.ide-vscode-3.3.0/out/resources/4.6.0/github
+  ```
+  Copy the above path and add `/dafny` at the end, and run the
+  following command (on Windows, this only works in WSL or a linux-style
+  shell):
+  ```
+  export PATH=$PATH:/home/vscode/.vscode-remote/extensions/dafny-lang.ide-vscode-3.3.0/out/resources/4.6.0/github/dafny
+  ```
 
-You can also call the dafny executable directly,
-it's `<path above>/dafny` or `<path>\Dafny.exe` on Windows.
-For example on Windows you can just use:
-```
-C:\Users\user_name\.vscode\extensions\dafny-lang.ide-vscode-3.3.0\out\resources\3.10.0\github\dafny\Dafny.exe --version
-```
+  You can also call the dafny executable directly,
+  it's `<path above>/dafny` or `<path>\Dafny.exe` on Windows.
+  For example on Windows you can just use:
+  ```
+  C:\Users\user_name\.vscode\extensions\dafny-lang.ide-vscode-3.3.0\out\resources\3.10.0\github\dafny\Dafny.exe --version
+  ```
 
-That's it!
-Now `dafny` should work from the command line -- see
-"Checking that installation worked" below.
+  That's it!
+  Now `dafny` should work from the command line -- see
+  "Checking that installation worked" below.
 
 ## Additional ways to get the PATH: (optional)
 
