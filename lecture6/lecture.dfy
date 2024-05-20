@@ -590,30 +590,35 @@ method WeakestPreconditionEx(x: int) returns (y: int)
   Announcements:
 
   - HW4 is released! Due Monday, June 3
+    https://classroom.github.com/a/YINeHx56
+    https://github.com/DavisPL-Teaching/189c-hw4
 
-  - Installation instructions have been updated in the homework
-    README file. However, an important change: you don't need
-    the Dafny command line to complete the homework. You onlly
-    need the Dafny VSCode extension (with the green bars on the side).
+  - **Dafny installation help office hours: Today 4pm**
+
+    Installation instructions have been updated in the homework
+    README file. An important note: you won't need the Dafny
+    command line to complete the homework. You'll only need the
+    Dafny VSCode extension (with the green bars on the side).
 
   - Looking ahead:
     **Class on Friday, May 31 will be via Zoom.**
     My office hours that week will be moved to Wednesday.
-    That way, leading up to the deadline you will have
-    Wednesday, Friday, and Monday office hours.
+    (So leading up to the HW4 deadline you will have
+    Wednesday, Friday, and Monday office hours.)
 
   Plan for today:
 
   - Poll
   - Finish strongest postconditions and weakest preconditions
-  - Misc: sequences
   - Move on to Lecture 7: loop invariants!
+
+  Questions?
 */
 
 /*
   ===== Poll =====
 
-  Consider the following function:
+  Consider the following method:
 
   method birthday(age: int) returns (new_age: int)
   {
@@ -632,31 +637,136 @@ method WeakestPreconditionEx(x: int) returns (y: int)
   https://tinyurl.com/3wfy9jjp
 */
 
+method birthday(age: int) returns (new_age: int)
+  // 1. SP(age >= 0)
+  // requires age >= 0
+  // ensures age >= 0 && new_age == age + 1
+  // 2. WP(new_age == age + 1 && new_age >= 0)
+  // requires age >= -1
+  // ensures new_age == age + 1 && new_age >= 0
+{
+  return age + 1;
+}
+
+/*
+  Another definition:
+  StrongestPostcondition(P):
+    The set of all input, output pairs (x, y) such that
+    running the method on input x produces y, and
+    the input x satisfies P.
+
+  WeakestPrecondition(Q):
+    The set of all inputs x such that running the method
+    on input x produces an output y satisfying Q.
+
+  How do we actually compute these things?
+
+  At every point in your program, write down exactly
+  everything that is known to be true about the state of the program
+  at that point.
+
+  To do strongest postconditions: work forwards.
+  To do weakest preconditions: work backwards.
+*/
+
 // What about this? (A harder one)
 method StrongestPostconditionEx2(x: int) returns (y: int)
   requires x >= 5
   // TODO: what ensures statement should go here?
   // Let's figure it out!
+  // What Dafny would do internally
+  // ensures (
+  //           (5 <= x <= 10 && y == 3 * x)
+  //           ||
+  //           (x > 10 && y == 2 * x)
+  //         )
+  // What we might come up with by hand
+  ensures 5 <= x
+  ensures (5 <= x <= 10) ==> y == 3 * x
+  ensures (x > 10) ==> y == 2 * x
+  // The two are equivalent.
 {
+  // What is true here?
+  assert x >= 5;
+
   if x <= 10 {
-    y := Abs(x +  x + x);
+    // What is true here?
+    assert x >= 5 && x <= 10;
+
+    y := abs(x +  x + x);
+
+    // What is true here?
+    assert x >= 5 && x <= 10 && y == abs(x + x + x);
+    // Simplify (optional)
+    assert 5 <= x <= 10 && y == x + x + x;
+
   } else {
-    y := Abs(x + x);
+    // What is true here?
+    assert x >= 5 && x > 10;
+    // Simplify (optional)
+    assert x > 10;
+
+    y := abs(x + x);
+
+    // What is true here?
+    assert x > 10 && y == abs(x + x);
+    // Simplify
+    assert x > 10 && y == x + x;
+
   }
+  // What is true here?
+  // What do we do at the end of an if block?
+  assert (
+      (5 <= x <= 10 && y == x + x + x)
+      ||
+      (x > 10 && y == x + x)
+    );
+
+  assert (
+      (5 <= x <= 10 && y == 3 * x)
+      ||
+      (x > 10 && y == 2 * x)
+    );
+
 }
 
 // The working backwords method!
-method WeakestPostconditionEx2(x: int) returns (y: int)
+method WeakestPreconditionEx2(x: int) returns (y: int)
   // TODO: uncomment
-  // ensures y >= 5
+  ensures y >= 5
   // TODO: what requires statement should go here?
   // Let's figure it out!
+  // What Dafny would come up with automatically
+  requires (
+             x <= 10 ==> abs(x + x + x) >= 5)
+           &&
+           (x > 10 ==> abs(x + x) >= 5
+           )
+
 {
+
+  assert (
+      (x <= 10 ==> abs(x + x + x) >= 5)
+      &&
+      (x > 10 ==> abs(x + x) >= 5)
+    );
+
   if x <= 10 {
-    y := Abs(x +  x + x);
+    assert abs(x + x + x) >= 5;
+
+    y := abs(x +  x + x);
+
+    assert y >= 5;
   } else {
-    y := Abs(x + x);
+    // Evaluate the assignment y := abs(x + x)
+    // in reverse!
+    assert abs(x + x) >= 5;
+
+    y := abs(x + x);
+
+    assert y >= 5;
   }
+  assert y >= 5;
 }
 
 /*
@@ -665,6 +775,12 @@ method WeakestPostconditionEx2(x: int) returns (y: int)
 
   The way it does it is basically the process we did above.
   It can be done in a completely routine way.
+
+  This works great!
+  But the problem with it?
+  Loops and recursion.
+  It doesn't work through loops and recursion -- and that leads
+  us in to what we will see in Lecture 7.
 
   This process is also a super useful tool for debugging
   to see where the Dafny verifier is getting stuck.
