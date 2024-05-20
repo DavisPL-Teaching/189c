@@ -1,4 +1,4 @@
-# Lecture 6: Formal Verification
+# Lecture 6: Formal Verification in Dafny
 
 (Day 18 and the following days)
 
@@ -163,5 +163,7 @@ See `INSTALL.md` for instructions.
 ## Resources
 
 - [Dafny](https://dafny.org/)
+- [Dafny tutorial](https://dafny.org/latest/OnlineTutorial/guide)
+- [Dafny cheat sheet](https://dafny.org/latest/DafnyCheatsheet.pdf)
 - [Reference manual and user guide](https://dafny.org/latest/DafnyRef/DafnyRef)
 - Textbook: *Program Proofs,* by Rustan M. Leino -- [link](https://mitpress.mit.edu/9780262546232/program-proofs/)
