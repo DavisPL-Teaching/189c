@@ -610,10 +610,46 @@ method WeakestPreconditionEx(x: int) returns (y: int)
   - Move on to Lecture 7: loop invariants!
 */
 
+/*
+  ===== Poll =====
+
+  Consider the following function:
+
+  method birthday(age: int) returns (new_age: int)
+  {
+    return age + 1;
+  }
+
+  1. If the precondition is
+    age >= 0
+  then what is the strongest postcondition?
+
+  2. If the postcondition is
+    new_age == age + 1 && new_age >= 0
+  then what is the weakest precondition?
+
+  https://forms.gle/9e7vf2zDae6FFDfD6
+  https://tinyurl.com/3wfy9jjp
+*/
+
 // What about this? (A harder one)
 method StrongestPostconditionEx2(x: int) returns (y: int)
   requires x >= 5
   // TODO: what ensures statement should go here?
+  // Let's figure it out!
+{
+  if x <= 10 {
+    y := Abs(x +  x + x);
+  } else {
+    y := Abs(x + x);
+  }
+}
+
+// The working backwords method!
+method WeakestPostconditionEx2(x: int) returns (y: int)
+  // TODO: uncomment
+  // ensures y >= 5
+  // TODO: what requires statement should go here?
   // Let's figure it out!
 {
   if x <= 10 {
@@ -630,6 +666,6 @@ method StrongestPostconditionEx2(x: int) returns (y: int)
   The way it does it is basically the process we did above.
   It can be done in a completely routine way.
 
-  In fact, this process is also a super useful tool for debugging
+  This process is also a super useful tool for debugging
   to see where the Dafny verifier is getting stuck.
 */
