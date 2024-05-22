@@ -1,6 +1,34 @@
 # Formal Verification 2: Loops and Recursion
 
-A.k.a.: Verifying general code with loop invariants!
+A.k.a.: the missing piece of the puzzle:
+Verifying general code with loop invariants!
+
+## Day 28
+
+Announcements:
+
+- [Poll about HW5](https://piazza.com/class/lt90i40zrot3ue/post/136)
+
+- [HW make-up option](https://piazza.com/class/lt90i40zrot3ue/post/137)
+
+- HW4 due Monday June 3
+
+Plan:
+
+- Poll
+
+- Recap on lecture 6: weakest preconditions and strongest postconditions
+
+- Start lecture 7
+
+Questions about HW4 or any of the above?
+
+## Poll
+
+Which of the following is a correct description of the Weakest Precondition WP(program, Q)?
+
+https://forms.gle/EWViDHBygy7WyP8M7
+https://tinyurl.com/mtfy6842
 
 ## Resources (updated)
 
