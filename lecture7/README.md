@@ -3,7 +3,7 @@
 A.k.a.: the missing piece of the puzzle:
 Verifying general code with loop invariants!
 
-## Day 28
+## Day 22
 
 Announcements:
 

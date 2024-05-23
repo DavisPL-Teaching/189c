@@ -651,13 +651,22 @@ method birthday(age: int) returns (new_age: int)
 /*
   Another definition:
   StrongestPostcondition(P):
-    The set of all input, output pairs (x, y) such that
-    running the method on input x produces y, and
-    the input x satisfies P.
+    Describe (the set of) all output states y such that
+    running the method on an input state x satisfying
+    P may produce output y
 
   WeakestPrecondition(Q):
-    The set of all inputs x such that running the method
-    on input x produces an output y satisfying Q.
+    Describe (the set of) all input states x such that running
+    the method on input x produces an output y satisfying Q
+
+  The set of: just to emphasize there may be
+  zero or more than one.
+
+  input states/output states: we want to describe
+  all variables in scope at input/output to the
+  program, respectively.
+  For the final: what variables are in scope
+  will be mentioned.
 
   How do we actually compute these things?
 
