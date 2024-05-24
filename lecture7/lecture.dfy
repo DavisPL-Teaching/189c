@@ -105,14 +105,13 @@ method ComputeFib(n: nat) returns (b: nat)
 
     // O(n) loop iterations
     while i < n
+      // Loop invariant syntax
       invariant i >= 1
       invariant i <= n
       invariant curr == fib(i)
       invariant prev == fib(i-1)
-      // Loop invariant syntax
-      // Let's think about what the code is doing.
-      // invariant false
     {
+      // Let's think about what the code is doing.
       // On entering the loop:
       // curr, prev == 1, 0 (i == 1)
       // After first iteration of the loop:
@@ -134,86 +133,102 @@ method ComputeFib(n: nat) returns (b: nat)
 }
 
 /*
-  ===== Termination =====
+  ##### where we left off for Day 22 #####
 
-  There's another thing that's implicitly going on with recursion and while loops:
-  program termination.
+  ===== Day 23 =====
 
-  Exercise: add a decreases clause to both functions.
+  Announcements:
 
-  What does the decreases clause ensure?
+  - Please start HW4 if you haven't yet!
+    + Office hours today 330, I can help with installation issues
+    + We may not be able to keep helping with installation
+      issues in next week's office hours.
+
+  - The people have spoken: HW5 is cancelled!
+    + 27 votes for cancel
+    + 6 votes for keep
+    + I will release the homework on Piazza later today.
+    + I will be able to offer a very small amount of points for extra credit (5)
+      as a small incentive.
+    + Due June 6
+
+  Plan:
+  Finish things we need to cover for the homework:
+
+  - Fix the loop invariant and recap (from end of last time)
+
+  - Poll
+
+  - Remaining stuff we need to cover for the HW
+    + Sequences
+    + Lemmas
+
+  - I have lots of additional topics in advanced.dfy and repeated_squares.dfy
+    we could do next time.
+
+  Questions?
+
+  ===== Poll =====
+
+  https://forms.gle/Q44qm1Ve27xrpdRMA
+  https://tinyurl.com/mmu2scjs
+
+  Here's a very inefficient version of a function
+  that copies a nonnegative integer.
+
+  Write a loop invariant that will allow us to prove CopyInt.
+
+  Remember, a loop invariant must be:
+  (i) true before entering the loop,
+  (ii) preserved by the loop body
+  (iii) imply the postcondition after the loop ends
 */
 
-/*
-  ===== Digression 3: the limits of verification? =====
+method CopyInt(a: nat) returns (b: nat)
+  // Uncomment to try the example
+  // ensures b == a
+{
+  var i := a;
+  b := 0;
+  while i > 0
+    // invariant ...
+  {
+    i := i - 1;
+    b := b + 1;
+  }
+}
 
-  Let's take a step back and consider what we've done so far.
-  - We managed to write a function to calculate Fibonacci numbers and
-    *prove* that it's always correct, on all inputs. Without ever running
-    the code.
-
-  - It was a bit difficult though: we had to come up with a special "loop invariant"
-    and (in theory) a "decreases" clause to make it work,
-    and the code wouldn't verify otherwise.
-    So is this always possible?
-
-  There's sort of an argument for NO and an argument for YES.
-
-  NO: Some of you may have heard that proving general properties
-  about programs is supposed to be impossible!
-  (It's OK if you haven't heard this.) For example,
-  we know that the halting problem is impossible to decide:
-
-    HALT(x) = "Does program x halt?"
-
-  There's no program which decides the above!
-  Yet, Dafny is able to determine not just that all the programs halt,
-  but that they are correct (satisfy the spec) on all inputs.
-  So in Dafny, we could decide the halting problem this way:
-
-    HALT(x): return true;
-
-  Let's take a minute to appreciate what that means: using just some math
-  equations and formulas, and a fancy verification tool (which uses Z3),
-  we know (without running it) that the program will give the correct
-  answer on **all possible inputs.** Not just some particular
-  inputs that we tried. It's a way to completely fool-proof all future uses
-  of the code.
-
-  YES: The surprising thing (at least if you've taken theory of computation)
-  is that in practice, yes, it is almost always possible to prove that
-  programs correct.
-
-  People have even built entire software projects: like cryptographic libraries,
-  operating system kernels, and (famously) an optimizing C compiler (CompCert)
-  entirely in formally verified programming languages.
-    https://sel4.systems/About/
-    https://compcert.org/
-
-  If program termination and correctness is undecidable in general, then how
-  are these projects possible?
-
-  Any ideas? :)
-
-  Answer:
-*/
+// Another one
+method AddOne(a: nat) returns (b: nat)
+  // Uncomment to try the example
+  // ensures b == a + 1
+{
+  b := 0;
+  while b < a + 1
+    // invariant ...
+  {
+    b := b + 1;
+  }
+}
 
 /*
-  ===== Sequences and arrays =====
+  ===== Sequences =====
 
   Loops and invariants become especially useful when working
   with more complex data types, like sequences.
   Let's give an overview of these.
 
+  A sequence is basically a list. To create a new sequence:
+
+    b := [];
+    b := [1, 2, 3];
+
   The homework will be mostly about more basic data types, but there
-  are a few questions about sequences. We won't need arrays.
+  are a few questions about sequences.
 
-  Dafny supports sequences seq<int> and imperative arrays array<int>.
-  These are basically list types (like Python lists or C++ vectors).
-
-  Sequences are immutable, and arrays are mutable.
-  Due to the subtleties of mutability, arrays can be more advanced
-  to work with.
+  Sequences are immutable.
+  Dafny supports sequences seq<int> and imperative arrays array<int>,
+  which are mutable. Wwe won't use arrays on the homework.
 */
 
 method Find(a: seq<int>, key: int) returns (index: int)
@@ -231,7 +246,7 @@ method Find(a: seq<int>, key: int) returns (index: int)
   }
 }
 
-// If we have time we can also look at this:
+// SKIP: a similar example
 // Find the maximum element in a sequence
 // method FindMax(a: seq<int>) returns (max_i: int)
 //    requires a.Length > 0
@@ -239,44 +254,6 @@ method Find(a: seq<int>, key: int) returns (index: int)
 //    ensures forall k :: 0 <= k < a.Length ==> a[max_i] >= a[k]
 // {
 // }
-
-/*
-  Array example: allocating a new array
-
-  Until now for simplicity we haven't shown any data type
-  allocation, but Dafny allows allocating with the `new` keyword.
-*/
-
-method Copy(a: array<int>) returns (b: array<int>)
-{
-  b := new int[a.Length];
-  // TODO: copy the array over
-  // This will be a HW problem
-}
-
-// It can be useful to define predicates that can be used in
-// pre/postconditions to make the code more readable.
-
-// A predicate is just a function that returns a boolean.
-// Dafny provides as `predicate` keyword but you can also
-// just use `function`.
-
-// Predicate that holds if a sequence is sorted
-predicate sorted_eq(a: seq<int>, start: int, end: int)
-  requires 0 <= start < end < |a|
-{
-  forall i,j :: start <= i < j < end ==> a[i] <= a[j]
-}
-
-// Array version: note the `reads` clause
-// We won't see `reads` a lot in this class, but it will show up on
-// part 2 of the homework.
-predicate sorted_array(a: array<int>, start: int, end: int)
-  reads a
-  requires 0 <= start < end < a.Length
-{
-  forall i,j :: start <= i < j < end ==> a[i] <= a[j]
-}
 
 /*
   Selection of other/advanced concepts
@@ -287,11 +264,32 @@ predicate sorted_array(a: array<int>, start: int, end: int)
   an additional postcondition. A lemma may or may not have a body.
   You can write one like this:
 
-  method Lemma(a: seq<int>)
+  lemma MyLemma(a: seq<int>)
     ensures <some conditions>
   {
   }
 
+  (A plain method should also work, though using the lemma keyword is more idiomatic
+  for reasons we will not go into here.)
+
+  Example: write a lemma that addition is commutative:
+    a + b == b + a
+*/
+
+// TODO
+
+/*
+  Example: write a lemma that pow satisfies each of:
+    pow(x, exp + 1) == x * pow(x, exp)
+    pow(x, exp1 + exp2) == pow(x, exp1) * pow(x, exp2)
+*/
+
+function pow(x: int, exp: nat): int
+{
+  if exp == 0 then 1 else x * pow(x, exp - 1)
+}
+
+/*
   To call the lemma, you just call the method.
   It brings the postcondition assert in scope so that Dafny
   can use it to verify the code in the location you're working on.
@@ -300,21 +298,6 @@ predicate sorted_array(a: array<int>, start: int, end: int)
   Lemma();
   // Prove some additional assertions that were failing using the lemma
   assert <some hard condition>;
-
-  ===== Ghost variables and auxiliary state =====
-
-  Sometimes the implementation code is not adequate for dafny to verify
-  postconditions (especially in the presence of loops).
-  Ghost variables are additional state that you can track in the program
-  that is not part of the actual implementation.
-
-  An example of such extra state that might be helpful is a data structure that "logs" some important actions
-  that were done in the loop.
-
-  More generally, Dafny's concept of "ghost" is related to the idea of
-  abstraction.
-  Ghost data are any data that are removed away at runtime,
-  and only present at compile time.
 
   ===== Practice: a harder programming exercise =====
 
