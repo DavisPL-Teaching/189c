@@ -186,19 +186,34 @@ method ComputeFib(n: nat) returns (b: nat)
 
 method CopyInt(a: nat) returns (b: nat)
   // Uncomment to try the example
-  // ensures b == a
+  // requires a >= 0
+  ensures b == a
 {
-  var i := a;
+  var i: nat := a;
   b := 0;
   while i > 0
-    // invariant ...
+    // Technically these were not needed
+    // invariant i <= a
+    // invariant b >= 0
+    // invariant i >= 0
+    // The right invariant!
+    invariant a == b + i
+    // This also works
+    // invariant a - i == b
   {
     i := i - 1;
     b := b + 1;
   }
+  // What do I know here?
+  // (For the invariant above: i <= a, b >= 0)
+  // a - i == b? (no)
+  // i == 0, b == a? (no)
+  // i <= 0 <-- since the loop terminated
+  // i <= a && b >= 0 <-- invariant
+  // We don't know that a == b.
 }
 
-// Another one
+// Another one -- SKIP
 method AddOne(a: nat) returns (b: nat)
   // Uncomment to try the example
   // ensures b == a + 1
@@ -232,18 +247,19 @@ method AddOne(a: nat) returns (b: nat)
 */
 
 method Find(a: seq<int>, key: int) returns (index: int)
-  ensures 0 <= index < |a| ==> (index < |a| && a[index] == key)
+  ensures 0 <= index < |a| ==> a[index] == key
   ensures index == |a| ==> forall k :: 0 <= k < |a| ==> a[k] != key
-  // TODO: remove to implement
-  requires false
 {
   // Can we write code that satisfies the postcondition?
   index := 0;
   while (index < |a|) && (a[index] != key)
-    // TODO: Implement the loop invariant
+    invariant index <= |a|
+    invariant forall k :: 0 <= k < index ==> a[k] != key
   {
     index := index + 1;
   }
+  // We know that index == |a| OR a[index] == key
+  // We know that forall k :: 0 <= k < |a| ==> a[k] != key
 }
 
 // SKIP: a similar example
@@ -272,11 +288,26 @@ method Find(a: seq<int>, key: int) returns (index: int)
   (A plain method should also work, though using the lemma keyword is more idiomatic
   for reasons we will not go into here.)
 
+  Imagine:
+    You're trying to prove a function, and Dafny gets stuck somewhere
+    in the function, it can't figure out that
+      a[i + j] + a[j - 4] == a[j - 4] + a[i + j]
+
   Example: write a lemma that addition is commutative:
     a + b == b + a
 */
 
-// TODO
+lemma AdditionCommutative(a: int, b: int)
+  ensures a + b == b + a
+{
+  // Done
+}
+
+// To use the lemma:
+// At the place where Dafny is stuck:
+/*
+  AdditionCommutative(a[i + j], a[j - 4]);
+*/
 
 /*
   Example: write a lemma that pow satisfies each of:
