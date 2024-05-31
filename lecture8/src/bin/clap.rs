@@ -6,13 +6,13 @@ use clap::Parser;
 #[derive(Debug, Parser)]
 #[command(name = "CIS198 CLI", about = "A simple CLI example in Rust.")]
 struct GreetingCLI {
+    /// Name(s) of the people to greet
+    #[arg(short, long, num_args = 1.., required = true)]
+    names: Vec<String>,
+
     /// Greeting to use
     #[arg(short, long, default_value = "Hello")]
     greeting: String,
-
-    /// Name(s) of the people to greet
-    #[arg(short, long, required = true)]
-    names: Vec<String>,
 
     /// Whether to print debugging information
     #[arg(short, long)]
