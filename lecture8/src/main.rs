@@ -13,7 +13,7 @@
     clippy::unused_unit,
     clippy::unnecessary_cast,
     clippy::needless_return,
-    clippy::vec_init_then_push,
+    clippy::vec_init_then_push
 )]
 
 /*
@@ -192,7 +192,11 @@ pub fn add_two_integers_v2(a: isize, b: isize) -> isize {
     return result;
 }
 
-pub fn add_two_integers_result_by_reference(a: isize, b: isize, result: &mut isize) {
+pub fn add_two_integers_result_by_reference(
+    a: isize,
+    b: isize,
+    result: &mut isize,
+) {
     *result = 0;
     *result += a;
     *result += b;
