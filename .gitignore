@@ -5,3 +5,5 @@ __pycache__
 lecture0/dafny-demo-py
 .DS_Store
 *.runtimeconfig.json
+Cargo.lock
+target/

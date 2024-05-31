@@ -1,3 +1,7 @@
+/*
+    Demo: parallel programming with Rayon
+*/
+
 use rayon::prelude::*;
 
 fn sum_squares(n: usize) -> usize {

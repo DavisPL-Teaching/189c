@@ -380,7 +380,7 @@ pub fn structured_types() {
     struct Coordinate {
         x: f32,
         y: f32,
-    };
+    }
 
     // Enums (more on enums later)
     enum Weekdays {
