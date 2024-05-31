@@ -4,6 +4,14 @@ The last lecture!
 We have a couple of days left to cover
 this lecture.
 
+## Day 25
+
+Announcements:
+
+- HW4 due on Monday!
+
+## Recap
+
 This class has been about software correctness. We've learned
 that:
 
@@ -55,3 +63,8 @@ Diving in:
 - `src/intro.rs`: Introduction to safety properties
 - `src/bin`: Rust demos
 - `src/syntax.rs`: Basic Rust syntax
+
+There are also introductory slides in
+`Intro_Slides.pdf` and `Ownership_Slides.pdf`,
+for reference if needed.
+But we will start with the live coding part.

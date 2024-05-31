@@ -1,6 +1,5 @@
 /*
-    Lecture 8: Safety properties
-    + Introduction to Rust
+    Lecture 8: Safety properties and Rust
 
     This is a Rust file! (.rs)
 
@@ -185,10 +184,12 @@ fn abs_typed(x: i64) -> u64 {
     `unsafe` keyword),
     it is guaranteed to satisfy these safety properties.
 
-    For a detailed introduction, feel free to check out the slides
-    for my Rust course at UPenn:
+    For a detailed introduction, feel free to check out the slides:
 
-    https://github.com/upenn-cis198/lecture1/blob/master/lecture1_slides_public.pdf
+    https://github.com/DavisPL-Teaching/189C/blob/main/lecture8/Intro_Slides.pdf
+
+    The Rust course I taught at UPenn:
+    https://github.com/upenn-cis198/
 
     And the Rust book (interactive version):
 
