@@ -1,4 +1,4 @@
-# Formal Verification 2: Loops and Recursion
+# Lecture 7: Loops and Recursion
 
 A.k.a.: the missing piece of the puzzle:
 Verifying general code with loop invariants!

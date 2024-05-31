@@ -1,8 +1,11 @@
 /*
-  Advanced topics that we may not have time to cover in lecture
+  Advanced topics that we did not cover in lecture
 
+  - Predicates
+  - Arrays (and mutation)
+  - Ghost variables and auxiliary state
   - Program termination
-  -
+  - Philosophical discussion: the limits of verification
 */
 
 /*
@@ -57,18 +60,6 @@ predicate sorted_array(a: array<int>, start: int, end: int)
 }
 
 /*
-  ===== Termination =====
-
-  There's another thing that's implicitly going on with recursion and while loops:
-  program termination.
-
-  Exercise: add a decreases clause to both the fib and ComputeFib
-  functions.
-
-  What does the decreases clause ensure?
-*/
-
-/*
   ===== Ghost variables and auxiliary state =====
 
   Sometimes the implementation code is not adequate for dafny to verify
@@ -83,6 +74,18 @@ predicate sorted_array(a: array<int>, start: int, end: int)
   abstraction.
   Ghost data are any data that are removed away at runtime,
   and only present at compile time.
+*/
+
+/*
+  ===== Termination =====
+
+  There's another thing that's implicitly going on with recursion and while loops:
+  program termination.
+
+  Exercise: add a decreases clause to both the fib and ComputeFib
+  functions.
+
+  What does the decreases clause ensure?
 */
 
 /*
