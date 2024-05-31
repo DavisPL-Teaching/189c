@@ -1,5 +1,5 @@
 /*
-    Demo: web crawling with Reqwest
+    Demo 1: web crawling with Reqwest
 */
 use reqwest::blocking as rw;
 

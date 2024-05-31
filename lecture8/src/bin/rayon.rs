@@ -1,5 +1,5 @@
 /*
-    Demo: parallel programming with Rayon
+    Demo 2: parallel programming with Rayon
 */
 
 use rayon::prelude::*;

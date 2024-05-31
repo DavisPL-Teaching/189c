@@ -1,5 +1,5 @@
 /*
-    Demo: Building command line tools with Clap
+    Demo 3: Building command line tools with Clap
 */
 use clap::Parser;
 
