@@ -193,9 +193,9 @@ method CopyInt(a: nat) returns (b: nat)
   b := 0;
   while i > 0
     // Technically these were not needed
-    // invariant i <= a
-    // invariant b >= 0
-    // invariant i >= 0
+    invariant i <= a
+    invariant b >= 0
+    invariant i >= 0
     // The right invariant!
     invariant a == b + i
     // This also works
@@ -336,6 +336,28 @@ function pow(x: int, exp: nat): int
   version of the power function.
 
   **See repeated_squares for this exercise.**
+*/
+
+/*
+  What are the main advantages and limitations of Dafny?
+
+  - Invariants are very difficult to figure out (even for a human!) and very
+    effort intensive
+
+  - It inherits some of the same limitations of Z3
+    + If Z3 returns unknown or times out, Dafny also doesn't know what to do
+    + This is exactly what makes verification sometimes so difficult: we need
+      to add more information to help Dafny get through the assertion and give
+      it enough information to pass to Z3 so that Z3 knows the assertion is true.
+    + This is actually both a benefit and a drawback, as unlike
+      with Z3 where it can be unclear what additional information
+      to add to get the proof to work (we saw this somewhat in HW3),
+      with Dafny we at least know that we can add some additional
+      information to eventually get the proof to go through.
+
+  Summary:
+    - A lot more expressive and general; but
+    - A lot more effort intensive to get the proofs to go through.
 */
 
 /*
