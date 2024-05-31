@@ -1,6 +1,7 @@
 /*
     Demo 1: web crawling with Reqwest
 */
+
 use reqwest::blocking as rw;
 
 fn main() {

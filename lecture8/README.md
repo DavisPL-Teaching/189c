@@ -61,7 +61,7 @@ and behind Rust in particular.
 
 Diving in:
 - `src/intro.rs`: Introduction to safety properties
-- `src/bin`: Rust demos
+- `src/bin`: Rust demos (some cool things you can do with Rust)
 - `src/syntax.rs`: Basic Rust syntax
 
 There are also introductory slides in

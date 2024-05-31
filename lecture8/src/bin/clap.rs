@@ -1,6 +1,9 @@
 /*
     Demo 3: Building command line tools with Clap
+
+    (i.e. CLIs -- Command Line Interfaces)
 */
+
 use clap::Parser;
 
 #[derive(Debug, Parser)]
