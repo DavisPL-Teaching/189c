@@ -5,7 +5,7 @@ use clap::Parser;
 
 #[derive(Debug, Parser)]
 #[command(name = "CIS198 CLI", about = "A simple CLI example in Rust.")]
-struct CLI {
+struct GreetingCLI {
     /// Greeting to use
     #[arg(short, long, default_value = "Hello")]
     greeting: String,
@@ -20,7 +20,7 @@ struct CLI {
 }
 
 fn main() {
-    let args = CLI::parse();
+    let args = GreetingCLI::parse();
     for name in &args.names {
         println!("{}, {}!", args.greeting, name);
     }

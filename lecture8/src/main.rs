@@ -9,7 +9,12 @@
 // Just for this lecture: allowing warnings, since we wrote a lot of
 // illustrative / playground code
 #![allow(dead_code, unused_variables)]
-#![allow(clippy::unused_unit, clippy::unnecessary_cast, clippy::needless_return)]
+#![allow(
+    clippy::unused_unit,
+    clippy::unnecessary_cast,
+    clippy::needless_return,
+    clippy::vec_init_then_push,
+)]
 
 /*
     Tour of Cargo
@@ -418,6 +423,7 @@ pub fn references() {
     // add1(r);
 }
 
+#[allow(clippy::let_unit_value)]
 pub fn unit_type() {
     // Implicitly this is the same as:
     // pub fn unit_type() -> ()
@@ -432,12 +438,11 @@ pub fn unit_type() {
 #[allow(clippy::while_immutable_condition)]
 pub fn while_loop(b: bool) {
     while b {
-        unimplemented!()
+        println!("Infinite loop");
     }
 
     loop {
-        println!("Infinite Loop");
-        // Do things.
+        println!("Another infinite loop");
     }
 }
 
