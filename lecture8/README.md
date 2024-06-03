@@ -68,3 +68,49 @@ There are also introductory slides in
 `Intro_Slides.pdf` and `Ownership_Slides.pdf`,
 for reference if needed.
 But we will start with the live coding part.
+
+## Day 26
+
+Announcements:
+
+- HW4 due today!
+  + Office hours at 4pm
+
+- HW5 (optional extra credit) due Thursday
+
+- I hope you all had a chance to watch the recorded lecture!
+  (It also has a poll)
+
+- Makeup option, and all participation polls due Monday, June 10!
+
+Plan:
+
+- Poll
+
+- Recap introduction to Rust
+
+- Cover ownership in Rust (at a high level)
+
+- Next time: course review.
+
+Questions about HW4 or Friday's lecture?
+(Let's hold off on questions about the final until Wednesday)
+
+### Poll (June 3)
+
+On Friday, we introduced safety properties.
+
+Which of the following are examples of safety properties?
+(options in the form below)
+
+https://forms.gle/rBqqug81VYmzSJao7
+https://tinyurl.com/4pnhncep
+
+### Poll (June 5)
+
+I will go ahead and post the last poll, for next time (June 5).
+Feel free to complete this ahead of time.
+We will not look at the results in class today.
+
+https://forms.gle/TsUK9w3SwTEFAt7e7
+https://tinyurl.com/27c6yx9z
