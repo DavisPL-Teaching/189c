@@ -21,6 +21,7 @@
     .rs files in your src/ folder.
 */
 pub mod intro;
+pub mod ownership;
 pub mod syntax;
 
 /*
@@ -34,7 +35,7 @@ pub mod syntax;
 fn main() {
     println!("Hello, ECS 189C!");
 
-    // Call into functions in syntax.rs
+    // ===== Space to call functions in syntax.rs =====
 
     // syntax::machine_types();
 
@@ -47,4 +48,24 @@ fn main() {
     // syntax::slices();
 
     // syntax::strings();
+
+    // ===== Space to call functions in ownership.rs =====
+
+    // println!("Printing a vec:");
+    // print_vec_1(vec![1, 3, 5, 7]);
+    // print_vec_2(vec![1, 3, 5, 7]);
+
+    // // let name = String::from("Caleb");
+    // // let place1 = String::from("Philadelphia");
+    // // let place2 = String::from("Mars");
+    // // "Philadelphia" and "Mars" are &str values
+    // // bad_print(name, places_lived);
+    // // // bad_print(name, places_lived); // doesn't work
+    // let name = "Caleb";
+    // let mut places_lived = vec!["Philadelphia", "Mars"];
+    // good_print(&name, &places_lived);
+    // good_print(&name, &places_lived);
+    // // Modify places_lived here
+    // places_lived.push("The Moon");
+    // good_print(&name, &places_lived);
 }

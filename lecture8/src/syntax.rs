@@ -2,6 +2,8 @@
     More Rust!
 
     Introduction to basic syntax, types, and expressions
+
+    Adapted from my Rust course: https://github.com/upenn-cis198/lecture2
 */
 
 /*
