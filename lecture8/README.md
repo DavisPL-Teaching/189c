@@ -94,7 +94,6 @@ Plan:
 - Next time: course review.
 
 Questions about HW4 or Friday's lecture?
-(Let's hold off on questions about the final until Wednesday)
 
 ### Poll (June 3)
 
