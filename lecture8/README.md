@@ -100,6 +100,12 @@ Questions about HW4 or Friday's lecture?
 
 On Friday, we introduced safety properties.
 
+- A **safety property** is a spec of the following form:
+  when the program is run, a "bad" event never occurs.
+
+  I.e.: there is some set of bad states X, and
+  when the program is run, a state in X never occurs.
+
 Which of the following are examples of safety properties?
 (options in the form below)
 
