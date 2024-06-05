@@ -8,7 +8,7 @@ Announcements:
 
 - HW4 grading is in progress!
   We are aiming to finish the main grading by Friday,
-  style points by Saturday
+  style points (/10) by Saturday
 
 - The following are due by Monday, June 10:
     + makeup option
@@ -21,7 +21,10 @@ Questions about HW5?
 
 Plan:
 
-- Go over the poll (link provided last time)
+- Go over the poll
+    (Reposting the link:)
+    https://forms.gle/TsUK9w3SwTEFAt7e7
+    https://tinyurl.com/27c6yx9z
 
 - Go over study guide list of topics
 
@@ -30,7 +33,7 @@ Plan:
 ## Final exam information
 
 **Wednesday, June 12, 6pm** (as in schedulebuilder)
-I will post the room on Piazza.
+- In the same room as class
 
 Study sheet: you can bring 1 study sheet, single sided please!
 - I will collect your study sheets with the exam
