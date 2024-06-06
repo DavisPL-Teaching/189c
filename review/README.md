@@ -11,13 +11,11 @@ Announcements:
   style points (/10) by Saturday
 
 - The following are due by Monday, June 10:
-    + makeup option
+    + Makeup option
     + ALL in-class polls
     + ALL regrade requests
 
 - My office hours are today 315-415
-
-Questions about HW5?
 
 Plan:
 
@@ -30,6 +28,8 @@ Plan:
 
 - Open forum for questions + topics you want to review!
 
+Questions about the plan or about HW5?
+
 ## Final exam information
 
 **Wednesday, June 12, 6pm** (as in schedulebuilder)
@@ -37,6 +37,8 @@ Plan:
 
 Study sheet: you can bring 1 study sheet, single sided please!
 - I will collect your study sheets with the exam
+- Can be printed (no restrictions on font size)
+- Feel free to share your study sheet with your friends and classmates
 
 Study resources:
 - I have compiled a list of topics + example question formats
@@ -49,3 +51,4 @@ Study resources:
     + Some example questions (I will announce on Piazza)
 
 Syllabus reminders: final exam is 35% of your grade, closed book, curved
+study

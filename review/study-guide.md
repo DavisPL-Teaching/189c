@@ -13,15 +13,23 @@
 - Writing specifications
   + assume and assert
   + preconditions and postconditions
-  + specifications that go beyond logical assertions:
+  + specifications that go beyond assume/assert/precond/postcond:
     "function does not terminate"
     "function is pure"
     "function does not print to stdout"
     etc.
 
+
 - Methods of validating specifications
   + testing with Hypothesis
   + limitations of Hypothesis
+
+- Facts about specifications:
+    + Any (pre, postcondtion) pair is a specification, but not necessarily
+      vice versa
+    + All safety properties are specifications, but not necessarily vice versa
+    + There may be more than one valid spec for the same program!
+    + There may be more than one valid way to write pre/postconditions
 
 ### Example question formats:
 
@@ -30,11 +38,13 @@ Writing specs:
 - Which of the following are examples of specifications?
 - Here is a program, write
     + A valid specification
-    + The strongest possible specification on the output
+        (Note: syntax is not important, but your answer should be conceptually valid)
+    + The strongest possible postcondition on the output
+        Checks every piece of data in the output
 
 Pre/postconditions:
 - Is the program correct with respect to this pre/postcondition?
-- Which of the following preconditions are valid?
+- Which of the following preconditions are valid for this program and postcondition?
 
 Assume/assert:
 - Is the program correct given the assume() and assert() statements?
@@ -45,6 +55,7 @@ Hypothesis
 - Here is a Hypothesis test, what happens when it is run?
 - How does Hypothesis work?
     + what definition of correctness Hypothesis uses
+        + assume, assert, preconditions, postconditions
     + random generation
     + how assume and assert are handled
 - Limitations of Hypothesis
@@ -69,7 +80,8 @@ Hypothesis
   + Strings, Regex
 
 - Techniques
-  + What to do when Z3 fails to solve a problem
+  + 3 possible outputs (SAT, UNSAT, UNKNOWN)
+  + What to do when Z3 fails to solve a problem (returns UNKNOWN or times out)
 
 - Limitations
 
@@ -95,20 +107,13 @@ Regular expressions
 Z3:
 - Here is some Z3 code, what will happen when it is run?
   (you may assume that it does not timeout or return unknown)
-- Which of the following are reasons Z3 may return unknown?
-- Which of the following are reasons Z3 may time out?
+- Which of the following are reasons Z3 may return unknown / timeout?
 - Which of the following are limitations of Z3?
 
 ## Module 3: Dafny and formal verification
 
 What is formal verification?
 - Reasons you might want to use formal verification
-
-Weakest preconditions and strongest postconditions
-- Definition
-- What it means to be "weaker" or "stronger"
-    + of a specification?
-    + of a precondition or postcondition
 
 Abstraction in Dafny and how Dafny works
 - What is abstraction in Dafny?
@@ -119,16 +124,44 @@ Abstraction in Dafny and how Dafny works
     + postconditions
     + assume/assert
 - why assume is dangerous
+    + assume false anywhere, and then prove and assertion/postcondition
 - verification phase vs run/build phase
-- compilation targets
+- Dafny can compile to other languages (e.g., Python)
+
+Dafny advantages/disadvantages
+
+More advanced concepts:
+
+Weakest preconditions and strongest postconditions
+- Definition
+- What it means to be "weaker" or "stronger"
+    + of a precondition or postcondition
+        weaker = true for more inputs/outputs
+        stronger = true for fewer inputs/outputs
+        weakest of ALL conditions? = true
+        strongest of ALL conditions? = false
+    + of a specification?
+        weaker = true for more programs
+        stronger = true for fewer programs
+    + counterintuitive fact that came up in the Hypothesis module:
+        weaker precondition ==> stronger spec
+        stronger precondition ==> weaker spec
+        weaker postcondition ==> weaker spec
+        stronger postcondition ==> stronger spec
+
+Weakest precondition =
+    "Describe the (set) of all inputs such that after running the program,
+    the postcondition holds"
+
+Strongest postcondition =
+    "Describe the (set) of all outputs that are possible after running
+     the program on an input satisfying the precondition"
 
 Loop invariants
 - Three properties of a loop invariant
 - Who writes the loop invariant? (The user)
 - Dafny infers weakest preconditions / strongest postconditions
   in order to prove assertions, but does not infer loop invariants
-
-Dafny advantages/disadvantages
 
 ### Example question formats:
 
