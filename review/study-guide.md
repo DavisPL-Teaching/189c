@@ -188,7 +188,7 @@ Which of the following is a valid loop invariant?
 Write a loop invariant for this piece of code.
     (Same notes as above)
 
-## Module 4: Rust
+## Module 4: Rust and Safety Properties
 
 I will only ask you very basic questions about Rust -- see the last two polls.
 
