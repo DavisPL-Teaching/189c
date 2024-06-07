@@ -7,37 +7,59 @@
 Come up with a property that is true about the `square_root` function.
 It should be more interesting than just the behavior on a single input. You can describe it in code or using words.
 
-TODO add function
+```
+from math import sqrt
+
+def square_root(x):
+    return int(sqrt(x))
+```
 
 ### April 8
 
-For each program (P1, P2, P3), select all specifications (s1, s2, s3, s4) that it satisfies.
+Here are 3 programs, and 4 specifications. For each program, which
+specification(s) does it satisfy?
+For all programs, assume that the input is an arbitrary integer.
 
+Programs:
 ```
-P1 (returns x + 1)
-P2 (returns x + x)
-P3 (returns x * x + 1)
+def p1(x):
+    return x + 1
+def p2(x):
+    return x + x
+def p3(x):
+    return x * x + 1
 ```
 
+Specifications:
 ```
-s1: type(p(x)) is int
-s2: p(x) > x
-s3: p(x) == x * x
-s4: p(1) == 2
+def s1(x):
+    assert type(p(x)) is int
+def s2(x):
+    assert p(x) > x
+def s3(x):
+    assert p(x) == x * x
+def s4(x):
+    assert p(1) == 2
 ```
 
 ### April 10
 
 Is sort_list correct according to the spec?
 
+Program:
+```
+def sort_list(l):
+    l = l.copy()
+    return l
+```
+
 Spec:
 ```
 @given(st.lists(st.integers()))
 def test_sort_list(l):
-     assert sort_list(l) == sorted(l)
+    assume(l == sorted(l))
+    assert sort_list(l) == sorted(l)
 ```
-
-TODO
 
 ### April 12
 
@@ -214,9 +236,72 @@ method TestDouble()
 9. requires (x == 5 ==> y == 10)
 10. ensures (x == 5 ==> y == 10)
 
-### TODO
+### May 20
 
-TODO
+Consider the following function:
+
+```
+method birthday(age: int) returns (new_age: int)
+{
+     return age + 1;
+}
+```
+
+1. What is StrongestPostcondition(age >= 0) ?
+
+2. What is WeakestPrecondition(new_age == age + 1 && new_age >= 0)?
+
+### May 22
+
+Which of the following is a correct description of the Weakest Precondition WP(program, Q) (where Q is the postcondition)?
+
+- Describes the set of all inputs such that running the program on that input does not generate an error
+- Describes the set of all inputs such that running the program on that input terminates
+- Describes the set of all possible inputs such that after running the program, the output satisfies Q
+- Describes the set of all possible outputs of the program after running on an input satisfying Q
+- Describes the set of all possible outputs of the program, other than those outputs satisfying Q
+
+## May 24
+
+Write a loop invariant for `CopyInt`.
+```
+method CopyInt(a: nat) returns (b: nat)
+    ensures b == a
+{
+    var i := a;
+    b := 0;
+    while i > 0
+    // invariant ...
+    {
+        i := i - 1;
+        b := b + 1;
+    }
+}
+```
+
+### May 29
+
+Under which of the following circumstances is "false" a valid loop invariant?
+(select all that apply)
+
+- If the precondition is "true"
+- If the precondition is "false"
+- If the postcondition is "true"
+- If the postcondition is "false"
+- If the loop body is empty
+- If the entire loop block is unreachable code
+
+### May 31
+
+Which of the following can be considered a major disadvantage of using Dafny? (Select all that apply)
+
+- If Z3 returns SAT/COUNTEREXAMPLE, then Dafny may fail to prove a spec even if it's true
+- If Z3 returns UNSAT/PROVED, then Dafny may fail to prove a spec even if it's true
+- If Z3 returns UNKNOWN, then Dafny may fail to prove a spec even if it's true
+- When using formal verification it is possible to prove wrong results
+- Loop invariants cannot be generated automatically by the Dafny verification engine and have to be written by hand
+- Formal verification can be very effort intensive
+- Programs must be written in Dafny and can't be integrated into an existing Python or C code base
 
 ## Module 4: Rust and Safety Properties
 
