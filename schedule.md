@@ -34,20 +34,20 @@ I will try to keep it up to date, but please see Piazza for the latest informati
 | 7 | May 13 | Dafny I: Formal Verification | HW3 due | 6 |
 |   | May 15 | Dafny II |  | 6 |
 |   | May 17 | Dafny III |  | 6 |
-| 8 | May 20 | Dafny IV |  | 7 |
+| 8 | May 20 | Dafny IV |  | 6 |
 |   | May 22 | Dafny V |  | 7 |
 |   | May 24 | Dafny VI |  | 7 |
 | 9 | **No Class** (Memorial Day) |  |  |  |
-|   | May 29 | Rust I: Types and Safety Properties |  | 8 |
-|   | May 31 | Rust II |  | 8 |
+|   | May 29 | Dafny VII |  | 7 |
+|   | May 31 | Rust I: Safety Properties |  | 8 |
 
 ## Section 3: Advanced Topics and Review
 
 | Week | Date | Topic | Readings & HW | Lecture # |
 | --- | --- | --- | --- | --- |
-| 10 | June 3 | Rust III | HW4 due | 8 |
-|    | **Last day of class** -- June 5 | Course review |  | 9 |
-|    | June 7 | HW5 due? (TBD) |  |  |
+| 10 | June 3 | Rust II | HW4 due | 8 |
+|    | **Last day of class** -- June 5 | Course review |  |  |
+|    | June 6 (Thursday) | HW5 due (optional) |  |  |
 | 11 | June 10 | Last day to submit make-up assignments |  |  |
 |    | **Final** -- June 12 |  |  |  |
 
