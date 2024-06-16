@@ -70,20 +70,20 @@ See `schedule.md`.
 ## Grade Breakdown
 
 The following are minimum cutoffs: if your grade is above the given percentage, you will definitely receive at least the given grade. However, I reserve the right to lower the cutoffs (i.e. you might get a better grade than what the table says).
-Additionally, note that the final exam will be curved (see below), and this may also positively affect your final grade.
+This will be used to correct for if assignments or the final were harder than expected.
 
 | Percentage | Minimum Grade |
 | --- | --- |
-| 94 | A  |
+| 93 | A  |
 | 90 | A- |
 | 87 | B+ |
-| 84 | B  |
+| 83 | B  |
 | 80 | B- |
 | 77 | C+ |
-| 74 | C  |
+| 73 | C  |
 | 70 | C- |
 | 67 | D+ |
-| 64 | D  |
+| 63 | D  |
 | 60 | D- |
 
 ## Grading
