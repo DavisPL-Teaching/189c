@@ -46,6 +46,7 @@ While there are no official prerequisites, the following are unofficial requirem
 
 - A basic programming background (for example, the ability to write a program like [FizzBuzz](https://www.hackerrank.com/challenges/fizzbuzz/problem)) will be expected. (ECS 36A/36B/36C)
 - Some familiarity with discrete mathematics or mathematical proofs (e.g. ECS 20) will be helpful, but not required.
+- Some background in formal logic (like PHIL 12 or PHIL 112) is helpful, but not required.
 
 ## Learning Objectives
 
