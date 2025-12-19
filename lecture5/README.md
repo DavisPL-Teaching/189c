@@ -1,5 +1,7 @@
 # Lecture 5: Advanced Z3
 
+**Please note: This lecture has not yet been updated for winter quarter 2026.**
+
 Plan:
 - Strings and regular expressions
 

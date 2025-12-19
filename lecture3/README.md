@@ -1,5 +1,7 @@
 # Lecture 3: Z3 and Satisfiability
 
+**Please note: This lecture has not yet been updated for winter quarter 2026.**
+
 ## Announcements
 
 - HW0 and in-class polls can be made up for full credit at any point during the quarter -- no need to email me.

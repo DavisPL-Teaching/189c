@@ -1,5 +1,7 @@
 # Lecture 4: Z3 Applications
 
+**Please note: This lecture has not yet been updated for winter quarter 2026.**
+
 ## Announcements
 
 - HW2 is out! Due Friday, May 3 (11:59pm)

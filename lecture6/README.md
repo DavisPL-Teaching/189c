@@ -1,5 +1,7 @@
 # Lecture 6: Formal Verification in Dafny
 
+**Please note: This lecture has not yet been updated for winter quarter 2026.**
+
 (Day 18 and the following days)
 
 This lecture begins the second half of the course!

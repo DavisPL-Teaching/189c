@@ -1,5 +1,7 @@
 # Lecture 2: More complex specifications
 
+**Please note: This lecture has not yet been updated for winter quarter 2026.**
+
 ## Announcements
 
 - HW0 is due today 11:59pm

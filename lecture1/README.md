@@ -1,5 +1,7 @@
 # Lecture 1: Introduction to Correctness
 
+**Please note: This lecture has not yet been updated for winter quarter 2026.**
+
 ## Announcements
 
 1. Homework 0 is out, due Monday 11:59pm

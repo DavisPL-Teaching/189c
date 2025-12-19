@@ -1,5 +1,7 @@
 # Lecture 7: Loops and Recursion
 
+**Please note: This lecture has not yet been updated for winter quarter 2026.**
+
 A.k.a.: the missing piece of the puzzle:
 Verifying general code with loop invariants!
 
