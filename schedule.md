@@ -1,4 +1,4 @@
-# Schedule
+# Tentative Schedule
 
 **TBD: The schedule has not yet been updated for winter quarter 2026.**
 
@@ -48,13 +48,11 @@ I will try to keep it up to date, but please see Piazza for the latest informati
 | Week | Date | Topic | Readings & HW | Lecture # |
 | --- | --- | --- | --- | --- |
 | 10 | June 3 | Rust II | HW4 due | 8 |
-|    | **Last day of class** -- June 5 | Course review |  |  |
+|    | **Last day of class** -- June 5 | Course review or advanced topics[^1] |  |  |
 |    | June 6 (Thursday) | HW5 due (optional) |  |  |
 | 11 | June 10 | Last day to submit make-up assignments |  |  |
 |    | **Final** -- June 12 |  |  |  |
 
 ## Notes
-
-Advanced topics[^1] was skipped due to time.
 
 [^1]: Possible advanced topics: polymorphism, concurrency, distributed systems, security properties
