@@ -1,3 +1,5 @@
 # Lecture 0: Introduction to the course
 
-**Please note: This lecture has not yet been updated for winter quarter 2026.**
+This folder contains the slides (covered on Tuesday, January 6) and demos (will be covered at the start of class on January 8).
+
+Lecture notes will be posted before/after each lecture on GitHub!
