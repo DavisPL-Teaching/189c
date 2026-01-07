@@ -7,8 +7,8 @@ method IsEven(x: int) returns (y: bool)
     // ===== Definition of correctness 1 =====
     // (Definition of correctness == Specification)
     // The program should return whether x is even on all inputs
-    requires true
-    ensures y == (x % 2 == 0)
+    // requires true
+    // ensures y == (x % 2 == 0)
     // ===== Definition of correctness 2 =====
     // The program should return whether x is even on all inputs between 0 and 5
     // requires x >= 0

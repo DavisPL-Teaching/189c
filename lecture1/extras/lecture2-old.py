@@ -42,7 +42,6 @@ def s3(x):
 def s4(x):
     assert p(1) == 2
 
-# FORM: https://tinyurl.com/2p79r6y6
 
 ######################
 ###     Part 1     ###
@@ -203,9 +202,6 @@ def sort_list(l):
 def test_sort_list(l):
     assume(l == sorted(l))
     assert sort_list(l) == sorted(l)
-
-# Form:
-# https://forms.gle/fGggQAeCj8y1obnX7
 
 """
 
@@ -411,9 +407,6 @@ Which of the following has no effect? (Select all that apply)
 2. assert False
 3. assume True
 4. assume False
-
-https://forms.gle/KQivFbEyYNfxf2d48
-https://tinyurl.com/3frmvxc8
 """
 
 """
