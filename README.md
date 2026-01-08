@@ -28,7 +28,7 @@ Welcome to ECS 189C!
 I often lecture via live coding. I will post the code and lecture materials in this repository.
 To follow along with the lectures, clone the repository:
 ```shell
-git clone git@github.com:DavisPL-Teaching/189.git
+git clone git@github.com:DavisPL-Teaching/189c.git
 ```
 
 If you make changes to the code after each lecture, you will need to discard them before pulling again.
