@@ -39,7 +39,6 @@ fundamentally important to testing & verification.
 Assert and assume interact in interesting ways...
 
 Poll:
-https://forms.gle/cr5DYBDo3nTbB2oK6
 
 Which of the following has no effect? (Select all that apply)
 - assert True

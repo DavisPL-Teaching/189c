@@ -4,14 +4,18 @@ ECS 189C
 
 Part 1: Writing Specifications
 
-=== Intro ===
+=== Program specifications ===
 
-Recall from lecture 0:
-Q: why do we need specifications?
-A:
+A specification is any true or false property about a program.
 
-You may not know it, but you write specifications every day while programming!
-Every time you write an "assert" statement or a unit test, you are writing a specification:
+- By "program", at this stage, just think of this as any function in Python.
+
+Any given program either "satisfies" the specification (i.e., the property is true for that program, or does not satisfy the specification, i.e. the property is false for that program.
+
+Some programs satisfy the property (spec), others don't.
+Like an answer key for a test question.
+
+Recall the is_even function from Lecture 0:
 """
 
 def is_even(x):
@@ -26,50 +30,20 @@ def is_even(x):
     else:
         return False
 
-import pytest
-
-# Unit test
-# Comment out to run
-@pytest.mark.skip
-def test_is_even(x):
-    # This is a specification!!
-    assert is_even(4)
-    assert not is_even(3)
-    # This is also a specification!!
-    assert is_even(6)
-
-# run: pytest 1-specifications.py
-
 """
-Unit testing is helpful!
-But it only lets us test the code on finitely many inputs.
-Recall the definition some of you came up with last time
-for what is_even *should* do.
+=== Discussion Question and Poll ===
 
-Can unit testing express this?
+Which of the following is not a specification for the is_even function, according to the above definition?
+Select all that apply.
 
-Let's generalize...
-
-=== Program specifications ===
-
-A specification is any true or false property about a program.
-
-- By "program", at this stage, just think of this as any function in Python.
-
-Any given program either "satisfies" the specification (i.e., the property is true for that program, or does not satisfy the specification, i.e. the property is false for that program.
-
-Some programs satisfy the property (spec), others don't.
-Like a blueprint for a house, or an answer key for a test question.
-
-We saw examples on today's poll:
-https://forms.gle/AG5XoCkBiiGKK7WZA
+https://forms.gle/A1F35xpv73Pw3jhy8
 """
 
 # Specifications in natural language
 # SPECIFICATION:
 # On all inputs x, is_even(x) should return whether or not x is even.
 # On inputs x that are ...,
-def is_even(x):
+def is_even_2(x):
     """
     (Docstring)
 
@@ -89,17 +63,41 @@ def is_even(x):
     pass
 
 """
-=== Exploring specifications ===
+You may not know it, but you write specifications every day while programming!
+Every time you write an "assert" statement or a unit test, you are writing a specification.
 
-So we've written a specification. What can we do  next?
+Example:
+"""
 
-Hypothesis is a nice tool we can use to explore specifications,
+import pytest
+
+# Unit test
+# Comment out to run
+@pytest.mark.skip
+def test_is_even(x):
+    # This is a specification!!
+    assert is_even(4)
+    assert not is_even(3)
+    # This is also a specification!!
+    assert is_even(6)
+
+# run: pytest 1-specifications.py
+
+"""
+Unit testing is helpful!
+Unit testing can be considered a form of writing specifications.
+(Why?)
+
+=== Writing specifications ===
+
+We will use Hypothesis for the first part of the course.
+
+We can use Hypothesis tog et practice writing specifications,
 before diving into the later parts of the course.
 
+Specifications in natural language alone are not very useful!
 Hypothesis uses a technique called *random testing* to try to identify
 whether specs are true or false.
-Using Hypothesis will help us get experience with writing and testing
-specifications.
 
 === Hypothesis ===
 
@@ -241,7 +239,9 @@ Ties back to the question earlier:
      all inputs.)
 
     This is what makes Hypothesis a **testing** tool, rather than **verification.**
+"""
 
+"""
 === Recap ===
 
 1. We defined a "program specification" as any true or false property of a program
@@ -252,10 +252,10 @@ Ties back to the question earlier:
 (useful for software testing)
 
 4. Difference between testing & verification: Testing = try some inputs, verification (where we're eventually going) = actually determine whether the spec holds on **all** inputs, not just some inputs.
-"""
 
-"""
-Do all programs have specifications?
+=== Philosophical discussion ===
+
+To determine if our code is correct, we need a specification!
 
     remember the car example and chess program (Stockfish) examples!
     What does it mean for a program to be "correct"?

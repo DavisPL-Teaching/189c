@@ -1,38 +1,15 @@
 """
-===== Thursday, April 10 =====
+Lecture 1, Part 3:
+Types of Specifications
 
-From last time, a specification denotes a set of programs:
+=== Intro ===
 
-    ⟦ Spec ⟧ ∈ 2^Prog
+From last time: S1 is stronger than S2 if
+all programs satisfying S1 also satisfy S2.
 
-    ^ read: denotation of a spec is a subset of all programs.
+"stronger than" works how you would expect! for example:
 
-    Spec is written in some grammar
-    Prog is the set of all programs written in some grammar
-
-S1 is stronger than S2 if:
-
-    ⟦ S1 ⟧ ⊆ ⟦ S2 ⟧
-
-Observation:
-
--  "Stronger than" is a mathematical partial order on specifications.
-    (Actually a preorder)
-    (This means... it's transitive and reflexive)
-
-    1. For all S1, S2, S3, if ⟦ S1 ⟧ ⊆ ⟦ S2 ⟧ and ⟦ S2 ⟧ ⊆ ⟦ S3 ⟧ then ⟦ S1 ⟧ ⊆ ⟦ S3 ⟧.
-
-    2. For all S, ⟦ S ⟧ ⊆ ⟦ S ⟧
-
-Fun exercise (thanks to a student after class last time!)
-
-- Show that the partial order is countable, has infinite width, and has infinite height.
-
-Another exercise:
-
-- Define a similar partial order on programs: P1 *refines* P2 if all specs true of P1 are true of P2.
-
-  Is this partial order interesting or is it trivial?
+- If S1 is stronger than S2 and S2 is stronger than S3, then S1 is stronger than S3.
 """
 
 """
@@ -40,16 +17,19 @@ Another exercise:
 
 Our definition of "specification" is very broad:
 
-    ⟦ Spec ⟧ ∈ 2^Prog
+    "any true or false property"
 
 this is very useful! But it is also not very specific.
 
 In practice, we need our specification to be understandable to the tool we are using...
     i.e.: written in a more specific grammar
 
+Ex:
+
 - Hypothesis only understands specs using @given annotations on pytests (+ assert and assume)
 
-- Verification tools like Z3 and Dafny only understand specs written in formal logic
+- Foreshadowing:
+  Verification tools like Z3 and Dafny only understand specs written in formal logic
   (typically, first-order logic)
 
 Here are some examples (some previous and some new ones) on integer_sqrt:
@@ -212,8 +192,7 @@ We typically express functional correctness using...
 
 A pre/postcondition spec has the following form:
 
-    precondition: P: Input -> Bool
-    postcondition: Q: Output -> Bool
+    P and Q: Boolean properties
 
     - if P is true before executing the program, and we execute f,
       Q is true after.
@@ -222,14 +201,6 @@ A pre/postcondition spec has the following form:
 
 All functional correctness specs can be written using preconditions
 and postconditions!
-
-Q: Why do we need preconditions?
-
-    can't we do:
-    if y = f(x) then (P(x) -> Q(y)) is true?
-
-    Yes that encoding works but doesn't allow us to talk about the
-    state of the program before executing it.
 """
 
 # Classic example: Division by zero
@@ -268,7 +239,15 @@ def test_divide(x, y):
 # is > 0.
 
 """
-Exercise (skip for time):
+Q: Why do we need preconditions?
+
+    can't we do:
+    if y = f(x) then (P(x) -> Q(y)) is true?
+
+    Yes that encoding works but doesn't allow us to talk about the
+    state of the program before executing it.
+
+Exercise (time permitting)
 Rewrite the examples 1-7 using preconditions/postconditions
 
 Even if you have not heard of the word "precondition",

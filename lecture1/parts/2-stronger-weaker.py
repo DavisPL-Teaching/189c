@@ -62,7 +62,7 @@ def integer_sqrt(n):
 # 3. Check the specification
 # This step will depend on the tool.
 # As a Hypothesis test: - @given annotation and a unit test.
-@pytest.mark.skip
+@pytest.mark.skip # comment out to run
 @given(st.integers(min_value=0, max_value=10_000))
 def test_integer_sqrt(n):
     ans = integer_sqrt(n)
@@ -74,10 +74,6 @@ def test_integer_sqrt(n):
 
 """
 === Checking our understanding ===
-
-Before we run the code, let's do a poll.
-
-https://forms.gle/eGnEDsmnmjEVH8ZB9
 
 True/False
 - The function integer_sqrt satisfies the specification we wrote in test_integer_sqrt.
@@ -140,16 +136,23 @@ Special cases:
 And all of our other examples so far (e.g., the spec is_even, test_integer_srt, etc.
 are somewhere in between the two extremes.)
 
-=== Second poll ===
+=== Exercise ===
 
 Let's sort the above specifications by which is stronger/weaker than the others.
 
 Let's do this poll together as a class.
-(But still submit it on your own machines)
 
-https://forms.gle/F4mfmfGvJC1FVVu89
+1. If the input to integer_sqrt is a nonnegative integer, then the output is an integer.
+2. If the input to integer_sqrt is a positive integer, then the output is an integer.
+3. True (true of all programs)
+4. False (false of all programs)
+5. The input arguments are not modified by the program.
+6. If the input is greater than 100, then the output is greater than 10.
+7. If the input is greater than or equal to 100, then the output is greater than or equal to 10.
+"""
 
-Exercise:
+"""
+Additional Exercise:
 
 - Pick one of the rows/columns in the above poll
 (an example pair where one program is stronger than the other),
