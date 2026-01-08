@@ -1,7 +1,7 @@
 # Lecture 1: Program Specifications
 
-This lecture will cover program specifications --
-what they are, writing them, and program testing with Hypothesis.
+This lecture will cover program specifications
+and program testing with Hypothesis.
 
 ## Thursday, January 8
 
@@ -34,4 +34,4 @@ To follow along:
 
     + `code .` to open in VSCode
 
-- For each lectuer, do a `git stash`, `git pull` to get the latest lecture notes.
+- For each lecture, do a `git stash`, `git pull` to get the latest lecture notes.
