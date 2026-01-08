@@ -179,9 +179,7 @@ def average(l):
 # @pytest.mark.skip
 # @settings(verbosity=3)
 def test_average(xs):
-    xs_min = min(xs)
-    xs_max = max(xs)
-    xs_avg = average(xs)
+    # Fixed version from lecture
     EPSILON = .00000001
     assert min(xs) - EPSILON <= average(xs) <= max(xs) + EPSILON
 

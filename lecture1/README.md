@@ -14,7 +14,8 @@ Announcements:
     + Installation help on Monday 5pm!
 
     + We are happy to help with installation issues! Please post errors to Piazza.
-      We need to get all installation issues resolved by the HW0 deadline.
+
+    + We need to get all installation issues resolved by the HW0 deadline.
 
 Plan:
 
