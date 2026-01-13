@@ -26,6 +26,11 @@ Poll link: (TBD)
 
 """
 
+# Imports
+import pytest
+from hypothesis import given
+from hypothesis import strategies as st
+from hypothesis import settings
 
 """
 .
@@ -370,6 +375,8 @@ A sneak peak: preconditions can be written using "assume". This is what
 we will cover next.
 """
 
+from hypothesis import assume
+
 def divides_2(x, y):
     return x / y
 
@@ -381,9 +388,8 @@ ERROR = .000001
 )
 def test_divides_2(x, y):
     assume(y != 0) # assume statement!
-        result = divides_2(x, y)
-        assert (result * y - x < ERROR)
-
+    result = divides_2(x, y)
+    assert (result * y - x < ERROR)
 
 def divides_2(x, y):
     return x / y

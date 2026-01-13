@@ -10,6 +10,12 @@ What if we want to write it to include positive and negative integers,
 not only positive integers?
 """
 
+# Imports
+import pytest
+from hypothesis import given
+from hypothesis import strategies as st
+from hypothesis import settings
+
 from hypothesis import assume
 
 def divides_2(x, y):
