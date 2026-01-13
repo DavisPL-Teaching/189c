@@ -10,9 +10,30 @@ all programs satisfying S1 also satisfy S2.
 "stronger than" works how you would expect! for example:
 
 - If S1 is stronger than S2 and S2 is stronger than S3, then S1 is stronger than S3.
-"""
+
+=== Poll ===
+
+Sort the following specifications in Hypothesis by which row is stronger than each column.
+That is, check the box if the specification in that row is stronger than the specification in that column.
+
+1. @given(x==1 or x==2), assert f(x) = x
+2. @given(x==1), assert f(x) == x
+3. @given(x==2), assert f(x) == x
+4. @given(x==3), assert f(x) == x
+5. During the execution of the program f on any input x, f does not modify the value of x.
+
+Poll link: (TBD)
 
 """
+
+
+"""
+.
+.
+.
+.
+.
+
 === Types of Specifications ===
 
 Our definition of "specification" is very broad:
@@ -26,7 +47,10 @@ In practice, we need our specification to be understandable to the tool we are u
 
 Ex:
 
-- Hypothesis only understands specs using @given annotations on pytests (+ assert and assume)
+- Hypothesis only understands specs using @given annotations on pytests
+
+    - we will see later that Hypothesis supports specifications that can be written
+      using "assume" and "assert"
 
 - Foreshadowing:
   Verification tools like Z3 and Dafny only understand specs written in formal logic
@@ -304,11 +328,9 @@ ERROR = .000001
     st.integers(min_value = -100, max_value = 100),
 )
 def test_divides_2(x, y):
-    # could do e.g.:
-    # assume -100 <= y <= 100
-    assume(y != 0)
-    result = divides_2(x, y)
-    assert (result * y - x < ERROR)
+    if y != 0:
+        result = divides_2(x, y)
+        assert (result * y - x < ERROR)
 
 """
 With the precondition included, the spec says:
@@ -342,5 +364,37 @@ A: Yes
         so, you don't only have to assert things at the end.
 
 More general way of thinking about the
-kind of specifications that Hypothesis can support:
+kind of specifications that Hypothesis can support?
+
+A sneak peak: preconditions can be written using "assume". This is what
+we will cover next.
 """
+
+def divides_2(x, y):
+    return x / y
+
+ERROR = .000001
+
+@given(
+    st.integers(min_value = -100, max_value = 100),
+    st.integers(min_value = -100, max_value = 100),
+)
+def test_divides_2(x, y):
+    assume(y != 0) # assume statement!
+        result = divides_2(x, y)
+        assert (result * y - x < ERROR)
+
+
+def divides_2(x, y):
+    return x / y
+
+ERROR = .000001
+
+@given(
+    st.integers(min_value = -100, max_value = 100),
+    st.integers(min_value = -100, max_value = 100),
+)
+def test_divides_2(x, y):
+    if y != 0:
+        result = divides_2(x, y)
+        assert (result * y - x < ERROR)

@@ -283,7 +283,7 @@ def test_list_product(xs):
     # More interesting: check that our implementation
     # matches the standard/expected implementation.
 
-    # a form of spec: chcking whether one program is equivalent to another
+    # a form of spec: checking whether one program is equivalent to another
     assert list_product(xs) == reduce(lambda x, y: x * y, xs, 1)
 
 # pytest 1-specificcations.py passed - our implementation is correct!
@@ -331,8 +331,9 @@ Ties back to the question earlier:
 
 4. Difference between testing & verification: Testing = try some inputs, verification (where we're eventually going) = actually determine whether the spec holds on **all** inputs, not just some inputs.
 
-=== Philosophical discussion ===
+=== A philosophical point ===
 
+Recall from lecture 0:
 To determine if our code is correct, we need a specification!
 
     remember the car example and chess program (Stockfish) examples!

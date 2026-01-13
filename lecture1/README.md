@@ -36,3 +36,29 @@ To follow along:
     + `code .` to open in VSCode
 
 - For each lecture, do a `git stash`, `git pull` to get the latest lecture notes.
+
+## Tuesday, January 13
+
+Announcements
+
+- HW1 out - due next Friday 11:59pm
+
+    + Writing and testing specifications with Hypothesis
+      https://github.com/DavisPL-Teaching/189c-hw1
+
+    + OH: this Thu, Monday, next Thu
+
+- HW0 due today!
+
+Plan:
+
+- Finish philosophical point from part 1
+
+- Part 2:
+
+    Start with practice on the methodology (you will get similar practice on the HW),
+    then the poll, then stronger and weaker specifications.
+
+Following along:
+
+do a `git stash`, `git pull`.

@@ -4,7 +4,13 @@ Stronger and weaker specifications
 
 === Intro ===
 
-Recap on methodology so far:
+Recap: we know about
+    - spec: a true or false property of a program
+    - Python assertions are specifications!
+    - Hypothesis: a tool for writing and testing specifications
+    - testing vs. verification
+
+Methodology:
 
 1. We write a program
     (i.e.: what the program does)
@@ -24,6 +30,12 @@ Recap on methodology so far:
      E.g.: fuzzing = (a), static analysis = (b), typechecking = (b) and (c), etc.)
 """
 
+# Imports
+import pytest
+from hypothesis import given
+from hypothesis import strategies as st
+from hypothesis import settings
+
 """
 Let's practice this.
 (This time with a simpler example)
@@ -41,32 +53,23 @@ from math import sqrt
 
 # 1. Write the program
 def integer_sqrt(n):
-    # Ideas: binary search and check the square to see if it's greater than the target integer - keep narrowing search window until we hit the point
-    # where the current integer is the int square root
-    # Another idea: just call the sqrt function and round it down.
-    return int(sqrt(n))
+    # TODO: implement
+    raise NotImplementedError
 
-# 2. Write the specification
-# In plain English:
-# Suggestion: whatever the function returns, if we square it, we get n
-# This is the right idea but might not always work...
-# Input: 10, int(sqrt(10)) = 3, 3*3 = 9, not quite 10
-# Suggestion:
-# - if our answer is ans, we could look at ans^2 and (ans+1)^2
-# - The original integer n should be between ans^2 and (ans+1)^2
-# - In our example: 3^2 = 9 < 10 < 4^2 = 16
+# 2. Write the specification - first in English
+# TODO
+# ...
+# ...
+# ...
 
-# As a logical assertion:
-# assert ans * ans <= n and (ans + 1) * (ans + 1) > n
-
-# 3. Check the specification
+# 3. Translate the spec to Hypothesis and check
 # This step will depend on the tool.
 # As a Hypothesis test: - @given annotation and a unit test.
 @pytest.mark.skip # comment out to run
-@given(st.integers(min_value=0, max_value=10_000))
+# @given(st.integers(min_value=0, max_value=10_000))
 def test_integer_sqrt(n):
     ans = integer_sqrt(n)
-    assert (ans * ans <= n and (ans + 1) * (ans + 1) > n)
+    # assert ...
 
 # Some examples to try running the program
 # print(integer_sqrt(3))
@@ -77,7 +80,6 @@ def test_integer_sqrt(n):
 
 True/False
 - The function integer_sqrt satisfies the specification we wrote in test_integer_sqrt.
-- All functions that satisfy the specification in test_integer_sqrt are necessarily exactly equivalent to integer_sqrt.
 
 Which of the following additional specifications does integer_sqrt satisfy?
 1. The output of integer_sqrt is always an integer.
@@ -88,7 +90,20 @@ Which of the following additional specifications does integer_sqrt satisfy?
 6. If the input is greater than 100, then the output is greater than 10.
 7. If the input is greater than or equal to 100, then the output is greater than or equal to 10.
 
+https://forms.gle/7cYDGoNfLmtXD5Fa9
+
 Answers:
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
 
 (Let's run the code)
 
@@ -113,7 +128,11 @@ Definition.
 Let S1 and S2 be specifications
 
 - S1 is *stronger* than S2
-    if the set of programs satisfying S1 is a subset (or equal) to the set of programs satisfying S2
+    if every program satisfying S1 satisfies S2.
+
+    i.e.
+
+        if the set of programs satisfying S1 is a subset (or equal) to the set of programs satisfying S2
 
     Think of an example:
     "S1 = the output is 1"
@@ -123,7 +142,11 @@ Let S1 and S2 be specifications
     so S1 is stronger).
 
 - S1 is *weaker* than S2
-    if the set of programs satisfying S2 is a subset of the set of programs satisfying S1.
+    means the same thing as S2 is stronger than S1.
+
+    i.e.:
+
+        if the set of programs satisfying S2 is a subset of the set of programs satisfying S1.
 
 Special cases:
 
@@ -140,7 +163,8 @@ are somewhere in between the two extremes.)
 
 Let's sort the above specifications by which is stronger/weaker than the others.
 
-Let's do this poll together as a class.
+Let's do this exercise together as a class --
+if we don't finish it, we will do it as next time's poll.
 
 1. If the input to integer_sqrt is a nonnegative integer, then the output is an integer.
 2. If the input to integer_sqrt is a positive integer, then the output is an integer.
@@ -154,15 +178,8 @@ Let's do this poll together as a class.
 """
 Additional Exercise:
 
-- Pick one of the rows/columns in the above poll
-(an example pair where one program is stronger than the other),
-and write an example
-which satisfies one spec and not the other.
-
-- Pick one of the rows/columns in the above poll
-(an example pair where one program is NOT stronger than the other),
-and write an example
-which satisfies one spec and not the other.
+- For specifications 6 and 7, write an example program
+  which satisfies one spec and not the other.
 
 (The homework has some similar exercises!)
 """
@@ -171,41 +188,27 @@ which satisfies one spec and not the other.
 # 7. For all integer inputs x, If the input is greater than or equal to 100, then the output is greater than or equal to 10.
 
 # Between 6 and 7, is either one stronger?
-# - 6 is stronger than 7 iff all programs satisfying 6 also satisfy 7
-# Is there a program satisfying 6 but not 7?
 
 def prog_ex(x):
-    # Program returning 9 if the input is 100, otherwise returning 11
-    if x == 100:
-        return 9
-    else:
-        return 11
+    # TODO
+    raise NotImplementedError
 
 @given(st.integers(min_value=0, max_value=10_000))
+@pytest.mark.skip
 def test_prog_ex_spec_6(x):
-    y = prog_ex(x)
-    if x > 100:
-        assert y > 10
+    # TODO
+    raise NotImplementedError
 
 @given(st.integers(min_value=50, max_value=200)) # <- precondition
-# Mark as expected failure -
-@pytest.mark.xfail
+@pytest.mark.skip
 def test_prog_ex_spec_7(x):
-    y = prog_ex(x)
-    if x >= 100: # <- precondition
-        assert y >= 10 # <- postcondition
-
-# - 7 is stronger than 6 iff all programs satisfying 7 also satisfy 6
-# (Exercise)
-
-# @pytest.mark.skip
-# # @given(st.integers(min_value = , max_value = ))
-# def test_prog_ex_stronger():
-#     # TODO
-#     raise NotImplementedError
+    # TODO
+    raise NotImplementedError
 
 """
-The program we wrote satisfies spec 6 but not spec 7.
+The program we wrote should satisfy spec 6 but not spec 7.
+
+=== Problem? ===
 
 This reveals a problem with Hypothesis!
 Hypothesis tries random inputs, but in this case, it failed to try
@@ -216,6 +219,10 @@ One way to fix is (as we do above) by reducing the range of inputs we consider
 
 Another way to fix is by increasing the number of inputs we try (better - the
 homework shows how to do this, @settings(...))
+
+    @settings(max_examples=10_000)
+
+    (default is 100)
 
 But, this is a fundamental limitation of testing specifications,
 and is why we will turn to verifying them (i.e., actually proving
