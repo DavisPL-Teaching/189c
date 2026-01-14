@@ -2,6 +2,12 @@
 Lecture 1, Part 4:
 Assume and Assert
 
+Question:
+What are all possible specifications that can be expressed through
+tests?
+
+    ... through Hypothesis tests?
+
 ===== Assume and assert =====
 
 Going back to our divide by zero example.
@@ -26,6 +32,7 @@ def divides_2(x, y):
     st.integers(min_value = -1000, max_value = 1000),
 )
 @settings(max_examples=1000)
+@pytest.mark.skip
 def test_divide_2(x, y):
     # Assume statement!
     # Adds some constraint to the precondition.
@@ -54,6 +61,9 @@ Which of the following has no effect? (Select all that apply)
 - assert P if it occurs immediately following assume P
 - assume P if it occurs immediately following assert P
 
+Poll link:
+TBD
+
 Some of you may have picked up on the facts that:
 
 - preconditions are just assume() statements
@@ -78,11 +88,23 @@ def sort_list(l):
 
 # The spec:
 @given(st.lists(st.integers()))
+@pytest.mark.skip
 def test_sort_list(l):
     assume(l == sorted(l))
     assert sort_list(l) == sorted(l)
 
 """
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
 Multiverse view
 - Quantum bogosort:
     https://wiki.c2.com/?QuantumBogoSort
@@ -98,8 +120,7 @@ it to ensure the list is sorted?
 """
 
 """
-Now that we know about assume and assert,
-A more complete definition of specifications in Hypothesis:
+Punchline:
 
 Hypothesis can express exactly those specifications that are
 expressible using assume() and assert().
@@ -107,4 +128,13 @@ expressible using assume() and assert().
 - On all input executions such that all assume() statements
   hold up to a given point,
   all assert() statements hold after that point.
+
+- @given is functionally equivalent to an assume statement,
+  though it is implemented differently, using something called
+  "strategies"
+
+    import hypothesis.strategies as st
+    https://hypothesis.readthedocs.io/en/latest/reference/strategies.html
+
+- assume and assert can be used to write general program specifications and will reoccur in many of the tools covered in this class.
 """

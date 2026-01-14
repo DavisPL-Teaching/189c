@@ -20,10 +20,10 @@ That is, check the box if the specification in that row is stronger than the spe
 2. @given(x==1), assert f(x) == x
 3. @given(x==2), assert f(x) == x
 4. @given(x==3), assert f(x) == x
-5. During the execution of the program f on any input x, f does not modify the value of x.
+5. f does not crash on any input.
 
-Poll link: (TBD)
-
+Poll link:
+https://forms.gle/kAUYts452mbqSypD9
 """
 
 # Imports
@@ -57,9 +57,14 @@ Ex:
     - we will see later that Hypothesis supports specifications that can be written
       using "assume" and "assert"
 
+- Often: we use statements that are true *before* and *after*
+  a program executes. These are called preconditions and postconditions
+  (aka "programming by contract")
+
 - Foreshadowing:
-  Verification tools like Z3 and Dafny only understand specs written in formal logic
-  (typically, first-order logic)
+  Verification tools like Z3 and Dafny only understand specs written in formal logic syntax
+
+    forall, there exists, if-then, and, or, not, ...
 
 Here are some examples (some previous and some new ones) on integer_sqrt:
 
@@ -77,10 +82,6 @@ Here are some examples (some previous and some new ones) on integer_sqrt:
 
     # check x before and after the run
     Forall x0, if x = x0 then after f(x) is called (?) x = x0.
-
-    What if f modifies x, does something, and then changes it back?
-    A: We have no way of really getting a hold on this purely
-    using statements about what's true before and after f runs.
 
 4. If the input is greater than or equal to 100, then the output is greater than or equal to 10.
 
@@ -116,9 +117,6 @@ def test_int_sqrt_never_opens_a_file(x):
     raise NotImplementedError
 
 """
-Types of specs above?
-Try translating them to logical statements about a program f.
-
 Some questions:
 
 - Are all of these specifications expressible as Hypothesis tests?
@@ -138,72 +136,21 @@ The discussion about which are testable using Hypothesis might leave
 you wondering what properties exactly *can* be tested using Hypothesis
 (or easily tested in general)?
 
+===== Preconditions and Postconditions =====
+
 This raises an important distinction:
 
     For some of the specs above, we were able to write the spec
-    just thinking of the program as a mathematical function f
-    (like f(x) = x^2, f(x) = e^x, etc.)
-    only defined by its input-output behavior.
+    just thinking about what's true
+    before/after the program executes.
+
+    That is: thinking of a function only as defined by its
+    input-output behavior.
+
+===== Functional correctness =====
 
 - A **functional correctness** property is a spec which only depends
   on the set of all ordered pairs (x, y) such that f(x) = y.
-
-But even "True" and "False" are examples of this which aren't very useful.
-Also "if the input is an integer, then the output is an integer"
-isn't very useful.
-
-- A **full functional correctness** spec is one which exactly specifies
-    what f should do on every input.
-
-    That means: for all x, f(x) is exactly the value y
-    Or more formally our spec should satisfy a functional property like
-
-    Example: if we say "whenever x is an integer, f(x) is an integer", this doesn't define which integer it is!
-    but in our example:
-
-        "for all integers x, y = f(x) is an integer such that x * x <= y < (x + 1) * (x + 1)"
-
-    can actually show that there is only one such y.
-    So this is a full functional correctness spec.
-
-    For any f1, f2 satisfying the spec S, if f1(x) = y1 and f2(x) = y2
-    then y1 == y2.
-
-Two other special cases of specifications that turn out to be particularly useful
-(these are not functional correctness):
-
-These have to do with the behavior of the program when run
-(properties of the program trace):
-
-- A **safety property** states that "for all x, when f(x) is run,
-  some bad event X does not happen."
-
-    "the program doesn't read any files"
-    "the program doesn't modify its input x"
-
-- A **liveness property** states that "for all x, when f(x) is run,
-  some good event X does happen."
-
-    "f(x) does terminate"
-
-(Neither of these can be specified using functional correctness.)
-
-Are the above all possible specifications?
-No! We can imagine much more interesting cases...
-    (More examples, again, in cut/other-specs.md)
-
-Review:
-
-Can we test safety properties in Hypothesis?
-
-Can we test liveness properties in Hypothesis?
-
-What are all possible specifications expressible in Hypothesis?
-(pin in this question - more on this soon)
-"""
-
-"""
-=== Functional correctness ===
 
 Functional correctness is the focus of many program verification efforts in practice.
 It's not perfect, but it is often a good starting point!
@@ -213,11 +160,63 @@ which require deep and difficult encodings, more on this later.)
 - Often other properties can be encoded as functional correctness
   by maintaining some additional "state".
 
+But even "True" and "False" are examples of this which aren't very useful.
+Also "if the input is an integer, then the output is an integer"
+isn't very useful.
+More useful:
+
+- A **full functional correctness** spec is one which exactly specifies
+    what f should do on every input.
+
+    There is a Q on the HW which asks you to write a full
+    functional correctness spec!
+
+    That means: for all x, f(x) is exactly the value y
+
+    Pragmatically, it means...
+
+    Example: if we say "whenever x is an integer, f(x) is an integer", this doesn't define which integer it is!
+    but in our example:
+
+        "for all integers x, y = f(x) is an integer such that x * x <= y < (x + 1) * (x + 1)"
+
+    can actually show that there is only one such y.
+    So this is a full functional correctness spec.
+
+    ASIDE (for those interested): more formally, it means
+    our spec should satisfy a functional property like
+
+        For any f1, f2 satisfying the spec S, if f1(x) = y1 and f2(x) = y2
+        then y1 == y2.
+
+Examples:
+
+    "int_sqrt(x) is always odd"
+    is this functional correctness?
+
+    "int_sqrt(x) is odd on at least two inputs"
+    is this functional correctness?
+
+    "int_sqrt(x) takes less than 5 minutes to run"
+    is this functional correctness?
+
+    "int_sqrt(x) does not read your password from memory"
+    is this functional correctness?
+
+"""
+
+"""
+
 We typically express functional correctness using...
 
-=== Preconditions and postconditions ===
+===== Preconditions and postconditions =====
 
+    (A.k.a.: "Programming by Contract")
+    (A.k.a.: "Hoare triples")
     (A.k.a. Hoare triples)
+
+    "An Axiomatic Basis for Computer Programming"
+    Tony C.A.R. Hoare, 1969
 
 A pre/postcondition spec has the following form:
 
@@ -228,8 +227,8 @@ A pre/postcondition spec has the following form:
 
     - Equivalently: if P(x) is true and y = f(x) then Q(y) is true.
 
-All functional correctness specs can be written using preconditions
-and postconditions!
+We often use preconditions and postconditions to express functional
+correctness specs
 """
 
 # Classic example: Division by zero
@@ -248,6 +247,8 @@ def divide(x, y):
     st.integers(min_value = 0, max_value = 1000),
 )
 @settings(max_examples=1000)
+
+@pytest.mark.skip
 def test_divide(x, y):
     # # what to test here?
     # z = divide(x, y)
@@ -332,6 +333,7 @@ ERROR = .000001
     st.integers(min_value = -100, max_value = 100),
     st.integers(min_value = -100, max_value = 100),
 )
+@pytest.mark.skip
 def test_divides_2(x, y):
     if y != 0:
         result = divides_2(x, y)
@@ -386,6 +388,7 @@ ERROR = .000001
     st.integers(min_value = -100, max_value = 100),
     st.integers(min_value = -100, max_value = 100),
 )
+@pytest.mark.skip
 def test_divides_2(x, y):
     assume(y != 0) # assume statement!
     result = divides_2(x, y)
@@ -400,7 +403,44 @@ ERROR = .000001
     st.integers(min_value = -100, max_value = 100),
     st.integers(min_value = -100, max_value = 100),
 )
+@pytest.mark.skip
 def test_divides_2(x, y):
     if y != 0:
         result = divides_2(x, y)
         assert (result * y - x < ERROR)
+
+"""
+===== Safety and Liveness =====
+
+Two other special cases of specifications that turn out to be particularly useful
+(these are not functional correctness):
+
+These have to do with the behavior of the program when run
+(properties of the program trace):
+
+- A **safety property** states that "for all x, when f(x) is run,
+  some bad event X does not happen."
+
+    "the program doesn't read any files"
+    "the program doesn't modify its input x"
+
+- A **liveness property** states that "for all x, when f(x) is run,
+  some good event X does happen."
+
+    "f(x) does terminate"
+
+(Neither of these can be specified using functional correctness.)
+
+Are the above all possible specifications?
+No! We can imagine much more interesting cases...
+    (More examples, again, in cut/other-specs.md)
+
+Review:
+
+Can we test safety properties in Hypothesis?
+
+Can we test liveness properties in Hypothesis?
+
+What are all possible specifications expressible in Hypothesis?
+(pin in this question - more on this soon.)
+"""

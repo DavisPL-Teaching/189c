@@ -100,20 +100,6 @@ def test_integer_sqrt(n):
 # print(integer_sqrt(-3))
 
 """
-spec works!
-Program satisfies the spec!
-
-We are happy! --> we think we've implemented the program correctly
-    (AND, we've specified it correctly)
-
-How valuable is this spec?
-Have we tested EVERYTHING about the program?
-No, for example, we didn't test it on negative inputs.
-
-For now: no spec is perfect! Writing and defining precise & helpful specs
-is an art and it's something that we will continue to get more practice
-with.
-
 === Checking our understanding ===
 
 True/False
@@ -153,16 +139,41 @@ False == no program is valid
 .
 
 (Let's run the code)
+"""
 
-=== Question ===
+"""
+.
+.
+.
+.
+.
+(if it works)
+
+spec works!
+Program satisfies the spec!
+
+We are happy! --> we think we've implemented the program correctly
+    (AND, we've specified it correctly)
+
+=== Q+A ===
+
+Q: How valuable is this spec?
+   Have we tested EVERYTHING about the program?
+
+A: No, for example, we didn't test it on negative inputs.
+
+  For now: no spec is perfect! Writing and defining precise & helpful specs
+  is an art and it's something that we will continue to get more practice with.
 
 Q: are properties about the syntax or lines of code considered specifications?
     E.g.: the function must have at least 10 Lines of code
-    A: Yes, that's a valid spec but probably not one we're interested in.
+
+A: Yes, that's a valid spec but probably not one we're interested in.
 
 === Segue ===
 
-The above exercise is a good segue into two topics we want to cover next:
+The above exercise is a good segue into two topics we want to cover next
+(over the next two lecture parts):
 
 1. Stronger and weaker specifications
 
