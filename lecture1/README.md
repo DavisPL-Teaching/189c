@@ -65,7 +65,7 @@ do a `git stash`, `git pull`.
 
 ## Thursday, January 15
 
-Announcements/reminders
+Reminders:
 
 - HW1 due 1 week from tomorrow
 
@@ -73,7 +73,11 @@ Announcements/reminders
 
 Plan:
 
-- Types of specifications
+- Different types of specifications
 
-- key concepts: functional correctness, full functional correctness,
-  preconditions, and postconditions.
+    + functional correctness
+    + full functional correctness,
+    + preconditions and postconditions
+    + safety and liveness
+
+- If time: assume and assert

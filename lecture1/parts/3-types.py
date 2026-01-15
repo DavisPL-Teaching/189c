@@ -11,6 +11,14 @@ all programs satisfying S1 also satisfy S2.
 
 - If S1 is stronger than S2 and S2 is stronger than S3, then S1 is stronger than S3.
 
+Thinking about how strong you want your specification to be is an important part of testing
+and verifying software correctness in practice!
+
+    ==> Weaker specs are often easier to test and verify, but they leave room for mistakes!
+
+    ==> Stronger specs are often harder to write, and it can be difficult to ensure that the
+        spec covers all cases (more about this in today's lecture).
+
 === Poll ===
 
 Sort the following specifications in Hypothesis by which row is stronger than each column.
@@ -20,7 +28,7 @@ That is, check the box if the specification in that row is stronger than the spe
 2. @given(x==1), assert f(x) == x
 3. @given(x==2), assert f(x) == x
 4. @given(x==3), assert f(x) == x
-5. f does not crash on any input.
+5. f does not crash on input x==1 or x==2.
 
 Poll link:
 https://forms.gle/kAUYts452mbqSypD9
@@ -52,19 +60,19 @@ In practice, we need our specification to be understandable to the tool we are u
 
 Ex:
 
-- Hypothesis only understands specs using @given annotations on pytests
+- Python unit tests can only write assertions that are expressible in Python syntax
 
-    - we will see later that Hypothesis supports specifications that can be written
-      using "assume" and "assert"
+- Hypothesis only understands specs using @given annotations on pytests and assertions
 
-- Often: we use statements that are true *before* and *after*
-  a program executes. These are called preconditions and postconditions
-  (aka "programming by contract")
+- We may be testing a function that we didn't implement! (or a foreign API, such
+  as a network API)
+  If so, we can only test statements that are true  *before* and *after* the program executes
 
-- Foreshadowing:
-  Verification tools like Z3 and Dafny only understand specs written in formal logic syntax
+      These are called preconditions and postconditions
 
-    forall, there exists, if-then, and, or, not, ...
+We can express these "statements that are true" using formal logic syntax.
+
+- for all, there exists, if-then, and, or, not, ...
 
 Here are some examples (some previous and some new ones) on integer_sqrt:
 
@@ -72,20 +80,21 @@ Here are some examples (some previous and some new ones) on integer_sqrt:
 
     Let's think of our program integer_sqrt, as just a function f
 
-    Forall x, if x ∈ Int then f(x) ∈ Int.
+    For all x, if x: Int then f(x): Int.
+
+        (or: typeof(x) is int)
 
 2. False (false of all programs)
 
     False
 
-3. The input arguments are not modified by the program.
+3. If the input is greater than or equal to 100, then the output is greater than or equal to 10.
 
-    # check x before and after the run
-    Forall x0, if x = x0 then after f(x) is called (?) x = x0.
+    For all x, if x ≥ 100 then f(x) ≥ 10
 
-4. If the input is greater than or equal to 100, then the output is greater than or equal to 10.
+4. The program terminates on all inputs.
 
-    Forall x, if x ≥ 100 then f(x) ≥ 10
+    For all x, f(x) exists?
 
 5. The program does not read any files from the filesystem
 
@@ -95,59 +104,42 @@ Here are some examples (some previous and some new ones) on integer_sqrt:
     (in this case sytem calls) that are made by f when it executes.
     This would be somewhat difficult to do in Hypothesis alone.
 
-6. The program executes in constant time
-7. The program always terminates
-
-You could try to write these in Hypothesis...
-... but you would soon run into trouble.
+^^ More on these soon!
 """
 
-@pytest.mark.skip
-def test_int_sqrt_always_terminates(x):
-    y = integer_sqrt(x)
-    # assert type(y) == int ?
-    # assert True ?
-    # assert False ?
-    # I can't assert that we actually got to this point in the program.
-    raise NotImplementedError
+from math import sqrt
+def integer_sqrt(n):
+    return int(sqrt(n))
 
+# Spec 3 as a Hypothesis test
 @pytest.mark.skip
-def test_int_sqrt_never_opens_a_file(x):
-    # TODO
+@given(st.integers(min_value = 100, max_value = 1000))
+def test_spec_3(n):
+    assert integer_sqrt(n) >= 10
+
+# Spec 4 as a Hypothesis test?
+@pytest.mark.skip
+@given(st.integers(min_value = -1000, max_value = 1000))
+def test_spec_4():
+    # TODO ...
+    # assert ???
     raise NotImplementedError
 
 """
-Some questions:
-
-- Are all of these specifications expressible as Hypothesis tests?
-
-    No - some are, some aren't
-
-- Are all of these specifications easily checkable?
-
-    No - some are, some aren't
-
-Other examples?
-    (see cut/other-specs.md)
-
-=== Classes of specifications ===
-
 The discussion about which are testable using Hypothesis might leave
 you wondering what properties exactly *can* be tested using Hypothesis
 (or easily tested in general)?
 
-===== Preconditions and Postconditions =====
+===== Functional correctness =====
 
-This raises an important distinction:
+An important pattern:
 
     For some of the specs above, we were able to write the spec
     just thinking about what's true
     before/after the program executes.
 
-    That is: thinking of a function only as defined by its
-    input-output behavior.
-
-===== Functional correctness =====
+    Like testing a foreign function! we don't know how it was implemented,
+    but we can try running it and see what happens on different inputs.
 
 - A **functional correctness** property is a spec which only depends
   on the set of all ordered pairs (x, y) such that f(x) = y.
@@ -193,21 +185,26 @@ Examples:
 
     "int_sqrt(x) is always odd"
     is this functional correctness?
+    is this full functional correctness?
 
     "int_sqrt(x) is odd on at least two inputs"
     is this functional correctness?
+    is this full functional correctness?
 
     "int_sqrt(x) takes less than 5 minutes to run"
     is this functional correctness?
+    is this full functional correctness?
 
     "int_sqrt(x) does not read your password from memory"
     is this functional correctness?
 
+Observation:
+
+    Full functional correctness is stronger than functional correctness.
 """
 
 """
-
-We typically express functional correctness using...
+A common way to express functional correctness is using...
 
 ===== Preconditions and postconditions =====
 
@@ -240,14 +237,13 @@ def divide(x, y):
 
 # @pytest.mark.skip
 # @pytest.mark.xfail
-@given(
-    st.integers(min_value = -1000, max_value = 1000),
-    # st.integers(min_value = -1000, max_value = 1000),
-    # st.integers(min_value = 1, max_value = 1000),
-    st.integers(min_value = 0, max_value = 1000),
-)
-@settings(max_examples=1000)
-
+# @given(
+#     st.integers(min_value = -1000, max_value = 1000),
+#     # st.integers(min_value = -1000, max_value = 1000),
+#     # st.integers(min_value = 1, max_value = 1000),
+#     st.integers(min_value = 0, max_value = 1000),
+# )
+# @settings(max_examples=1000)
 @pytest.mark.skip
 def test_divide(x, y):
     # # what to test here?
@@ -410,6 +406,51 @@ def test_divides_2(x, y):
         assert (result * y - x < ERROR)
 
 """
+=== Other types of specifications? ===
+
+Recall these examples from before:
+
+3. The input arguments are not modified by the program.
+
+5. The program does not read any files from the filesystem
+
+and others...
+
+6. The program executes in constant time
+7. The program always terminates
+
+You could try to write these in Hypothesis...
+... but you would soon run into trouble.
+"""
+
+@pytest.mark.skip
+def test_int_sqrt_always_terminates(x):
+    y = integer_sqrt(x)
+    # assert type(y) == int ?
+    # assert True ?
+    # assert False ?
+    # I can't assert that we actually got to this point in the program.
+    raise NotImplementedError
+
+@pytest.mark.skip
+def test_int_sqrt_never_opens_a_file(x):
+    # TODO
+    raise NotImplementedError
+
+"""
+Some questions:
+
+- Are all of these specifications expressible as Hypothesis tests?
+
+    No - some are, some aren't
+
+- Are all of these specifications easily checkable?
+
+    No - some are, some aren't
+
+Other examples?
+    (see cut/other-specs.md)
+
 ===== Safety and Liveness =====
 
 Two other special cases of specifications that turn out to be particularly useful
@@ -435,12 +476,32 @@ Are the above all possible specifications?
 No! We can imagine much more interesting cases...
     (More examples, again, in cut/other-specs.md)
 
-Review:
+Questions:
 
 Can we test safety properties in Hypothesis?
 
 Can we test liveness properties in Hypothesis?
 
-What are all possible specifications expressible in Hypothesis?
-(pin in this question - more on this soon.)
+=== Conclusions ===
+
+Review:
+
+- Any testing or verification system is limited to a particular type of specs that it
+  can express or support.
+
+- Different ways of writing specs have different advantages and drawbacks!
+
+- A common approach is to focus on properties about the input/output of a function:
+
+    + functional correctness
+
+    + full functional correctness
+
+    + preconditions/postconditions
+
+        (like @given and assert!)
+
+- Beyond functional correctness: safety and liveness are two other simple classes of specs
+  that are often crucial.
+
 """
