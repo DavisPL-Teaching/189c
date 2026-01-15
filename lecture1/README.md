@@ -71,6 +71,8 @@ Reminders:
 
 - OH: today, Monday, next Thursday
 
+    OH: 3-4pm in Academic Surge Building 2085
+
 Plan:
 
 - Different types of specifications
@@ -81,3 +83,5 @@ Plan:
     + safety and liveness
 
 - If time: assume and assert
+
+If you're following along: `git stash; git pull`.

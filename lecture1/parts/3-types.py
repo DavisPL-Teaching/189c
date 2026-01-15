@@ -16,7 +16,9 @@ and verifying software correctness in practice!
 
     ==> Weaker specs are often easier to test and verify, but they leave room for mistakes!
 
-    ==> Stronger specs are often harder to write, and it can be difficult to ensure that the
+    ==> Stronger specs are often harder to write, but
+        can be more likely to find bugs --
+        however, it can be difficult to ensure that the
         spec covers all cases (more about this in today's lecture).
 
 === Poll ===
@@ -24,14 +26,73 @@ and verifying software correctness in practice!
 Sort the following specifications in Hypothesis by which row is stronger than each column.
 That is, check the box if the specification in that row is stronger than the specification in that column.
 
-1. @given(x==1 or x==2), assert f(x) = x
+1. @given(x==1 or x==2), assert f(x) == x
 2. @given(x==1), assert f(x) == x
 3. @given(x==2), assert f(x) == x
 4. @given(x==3), assert f(x) == x
-5. f does not crash on input x==1 or x==2.
+5. f does not crash on inputs x==1 and x==2.
 
 Poll link:
 https://forms.gle/kAUYts452mbqSypD9
+
+Answers?
+.
+.
+.
+.
+.
+
+1 is stronger than 1 because any spec is stronger than itself
+
+1 and 2: is 1 stronger than 2 or 2 stronger than 1?
+
+1 is stronger than 2:
+
+    def stronger:
+
+        "any program satisfying 1 satisfies 2"
+
+    - 1 is testing the program f on a *broader range* of inputs
+
+        if 1 is the case, then I can in particular run
+        the program on x == 1, and I will get spec 2.
+
+        Similarly, if 1 is in the case, then I can in particular
+        run the program on x == 2, and I will get spec 3.
+
+Question: but isn't "x == 1 or x == 2" weaker than just "x == 1"?
+
+    If we have a weaker statement about the input, we get a stronger
+    spec!
+
+    Because there are more inputs that the program has to
+    follow, we get a stronger spec.
+
+    If you expand the set of inputs, you get a stronger spec.
+
+    as a venn diagram?
+    spec S1 is stronger than S2
+    means
+    the set of programs satisfying S1 is a subset of the set
+    of programs satisfying S2, which means
+
+    S1 (thought of as a set of programs) is a smaller circle
+    inside S2.
+
+Another way of thinking about it:
+
+    1 is saying: f(1) == 1 and f(2) == 2
+    2 is saying: f(1) == 1
+    3 is saying: f(2) == 2
+
+so 1 is stronger than 2 and 3.
+
+Answers:
+    1 stronger than 1, 2, 3, 5
+    2 is stronger than 2
+    3 is stronger than 3
+    4 is stronger than 4
+    5 is stronger than 5
 """
 
 # Imports
@@ -66,9 +127,9 @@ Ex:
 
 - We may be testing a function that we didn't implement! (or a foreign API, such
   as a network API)
-  If so, we can only test statements that are true  *before* and *after* the program executes
+  If so, we can only test statements that are true *before* and *after* the program executes
 
-      These are called preconditions and postconditions
+    These are called preconditions and postconditions
 
 We can express these "statements that are true" using formal logic syntax.
 
@@ -78,15 +139,15 @@ Here are some examples (some previous and some new ones) on integer_sqrt:
 
 1. If the input is an integer, then the output is an integer.
 
+    assert typeof(output) is int
+
     Let's think of our program integer_sqrt, as just a function f
 
-    For all x, if x: Int then f(x): Int.
+    For all x, if typeof(x) is int then typeof(f(x)) is int.
 
-        (or: typeof(x) is int)
+2. False (false of all programs) (empty set of programs)
 
-2. False (false of all programs)
-
-    False
+    assert false
 
 3. If the input is greater than or equal to 100, then the output is greater than or equal to 10.
 
@@ -95,13 +156,14 @@ Here are some examples (some previous and some new ones) on integer_sqrt:
 4. The program terminates on all inputs.
 
     For all x, f(x) exists?
+    ^^ maybe expressible using logic?
 
 5. The program does not read any files from the filesystem
 
     ???
     Check the journal log of the computer?
     We would need some way to log all of the function calls
-    (in this case sytem calls) that are made by f when it executes.
+    (in this case system calls) that are made by f when it executes.
     This would be somewhat difficult to do in Hypothesis alone.
 
 ^^ More on these soon!
@@ -112,15 +174,21 @@ def integer_sqrt(n):
     return int(sqrt(n))
 
 # Spec 3 as a Hypothesis test
-@pytest.mark.skip
+# @pytest.mark.skip
 @given(st.integers(min_value = 100, max_value = 1000))
 def test_spec_3(n):
     assert integer_sqrt(n) >= 10
 
 # Spec 4 as a Hypothesis test?
-@pytest.mark.skip
 @given(st.integers(min_value = -1000, max_value = 1000))
-def test_spec_4():
+@pytest.mark.skip
+def test_spec_4(n):
+    # ensure that program terminates for n...
+    # I can run the program...
+    ans = integer_sqrt(n)
+    # ^^^ if the program terminates, great!
+    # ^^^ if the program doesn't terminate... we have a problem
+    # our test also just won't terminate.
     # TODO ...
     # assert ???
     raise NotImplementedError
@@ -138,19 +206,27 @@ An important pattern:
     just thinking about what's true
     before/after the program executes.
 
-    Like testing a foreign function! we don't know how it was implemented,
-    but we can try running it and see what happens on different inputs.
+        --> solely about the input/output behavior of the function
+
+    Like testing a foreign function!
+        e.g. connecting to Google, GitHub, or chatGPT network
+        API
 
 - A **functional correctness** property is a spec which only depends
   on the set of all ordered pairs (x, y) such that f(x) = y.
 
-Functional correctness is the focus of many program verification efforts in practice.
+Functional correctness is the focus of many program testing and
+verification efforts in practice.
 It's not perfect, but it is often a good starting point!
 And we have good tools for reasoning about it (compared to some of the others
 which require deep and difficult encodings, more on this later.)
 
 - Often other properties can be encoded as functional correctness
   by maintaining some additional "state".
+
+Informally:
+    functional correctness = property of a program that only
+    depends on its input-output behavior.
 
 But even "True" and "False" are examples of this which aren't very useful.
 Also "if the input is an integer, then the output is an integer"
@@ -167,10 +243,15 @@ More useful:
 
     Pragmatically, it means...
 
+        if you write a Hypothesis test, you should go
+        through every piece of data in your output, and
+        verify that every piece of data was computed
+        correctly.
+
     Example: if we say "whenever x is an integer, f(x) is an integer", this doesn't define which integer it is!
     but in our example:
 
-        "for all integers x, y = f(x) is an integer such that x * x <= y < (x + 1) * (x + 1)"
+        "for all integers x, y = int_sqrt(x) is an integer such that y * y <= x < (y + 1) * (y + 1)"
 
     can actually show that there is only one such y.
     So this is a full functional correctness spec.
@@ -184,19 +265,20 @@ More useful:
 Examples:
 
     "int_sqrt(x) is always odd"
-    is this functional correctness?
-    is this full functional correctness?
+    is this functional correctness? Yes
+    is this full functional correctness? No
 
     "int_sqrt(x) is odd on at least two inputs"
-    is this functional correctness?
-    is this full functional correctness?
+    is this functional correctness? Yes
+    is this full functional correctness? No
 
     "int_sqrt(x) takes less than 5 minutes to run"
-    is this functional correctness?
-    is this full functional correctness?
+    is this functional correctness? No
+    is this full functional correctness? No
 
     "int_sqrt(x) does not read your password from memory"
-    is this functional correctness?
+    is this functional correctness? No
+    is this full functional correctness? No
 
 Observation:
 
@@ -204,13 +286,13 @@ Observation:
 """
 
 """
-A common way to express functional correctness is using...
+A common way to express (full) functional correctness
+is using...
 
 ===== Preconditions and postconditions =====
 
     (A.k.a.: "Programming by Contract")
     (A.k.a.: "Hoare triples")
-    (A.k.a. Hoare triples)
 
     "An Axiomatic Basis for Computer Programming"
     Tony C.A.R. Hoare, 1969
@@ -219,13 +301,16 @@ A pre/postcondition spec has the following form:
 
     P and Q: Boolean properties
 
-    - if P is true before executing the program, and we execute f,
+    - if P is true before executing the program,
+        and we execute f,
       Q is true after.
 
-    - Equivalently: if P(x) is true and y = f(x) then Q(y) is true.
+In other words:
 
-We often use preconditions and postconditions to express functional
-correctness specs
+    - for ALL inputs satisfying P, after executing program
+      f, the output satisfies Q.
+
+We often use preconditions and postconditions to express functional correctness specs.
 """
 
 # Classic example: Division by zero
@@ -235,27 +320,26 @@ def divide(x, y):
     # (integer division)
     return x // y
 
-# @pytest.mark.skip
 # @pytest.mark.xfail
-# @given(
-#     st.integers(min_value = -1000, max_value = 1000),
-#     # st.integers(min_value = -1000, max_value = 1000),
-#     # st.integers(min_value = 1, max_value = 1000),
-#     st.integers(min_value = 0, max_value = 1000),
-# )
+@given(
+    st.integers(min_value = -1000, max_value = 1000),
+    # st.integers(min_value = -1000, max_value = 1000),
+    st.integers(min_value = 1, max_value = 1000),
+    # st.integers(min_value = 0, max_value = 1000),
+)
 # @settings(max_examples=1000)
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_divide(x, y):
-    # # what to test here?
-    # z = divide(x, y)
-    # # Write the spec here:
-    # # (you could write any spec here, but let's use:)
-    # assert z * y <= x < (z + 1) * y
+    # what to test here?
+    # Write the spec here:
+    # (you could write any spec here, but let's use:)
+    z = divide(x, y)
+    assert z * y <= x < (z + 1) * y
 
     # Fixed version with added precondition
-    if y > 0:
-        z = divide(x, y)
-        assert z * y <= x < (z + 1) * y
+    # if y > 0:
+    #     z = divide(x, y)
+    #     assert z * y <= x < (z + 1) * y
 
 # We couldn't even test our statement, because our program
 # crashed :(
@@ -265,20 +349,27 @@ def test_divide(x, y):
 # is > 0.
 
 """
-Q: Why do we need preconditions?
+The condition
 
-    can't we do:
-    if y = f(x) then (P(x) -> Q(y)) is true?
+    st.integers(min_value = 1, max_value = 1000),
 
-    Yes that encoding works but doesn't allow us to talk about the
-    state of the program before executing it.
+is implicitly a precondition! It tells Hypothesis:
 
-Exercise (time permitting)
+    "I only care about inputs y between 1 and 1000"
+
+Difference between preconditions and regular assertions -
+
+    Preconditions exclude some inputs from consideration
+
+    Even if the program crashes or misbehaves wildly on
+    other inputs, I won't catch it.
+
+Exercise (skip for time)
 Rewrite the examples 1-7 using preconditions/postconditions
 
 Even if you have not heard of the word "precondition",
 you are probably intuitively familiar with the concept of preconditions
-if you have some experience programing and working with libraries...
+if you have some experience programming and working with libraries...
 
 Examples:
 - list pop: https://docs.python.org/3/tutorial/datastructures.html
@@ -287,6 +378,19 @@ Examples:
 
     This is another way of saying that the precondition of
     list.pop() is that the list should be nonempty.
+
+    Implicit preconditions:
+    - input is a list
+    - input should be nonempty
+
+    pre/post style spec:
+
+    "if you generate inputs that are lists and are nonempty,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      precondition
+     and run the progam, then the output will satisfy ...."
+                                                ^^^^^^^^^^
+                                                postcondition
 
 - file open: https://docs.python.org/3/library/functions.html#open
 
@@ -298,9 +402,12 @@ Examples:
 Point:
 You can often read off preconditions from the documentation!
 
+There are always implicit assumptions in any API that you use.
+
 Point:
 Often a precondition that's useful is whatever is needed to not
-have the program crash.
+have the program crash or otherwise misbehave.
+
 In practice, exceptions are often used to enforce preconditions --
 if we don't know what to do on a particular input, we crash the program
 
@@ -328,12 +435,17 @@ ERROR = .000001
 @given(
     st.integers(min_value = -100, max_value = 100),
     st.integers(min_value = -100, max_value = 100),
+    # st.integers(min_value = 1, max_value = 100),
 )
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_divides_2(x, y):
     if y != 0:
         result = divides_2(x, y)
         assert (result * y - x < ERROR)
+        assert (result * y - x > -ERROR)
+    # ^^^ Note: not a full functional correctness spec
+    # hard to pin down the exact value in the case of
+    # approximate floating point arithmetic.
 
 """
 With the precondition included, the spec says:
@@ -387,6 +499,12 @@ ERROR = .000001
 @pytest.mark.skip
 def test_divides_2(x, y):
     assume(y != 0) # assume statement!
+                   # another way of expressing preconditions
+
+    # equivalent to:
+    # if y == 0:
+    #     return
+
     result = divides_2(x, y)
     assert (result * y - x < ERROR)
 
@@ -410,32 +528,18 @@ def test_divides_2(x, y):
 
 Recall these examples from before:
 
-3. The input arguments are not modified by the program.
+4. The program terminates on all inputs.
 
 5. The program does not read any files from the filesystem
 
 and others...
 
 6. The program executes in constant time
-7. The program always terminates
+7. The input arguments are not modified by the program.
 
 You could try to write these in Hypothesis...
 ... but you would soon run into trouble.
 """
-
-@pytest.mark.skip
-def test_int_sqrt_always_terminates(x):
-    y = integer_sqrt(x)
-    # assert type(y) == int ?
-    # assert True ?
-    # assert False ?
-    # I can't assert that we actually got to this point in the program.
-    raise NotImplementedError
-
-@pytest.mark.skip
-def test_int_sqrt_never_opens_a_file(x):
-    # TODO
-    raise NotImplementedError
 
 """
 Some questions:
@@ -470,7 +574,11 @@ These have to do with the behavior of the program when run
 
     "f(x) does terminate"
 
-(Neither of these can be specified using functional correctness.)
+Neither of these can be specified using functional correctness...
+
+    but they *are* examples of specifications (since they
+    are true or false properties)
+    and they are often useful in practice.
 
 Are the above all possible specifications?
 No! We can imagine much more interesting cases...
@@ -501,7 +609,7 @@ Review:
 
         (like @given and assert!)
 
-- Beyond functional correctness: safety and liveness are two other simple classes of specs
-  that are often crucial.
+- Beyond functional correctness: safety and liveness are two other example classes of specs
+  that are often useful.
 
 """
