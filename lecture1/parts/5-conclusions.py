@@ -38,14 +38,19 @@ Other limitations of Hypothesis specifically?
 
 - Testing can be redundant.
 
-Quick recap:
-- we talked about different types of specifications
-    (functional correctness, safety, liveness)
-- we talked about preconditions and postconditions
-- we talked about assert/assume
+- Engineering practice to write Hypothesis tests well & effectively.
 
-    + A pre/post condition based spec is called
-        functional correctness
+----
+
+Quick recap:
+- we talked about writing tests & test methodology
+
+- we talked about different types of specifications
+    + preconditions and postconditions
+    + A pre/post condition based spec is called functional correctness
+    + safety, liveness
+
+- we talked about assert/assume
 
     + assume/assert based spec is everything that Hypothesis can express
         (slightly more general)

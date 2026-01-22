@@ -27,12 +27,13 @@ from hypothesis import assume
 def divides_2(x, y):
     return x / y
 
+ERROR = 0.00001
+
 @given(
     st.integers(min_value = -1000, max_value = 1000),
     st.integers(min_value = -1000, max_value = 1000),
 )
 @settings(max_examples=1000)
-@pytest.mark.skip
 def test_divide_2(x, y):
     # Assume statement!
     # Adds some constraint to the precondition.
@@ -60,13 +61,15 @@ def my_assert(b):
     if not b:
         # halt the program with an error, test failed :-(
         sys.exit(1)
-        # alternative:
+        # in Pytest/Hypothesis, what happens:
         # raise AssertionError("assertion failed")
 
 def my_assume(b):
     if not b:
         # halt the program -- no error, test passed :-)
         sys.exit(0)
+        # in Pytest/Hypothesis, what happens:
+        # ignore this run, move on to the next test case.
 
 """
 Assert and assume interact in interesting ways...
@@ -100,6 +103,12 @@ Some of you may have picked up on the facts that:
 - preconditions are just assume() statements
 - postconditions are just assert() statements.
 
+Asuming f is a function like
+
+    def f(x):
+        // ... do something
+        return y
+
 precond P, program f, postcondition Q
     == equivalent to ==
     assume(P(x))
@@ -111,7 +120,7 @@ It's very dangerous.
 """
 
 # Another example
-# Is this program for sorting a list correct? :)
+# Is this program for sorting a list correct, according to the spec? :)
 
 def sort_list(l):
     l = l.copy()
@@ -119,7 +128,6 @@ def sort_list(l):
 
 # The spec:
 @given(st.lists(st.integers()))
-@pytest.mark.skip
 def test_sort_list(l):
     assume(l == sorted(l))
     assert sort_list(l) == sorted(l)
@@ -141,6 +149,23 @@ Multiverse view
     https://wiki.c2.com/?QuantumBogoSort
 - (Based on: bogosort
     https://en.wikipedia.org/wiki/Bogosort)
+
+Q: In what cases is assume better than using if?
+A: They're not really that different.
+
+    assume(P)
+
+    is really the same as:
+
+    if P:
+        <continue rest of test, put all assertions here>
+    else:
+        pass, exit normally
+
+    What's dangerous? Putting all of your test logic in a specific branch,
+    where only some conditions are true, and failing to test for other edge cases.
+
+    General lesson: don't exclude edge cases from consideration.
 
 Another way of thinking about this is, whose responsibility is
 it to ensure the list is sorted?
@@ -173,4 +198,7 @@ Precise statement:
         extras/strategies.py
 
 - assume and assert can be used to write general program specifications and will reoccur in many of the tools covered in this class.
+
+- assume is dangerous! Be careful about using it or you end up excluding cases that are actually
+  important.
 """

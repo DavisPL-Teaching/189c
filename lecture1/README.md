@@ -92,9 +92,28 @@ Announcements/reminders:
 
 - HW1 due tomorrow!
 
-- OH: today 3pm on Zoom
+    Please double check before you submit!
 
-- **Midterm date:** The midterm will be on February 12. Please mark your calendar now
+    0. Run the code, make sure it runs, make sure pytest passes without any failures (red text)
+
+    1. Remove hidden files/folders/junk and zip the entire folder in the **original directory structure**
+
+        `__pycache__`, `.pytest`, `.hypothesis`
+
+            View hidden files and folders -> rm stuff like this
+
+    2. Upload to Gradescope
+
+    3. Download the files and run them `python3 part1.py` `pytest part1.py`
+
+        - Do this on a friend's machine!
+
+- OH: today 3pm on Zoom -- link will be posted on Piazza
+
+    If you have a conflict: I will also hold OH 2-3pm for my graduate class.
+
+- **Midterm date:** The midterm will be on Thursday, February 12 in class (usual class time)
+  Please mark your calendar now
   to ensure that you do not miss class on that date!
 
 - If you are wondering about your performance on the in-class polls, please note I will sync these soon,
