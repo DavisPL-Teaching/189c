@@ -1,33 +1,47 @@
-# Lecture 2: More complex specifications
+# Lecture 2: Z3 and Satisfiability
 
 **Please note: This lecture has not yet been updated for winter quarter 2026.**
 
 ## Announcements
 
-- HW0 is due today 11:59pm
+- HW0 and in-class polls can be made up for full credit at any point during the quarter -- no need to email me.
+  + go through either the lecture video (Canvas)
+    or the lecture source (GitHub)
+  + Google form will remain open
+  + your grade will be automatically updated in Canvas on the next sync
 
-- HW1 is released! Due Friday, April 19.
+- HW1 is due Friday, April 19 (11:59pm).
 
-## Recap
+- There's no "submit" button; you just push your code
 
-We've talked about components of correctness:
-- A program
-- A specification
-- Preconditions
+- Note: how to commit/push on GitHub Codespaces
+```
+git add .
+git commit -m "Modified files"
+git push
+```
 
-We've learned syntax for writing specifications in Hypothesis.
+- Reminder: please push your code and load up your repository
+  online to make sure your changes are showing up.
 
-## Plan
+- Questions about HW1?
 
-- Tying up a few loose ends from lecture1
-- Poll
-- Writing preconditions
-- Weaker and stronger specs
-- Weaker and stronger preconditions (if time)
-- Types of specs
-- Discussion and limitations
+## Plan for the next few days
 
-## Schedule
+- Introduction to Z3
+- Satisfiability
+- Core data types and operations
+- More complex data types
 
-Finishing up Hypothesis this week.
-Z3 starting in one week (Monday).
+## Looking ahead
+
+- Strings and regular expressions
+- Advanced techniques
+
+Some subset of the following:
+- Extended programming exercise
+- Z3 in practice
+- Z3 internals
+- Z3 limitations
+
+About 2-3 weeks on Z3 (HW2 and HW3), then moving on to Dafny (HW4) and Rust (HW5).

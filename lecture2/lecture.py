@@ -1,7 +1,10 @@
 """
-Lecture 3: Z3 and Satisfiability
+Lecture 2: Z3 and Satisfiability
 ECS 189C
-April 15, 2024
+
+Please note:
+This is a "sneak peak" of what we will see for this lecture.
+For next week, the lecture will be reorganized into parts parts/ like lecture1.
 """
 
 ####################
@@ -16,9 +19,6 @@ Which of the following is a limitation of testing with Hypothesis? (Select all t
 3. The specification written could be incomplete (underspecified)
 4. It can only test preconditions and postconditions
 5. It can only test assume and assert statements
-
-https://forms.gle/gxJjhhbr1qDSmqeS8
-https://tinyurl.com/3dxdd5rn
 """
 
 #######################
@@ -224,18 +224,6 @@ this week.
 
 Day 7
 
-=== Announcements ===
-
-- HW1 due Friday (in 2 days!)
-    + Start now if you haven't already! (HW1 invite link in Piazza)
-    + 1 of you still has an unlinked GitHub account -- please re-click the invite
-
-- Submit HW0 if you haven't yet (5 people)
-    + No due date but will make it difficult to complete HW1 unless you catch
-      problems now
-
-- General notice: encourage posting questions on Piazza
-
 === Plan for today ===
 
 First part:
@@ -291,9 +279,6 @@ A) "proved"
 B) "failed to prove"
 C) "counterexample" with no other text
 D) "counterexample" together with an example of x and y
-
-https://forms.gle/Q533T9gUhgQUabAu9
-https://tinyurl.com/bdcrceep
 
 .
 .
@@ -669,9 +654,6 @@ def test_poll_output_2():
 
 print("Output:")
 test_poll_output_2()
-
-# https://forms.gle/KR69gCKnyofZGM8x9
-# https://tinyurl.com/5dcsxmj6
 
 # Let's try it out
 
