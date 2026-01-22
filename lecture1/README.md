@@ -85,3 +85,28 @@ Plan:
 - If time: assume and assert
 
 If you're following along: `git stash; git pull`.
+
+## Thursday, January 22
+
+Announcements/reminders:
+
+- HW1 due tomorrow!
+
+- OH: today 3pm on Zoom
+
+- **Midterm date:** The midterm will be on February 12. Please mark your calendar now
+  to ensure that you do not miss class on that date!
+
+- If you are wondering about your performance on the in-class polls, please note I will sync these soon,
+  for the first 3 weeks of class.
+
+  + Remember that these can be made up at any time, so don't worry if you are missing some scores
+    (and no need to email me about it!) Just make up the missing ones and they will sync on the next update.
+
+Plan for today:
+
+- Lecture 1, part 4: assume and assert, poll, part 5: conclusions
+
+- If time: we will get a small foray into Lecture 2.
+
+Any questions about HW1?

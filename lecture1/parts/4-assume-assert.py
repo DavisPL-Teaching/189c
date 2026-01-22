@@ -49,6 +49,26 @@ fundamentally important to testing & verification.
 - Assume: This property should hold, if it doesn't, I want to
     ignore this test.
 
+Another way to think about them (if you are more systems-oriented):
+if we imagine a program that is just a single standalone unit test,
+it's sort of like
+"""
+
+import sys
+
+def my_assert(b):
+    if not b:
+        # halt the program with an error, test failed :-(
+        sys.exit(1)
+        # alternative:
+        # raise AssertionError("assertion failed")
+
+def my_assume(b):
+    if not b:
+        # halt the program -- no error, test passed :-)
+        sys.exit(0)
+
+"""
 Assert and assume interact in interesting ways...
 
 Poll:
@@ -62,7 +82,18 @@ Which of the following has no effect? (Select all that apply)
 - assume P if it occurs immediately following assert P
 
 Poll link:
-TBD
+https://forms.gle/8jKUbC6fQv4hDNmA6
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
 
 Some of you may have picked up on the facts that:
 
@@ -125,6 +156,8 @@ Punchline:
 Hypothesis can express exactly those specifications that are
 expressible using assume() and assert().
 
+Precise statement:
+
 - On all input executions such that all assume() statements
   hold up to a given point,
   all assert() statements hold after that point.
@@ -135,6 +168,9 @@ expressible using assume() and assert().
 
     import hypothesis.strategies as st
     https://hypothesis.readthedocs.io/en/latest/reference/strategies.html
+
+    More about strategies: see
+        extras/strategies.py
 
 - assume and assert can be used to write general program specifications and will reoccur in many of the tools covered in this class.
 """
