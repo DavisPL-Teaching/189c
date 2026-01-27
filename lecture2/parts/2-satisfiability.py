@@ -8,15 +8,20 @@ Logic programming
 In part 1, we saw that Z3 is useful for proving that a spec holds
 - not just on one input, on all inputs!
 
+- paradigm shift from testing to verification
+
+    testing = check the spec on some specific inputs (Hypothesis)
+    verification = prove the spec on all inputs. (Z3, Dafny)
+
 We will see in this lecture that Z3 is more general than that.
+
 It's actually a tool which can be used in two complementary,
 dual paradigms:
 
     Proof      and       Satisfiability.
     prove()              solve()
 
-(Aside for those who have taken a logic class:
- proof = validity)
+(Aside for those who have taken a logic class: proof = validity)
 
 In this part:
 
@@ -34,28 +39,35 @@ Start with poll.
 ####################
 ###     Poll     ###
 ####################
+# We'll do this as a class
 
 """
 The z3.prove function (or our custom prove function)
 returns one of three results:
-- proved (demonstrate that it's true for all inputs)
-- failed to prove (this basically means "I don't know")
-- counterexample (shows an input where the spec is not true)
+- PROVED - proved (demonstrate that it's true for all inputs)
+- COUNTEREXAMPLE - counterexample (shows an input where the spec is not true)
+- UNKNOWN - failed to prove (this basically means "I don't know")
 
 What would you guess is the output of the following Z3 code?
 """
 
 import z3
 import pytest
-from helper import prove, PROVED
+from helper import prove, PROVED, COUNTEREXAMPLE, UNKNOWN
 
-@pytest.mark.skip
+# @pytest.mark.skip
 # @pytest.mark.xfail
 def test_poll_output():
-    x = z3.Int('x')
-    y = z3.Int('y')
-    spec = z3.And(x > 100, y < 100)
-    assert prove(spec) == PROVED
+    x = z3.Int('x') # Define x to be an input integer
+    y = z3.Int('y') # Define y to be an input integer
+    spec = z3.And(x > 100, y < 100) # Assert spec: x > 100 and y < 100
+
+    # prove(spec) # will return PROVED, COUNTEREXAMPLE, or UNKNOWN
+
+    assert prove(spec) == COUNTEREXAMPLE
+
+# Uncomment to run
+# test_poll_output()
 
 """
 A) "proved"
@@ -81,19 +93,54 @@ D) "counterexample" together with an example of x and y
 
 (Try running it)
 
+```
+counterexample
+[y = 100, x = 101]
+```
+
 Key point: "proved" means it must be true for all inputs.
 
-How does Z3 work?
-
-Before we understand how Z3 works, we need to understand the concept
-of satisfiability.
+Change to solve() instead of prove()
 """
+
+from helper import solve, SAT, UNSAT, UNKNOWN
+
+def test_poll_output_2():
+    x = z3.Int('x') # Define x to be an input integer
+    y = z3.Int('y') # Define y to be an input integer
+    spec = z3.And(x > 100, y < 100) # Assert spec: x > 100 and y < 100
+
+    # Is the spec true for all inputs?
+    # prove(spec) # will return PROVED, COUNTEREXAMPLE, or UNKNOWN
+
+    # Is the spec true for **at least one** input?
+    solve(spec)
+
+    # assert prove(spec) == COUNTEREXAMPLE
+
+# Uncomment to run
+test_poll_output_2()
+
+"""
+Unlike prove(), solve() gave us back an example where the spec was *true* (just one particular input),
+rather than giving us a counterexample where the spec was false.
+
+We'll see that this can be used for many useful and fun applications.
+
+****** where we ended for Tuesday, January 27 ******
+
+"""
+
+#############################################################
 
 ##########################
 ###   Satisfiability   ###
 ##########################
 
 """
+Before we understand how Z3 works, we need to understand the concept
+of satisfiability
+
 A *formula* is a logical or mathematical statement that is either true or false.
 Formulas are the main subject of study in logic and they are also
 the core objects that Z3 works with.
@@ -138,8 +185,8 @@ To make a Boolean variable, we use:
 - z3.Bools
 """
 
-a = z3.Bool('a')
-b = z3.Bool('b')
+# a = z3.Bool('a')
+# b = z3.Bool('b')
 
 # This defines two boolean variables, a and b.
 # We'll see what the 'a' and 'b' mean in a moment
@@ -150,10 +197,10 @@ Creating a formula
 We can take our boolean variables and combine them
 """
 
-form1 = z3.And(a, b)
-form2 = z3.Or(a, b)
-form3 = z3.Not(a)
-form4 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
+# form1 = z3.And(a, b)
+# form2 = z3.Or(a, b)
+# form3 = z3.Not(a)
+# form4 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
 
 # We could run z3.prove() on these formulas or a new function called
 # z3.solve() -- we will do this in a moment
@@ -219,21 +266,21 @@ form3 = z3.Not(a)
 form4 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
 """
 
-z3.solve(form1)
-z3.solve(form2)
-z3.solve(form3)
-z3.solve(form4)
-# =====> Satisfiable, Z3 gives an example
+# z3.solve(form1)
+# z3.solve(form2)
+# z3.solve(form3)
+# z3.solve(form4)
+# # =====> Satisfiable, Z3 gives an example
 
-# For all four examples, the formula is satisfiable -- Z3 returns an example
-# where the formula is true.
-# What about something that's NOT satisfiable?
+# # For all four examples, the formula is satisfiable -- Z3 returns an example
+# # where the formula is true.
+# # What about something that's NOT satisfiable?
 
-form5 = z3.And(a, z3.Not(a))
-# A and Not A --> always false, should be never true, i.e. not satisfiable
+# form5 = z3.And(a, z3.Not(a))
+# # A and Not A --> always false, should be never true, i.e. not satisfiable
 
-z3.solve(form5)
-# =====> Unsatisfiable, Z3 says "no solution"
+# z3.solve(form5)
+# # =====> Unsatisfiable, Z3 says "no solution"
 
 """
 Two functions of Z3:
@@ -314,22 +361,22 @@ Examples:
 
 """
 
-print("More examples:")
-x = z3.Bool('x')
-y = z3.Bool('y')
-# What does implies do?
-z3.solve(z3.Implies(x, y))
-# Implies is basically the "if then" function and it has the following meaning:
-# if x is true then y, otherwise true.
-# arrow (-->)
-# If you like you can write z3.If(x, y, True) instead of z3.Implies(...)
-# It's reducible to if then.
+# print("More examples:")
+# x = z3.Bool('x')
+# y = z3.Bool('y')
+# # What does implies do?
+# z3.solve(z3.Implies(x, y))
+# # Implies is basically the "if then" function and it has the following meaning:
+# # if x is true then y, otherwise true.
+# # arrow (-->)
+# # If you like you can write z3.If(x, y, True) instead of z3.Implies(...)
+# # It's reducible to if then.
 
-# XOR implies or?
-# XOR is exclusive or (exactly one, but not both of x and y are true)
-x_xor_y = z3.Xor(x, y)
-x_or_y = z3.Or(x, y)
-z3.prove(z3.Implies(x_xor_y, x_or_y))
+# # XOR implies or?
+# # XOR is exclusive or (exactly one, but not both of x and y are true)
+# x_xor_y = z3.Xor(x, y)
+# x_or_y = z3.Or(x, y)
+# z3.prove(z3.Implies(x_xor_y, x_or_y))
 
 """
 Convenient shortcuts:
@@ -368,15 +415,15 @@ y = z3.Int('x') # This is also the same variable as x
 
 # What would you guess is the output of the following Z3 code?
 
-@pytest.mark.skip
-def test_poll_output_2():
-    x = z3.Int('x')
-    y = z3.Int('y')
-    spec = z3.Implies(z3.And(x >= 10, y == x * x), y >= 100)
-    prove(spec)
+# @pytest.mark.skip
+# def test_poll_output_2():
+#     x = z3.Int('x')
+#     y = z3.Int('y')
+#     spec = z3.Implies(z3.And(x >= 10, y == x * x), y >= 100)
+#     prove(spec)
 
-print("Output:")
-test_poll_output_2()
+# print("Output:")
+# test_poll_output_2()
 
 # Let's try it out
 
@@ -393,12 +440,12 @@ Basic data types: Bool, Int, Real
 (In fact we don't really need booleans -- we can represent them as integers.)
 """
 
-# How to define a boolean using integers
-b = z3.Int('b')
-boolean_spec = z3.And(b >= 0, b <= 1)
-z3.solve(boolean_spec)
-# If you wanted to do boolean operations,
-# and, or, implies, etc. you could define these on integers.
+# # How to define a boolean using integers
+# b = z3.Int('b')
+# boolean_spec = z3.And(b >= 0, b <= 1)
+# z3.solve(boolean_spec)
+# # If you wanted to do boolean operations,
+# # and, or, implies, etc. you could define these on integers.
 
 """
 === Integers ===
@@ -408,9 +455,9 @@ z3.Ints -- creates multiple integers
 
 Examples
 """
-x, y = z3.Ints("x y")
-spec = z3.And(x > y, y > 5)
-z3.solve(spec)
+# x, y = z3.Ints("x y")
+# spec = z3.And(x > y, y > 5)
+# z3.solve(spec)
 
 """
 What operations are supported here?
@@ -419,12 +466,12 @@ on Z3 integers. BUT keep in mind it's not the same as Python
 integer arithmetic.
 """
 
-x + y # <- Z3 expression, NOT a Python integer
-print(x + y) # Prints as "x + y", not as some specific integer
+# x + y # <- Z3 expression, NOT a Python integer
+# print(x + y) # Prints as "x + y", not as some specific integer
 
-# Problem: find two integers whose sum and product is the same.
-print("Find two integers whose sum and product is equal:")
-z3.solve(x + y == x * y)
+# # Problem: find two integers whose sum and product is the same.
+# print("Find two integers whose sum and product is equal:")
+# z3.solve(x + y == x * y)
 
 # Operations we've seen so far: +, *, ==, <, all of these
 # work on Z3 integers.
@@ -472,9 +519,9 @@ def pythagorean_triple(a, b, c):
     # TL;DR Python boolean operators are weird, so be careful with them.
 
 # If we want an example:
-a, b, c = z3.Ints("a b c")
-print("Example pythagorean triple:")
-z3.solve(pythagorean_triple(a, b, c))
+# a, b, c = z3.Ints("a b c")
+# print("Example pythagorean triple:")
+# z3.solve(pythagorean_triple(a, b, c))
 
 """
 Q: what if we want more than one answer?
@@ -488,16 +535,16 @@ that answer is excluded.
 
 # First answer: a = 6, b = 8, c = 10
 # Second answer
-new_constraint = z3.Or(
-    z3.Not(a == 6),
-    z3.Not(b == 8),
-    z3.Not(c == 10),
-)
-# ^ Force the solver to give us a new answer.
-z3.solve(z3.And([
-    pythagorean_triple(a, b, c),
-    new_constraint,
-]))
+# new_constraint = z3.Or(
+#     z3.Not(a == 6),
+#     z3.Not(b == 8),
+#     z3.Not(c == 10),
+# )
+# # ^ Force the solver to give us a new answer.
+# z3.solve(z3.And([
+#     pythagorean_triple(a, b, c),
+#     new_constraint,
+# ]))
 
 # We can keep adding constraints for each new answer,
 # there is also a way to do this programmatically

@@ -32,7 +32,40 @@ https://forms.gle/Vy9dAd7G31YyY7TE6
 .
 .
 
+Correct answers: 1, 2, 3, and 5
+
+4/5:
+Hypothesis is limited in expressiveness to exactly those specs that can
+be expressed using two fundamental keywords: assume and assert
+
+Preconditions/postconditions can be expressed using assume/assert, but not
+always the other way around.
 """
+
+def loop_example(l):
+    # Example: take each item in the input list, add double that element to
+    # the output list.
+    result = []
+    for x in l:
+        # add double x to output list:
+        result.append(2 * x)
+        # do some assertions - validate the internal logic of the program
+        # cannot necessarily be expressed using pre/postconditions! because
+        # they validate some internal logic during the execution of the program,
+        # not just before/after it executes.
+        assert type(x) is int
+        assert (2 * x) % 2 == 0
+
+    return result
+
+from hypothesis import assume, given, strategies as st
+
+@given(st.lists(st.integers()))
+def test_loop_example(l):
+    # Example with preconditions and postconditions:
+    assume(l != [])
+    l2 = loop_example(l)
+    assert(l2 != [])
 
 #######################
 ###   Intro to Z3   ###
@@ -66,12 +99,13 @@ from hypothesis import given
 import hypothesis.strategies as st
 import pytest
 
-@pytest.mark.skip
+# @pytest.mark.skip
 @given(st.integers())
 def test_absolute_value(x):
+    # (This is in fact a "full functional correctness" spec)
     y = absolute_value(x)
-    assert y == x or y == -x
     assert y >= 0
+    assert y == x or y == -x
 
 # What happens when we test it?
 
@@ -82,7 +116,6 @@ def test_absolute_value(x):
 
 from hypothesis import settings
 
-@pytest.mark.skip
 @given(st.integers())
 # Uncomment for slow test running many examples
 # @settings(max_examples = 10000)
@@ -130,6 +163,10 @@ Second step: we have to rewrite the function using Z3.
 - [Z3 docs](https://ericpony.github.io/z3py-tutorial/guide-examples.html)
 """
 
+# Direct translation of the Python absolute_value
+# Kind of like a ternary if-then-else statement
+# cond ? true-branch false-branch
+# cond ? x y
 def absolute_value_z3(x):
     # Read this as: if x < 0 then -x else x.
     return z3.If(x < 0, -x, x)
@@ -139,14 +176,15 @@ def absolute_value_z3(x):
 
 # To see output:
 # run with pytest lecture.py -rP
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_absolute_value_z3():
     # Declare our variables
-    x = z3.Int('x')
+    x = z3.Int('x') # x is a Z3 integer with the variable name x
     y = absolute_value_z3(x)
     # Spec:
     # y is either equal to x or -x, and y is nonnegative
-    spec = z3.And(z3.Or(y == x, y == -x), y >= 0)
+    # using z3.And and z3.Or instead of Python and/or
+    spec = z3.And(y >= 0, z3.Or(y == x, y == -x))
     # Ask Z3 to prove it:
     # This is our custom helper function
     # You can also just use z3.prove here
@@ -155,21 +193,25 @@ def test_absolute_value_z3():
     # but I wrote a version that works inside a unit test
     assert prove(spec) == PROVED
 
+    # Uncomment to inspect what's going on
+    # breakpoint()
+
 # What happens if the spec does not hold?
 
-@pytest.mark.skip
+# @pytest.mark.skip
 # @pytest.mark.xfail
 def test_absolute_value_z3_2():
     x = z3.Int('x')
     y = absolute_value_z3(x)
     # This spec is wrong -- it says that abs(x) should
     # always be positive (not just nonnegative)
-    spec = z3.And(z3.Or(y == x, y == -x), y > 0)
+    spec = z3.And(y > 0, z3.Or(y == x, y == -x))
     # What happens when we try to prove it?
-    assert prove(spec) == PROVED
+    # assert prove(spec) == PROVED
+    assert prove(spec) == COUNTEREXAMPLE
 
 # Z3 tells us that it's not true -- and
-# shows us a counterexample:
+# shows us a counterexample!
 # counterexample
 # [x = 0]
 
@@ -199,9 +241,9 @@ Examples:
     can be modeled as mathematical objects
     (state spaces with some transition relation)
 
-- One well-known example: Amazon AWS uses Z3 to model who has access
-    to cloud resources - we encode "who has access" as a mathematical property,
-    then we want to prove whether or not an unauthorized user has access.
+    + One well-known example: Amazon AWS uses Z3 to model who has access
+        to cloud resources - we encode "who has access" as a mathematical property,
+        then we want to prove whether or not an unauthorized user has access.
 
 The key to applying Z3 in the real world is to define the right
 mathematical domain to map your programs to.
@@ -221,7 +263,7 @@ Differences from Hypothesis?
     For Z3, we had to rewrite it as absolute_value_z3, using Z3 abstractions.
 
     One way to think about it:
-    we are testing a *model* of the program, not the program itself!
+    we are working with a *model* of the program, not the program itself!
 
     More on this later! This is both an advantage and a drawback.
 
@@ -235,9 +277,25 @@ is correct: true for ALL inputs, not just some inputs.
 We discussed how to write a basic example in Z3, and how Z3 requires
 us to rewrite the program using Z3 syntax
 
+    instead of Python if: z3.If
+
+    instead of Python and: z3.And
+
+    instead of Python or: z3.Or
+
+    instead of Python integers: z3.Int("x"), z3.Int("y"), etc.
+
+    ...
+
 Things we will see next:
 
-- Z3 is much more powerful than just proving properties of programs.
+- Z3 is much more powerful than just proving specifications for programs.
+
+    more generally useful for: basically "logic programming"
+
+    A new way of thinking about programming!
+
+        + Fun application: writing a Sudoku solver
 
 - More specific syntax and data types
 

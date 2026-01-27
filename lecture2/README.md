@@ -12,6 +12,8 @@ Announcements:
     At an introductory level, so you can get started now if you like.
     We will get some experience with Z3 over the next few classes.
 
+  + Due Friday, Feb 6 11:59pm
+
 - Polls synced over the weekend -- if you have a 0 on all polls, check
   that you have submitted HW0 with your email and student ID.
 
@@ -21,7 +23,11 @@ Reminder:
 
 Plan for today:
 
-- Introduction to Z3.
+- Start with the poll
+
+- Part 1: Introduction to Z3.
+
+- If time, start Part 2
 
 Do a `git stash; git pull` to follow along.
 
