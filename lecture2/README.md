@@ -1,47 +1,28 @@
 # Lecture 2: Z3 and Satisfiability
 
-**Please note: This lecture has not yet been updated for winter quarter 2026.**
+## Tuesday, January 27
 
-## Announcements
+Announcements:
 
-- HW0 and in-class polls can be made up for full credit at any point during the quarter -- no need to email me.
-  + go through either the lecture video (Canvas)
-    or the lecture source (GitHub)
-  + Google form will remain open
-  + your grade will be automatically updated in Canvas on the next sync
+- I am still sick, hope to be back in person soon
 
-- HW1 is due Friday, April 19 (11:59pm).
+- HW2 released today!
 
-- There's no "submit" button; you just push your code
+  + Z3 homework
+    At an introductory level, so you can get started now if you like.
+    We will get some experience with Z3 over the next few classes.
 
-- Note: how to commit/push on GitHub Codespaces
-```
-git add .
-git commit -m "Modified files"
-git push
-```
+- Polls synced over the weekend -- if you have a 0 on all polls, check
+  that you have submitted HW0 with your email and student ID.
 
-- Reminder: please push your code and load up your repository
-  online to make sure your changes are showing up.
+Reminder:
 
-- Questions about HW1?
+- Midterm Thursday, February 12 in class
 
-## Plan for the next few days
+Plan for today:
 
-- Introduction to Z3
-- Satisfiability
-- Core data types and operations
-- More complex data types
+- Introduction to Z3.
 
-## Looking ahead
+Do a `git stash; git pull` to follow along.
 
-- Strings and regular expressions
-- Advanced techniques
-
-Some subset of the following:
-- Extended programming exercise
-- Z3 in practice
-- Z3 internals
-- Z3 limitations
-
-About 2-3 weeks on Z3 (HW2 and HW3), then moving on to Dafny (HW4) and Rust (HW5).
+Questions?

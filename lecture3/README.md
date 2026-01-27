@@ -1,4 +1,4 @@
-# Lecture 5: Advanced Z3
+# Lecture 3: Advanced Z3
 
 **Please note: This lecture has not yet been updated for winter quarter 2026.**
 

@@ -1,8 +1,6 @@
 """
 Z3 helper functions
 
-(This file is also available on the homework)
-
 This file provides three functions:
 
 - prove(spec) can be used instead of z3.prove.
@@ -16,6 +14,8 @@ This file provides three functions:
 - get_solution(spec) can be used to get a solution
   to the spec, assuming that it is satisfiable (SAT).
   Otherwise it returns None.
+
+This file will also be available to you for use on the homework.
 """
 
 import z3
@@ -36,14 +36,14 @@ def prove(spec):
     solver = z3.Solver()
     solver.add(z3.Not(spec))
     result = solver.check()
-    if result == UNSAT:
+    if result == PROVED:
         print("proved")
-    elif result == UNKNOWN:
-        print("failed to prove")
-    else:
-        # result == SAT
+    elif result == COUNTEREXAMPLE:
         print("counterexample")
         print(solver.model())
+    else:
+        # result == UNKNOWN
+        print("failed to prove or find counterexample")
     return result
 
 """
@@ -67,8 +67,6 @@ def solve(spec):
 
 """
 get_solution(spec)
-
-This function will be useful for Part 2.
 
 The solution is returned as a Z3 "Model" object.
 You can get the value of a variable x from a model by doing
