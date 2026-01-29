@@ -1,6 +1,8 @@
 # Course Review and Study Guide
 
-## Module 1: Correctness, Specifications, Hypothesis
+## Pre-Midterm
+
+### Lecture 1: Correctness, Specifications, Hypothesis
 
 - Correctness
   + Why is correctness important?
@@ -19,6 +21,9 @@
     "function does not print to stdout"
     etc.
 
+- Stronger and weaker specifications
+
+- Types of specifications
 
 - Methods of validating specifications
   + testing with Hypothesis
@@ -42,9 +47,20 @@ Writing specs:
     + The strongest possible postcondition on the output
         Checks every piece of data in the output
 
+Stronger/weaker specs
+- Here are some specs spec1 and spec2, is spec1 stronger than spec2?
+- What is the strongest possible spec? What is the weakest possible spec?
+
+Types of specs
+- What is a safety property?
+- Which of the following are safety properties?
+- Is the following a functional correctness property?
+- Is the following a full functional correctness property?
+
 Pre/postconditions:
 - Is the program correct with respect to this pre/postcondition?
 - Which of the following preconditions are valid for this program and postcondition?
+
 
 Assume/assert:
 - Is the program correct given the assume() and assert() statements?
@@ -63,7 +79,7 @@ Hypothesis
     + Specifications beyond the scope of pre/postconditions
     + What a test passing means in Hypothesis
 
-## Module 2: Z3 and Satisfiability
+## Lecture 2: Z3 and Satisfiability
 
 - Satisfiability
   + what is satisfiability?
@@ -100,9 +116,6 @@ Encoding programs using Z3
 
 Regular expressions
 - Which of the following strings match the regular expression?
-- Write a regular expression which encodes the following property
-    (I will give reminders for ALL Z3 syntax, your answer doesn't have to
-     "compile" but it should be conceptually correct)
 
 Z3:
 - Here is some Z3 code, what will happen when it is run?
@@ -110,7 +123,9 @@ Z3:
 - Which of the following are reasons Z3 may return unknown / timeout?
 - Which of the following are limitations of Z3?
 
-## Module 3: Dafny and formal verification
+## Post-midterm
+
+### Lecture 3: Dafny and formal verification
 
 What is formal verification?
 - Reasons you might want to use formal verification
@@ -143,7 +158,7 @@ Weakest preconditions and strongest postconditions
     + of a specification?
         weaker = true for more programs
         stronger = true for fewer programs
-    + counterintuitive fact that came up in the Hypothesis module:
+    + counterintuitive fact that came up in the Hypothesis Lecture:
         weaker precondition ==> stronger spec
         stronger precondition ==> weaker spec
         weaker postcondition ==> weaker spec
@@ -188,24 +203,7 @@ Which of the following is a valid loop invariant?
 Write a loop invariant for this piece of code.
     (Same notes as above)
 
-## Module 4: Rust and Safety Properties
-
-I will only ask you very basic questions about Rust -- see the last two polls.
-
-- What is a safety property?
-- Which of the following are safety properties?
-- What are the primary safety properties that Rust enforces
-- What are advantages/disadvantages of Rust?
-- Some motivation:
-    + principles of good code
-    + user does not have to write the spec
-    + Rust is good for speed/performance, low-level systems software, C replacement
-
-You do NOT need to understand the Rust ownership rules, but you should know
-the word "ownership" and that it is the fundamental property behind how Rust
-works.
-
-## General
+### General
 
 Best fit tools for the task?
 - Here is an example task/program, would Hypothesis, Z3, or Dafny

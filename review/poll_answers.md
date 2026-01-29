@@ -22,3 +22,7 @@ A, C, E, F
 
 Jan 27:
 A, B, C, E
+
+Jan 29:
+1. C and D
+2. A, B, and D
