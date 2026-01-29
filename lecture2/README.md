@@ -54,3 +54,25 @@ Plan for today:
 - More about how Z3 works and common pitfalls.
 
 Questions?
+
+## Tuesday, February 3
+
+Reminders:
+
+- HW2 due Friday 11:59pm
+
+- Midterm Thursday, February 12 in class
+
+Announcements:
+
+- I have updated review/ with additional study materials!
+
+Plan:
+
+- Go over study materials for midterm
+
+- Finish loose ends from part 2
+
+- Sudoku.
+
+Questions?
