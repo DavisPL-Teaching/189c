@@ -1,5 +1,7 @@
 """
-Sudoku solver
+ECS 189C
+
+Z3 Applications
 
 === Sudoku ===
 
@@ -173,28 +175,6 @@ def get_input():
 ############### Where we left off for day 9 ###############
 
 """
-Day 10
-
-Announcements:
-
-- HW 2 is due in 9 days
-
-- Mistake in HW2 part 3
-
-Last time:
-
-- We started working on a Sudoku solver using Z3
-
-Plan for today:
-
-- Clarify how solving problems with Z3 is different from normal programming
-
-- Finish the Sudoku solver
-
-- Task scheduler (2nd place with 24 votes)
-
-- Any questions?
-
 === Clarification ===
 
 Some people were confused last time!
@@ -231,44 +211,6 @@ That doesn't sound very good!
 path of trying things that don't work out.
 
 Is there a better way?
-
-===== Solving problems with Z3 =====
-
-Z3 requires thinking about problems in a very different way!
-
-Z3 process: think about "what" instead of "how":
-    - we define the *output* as a set of abstract variables
-    - we think about what constraints the output must satisfy
-    - (Magic part)
-      we pass the constraints to Z3 to solve the problem for us.
-
-Z3 integers: not the same as Python integers!
-
-(aside: quick terminal demo)
-
-- In Z3, everything is an abstract expression
-  Integer values are not known, they're abstract variables
-  "x" and "y", not specific integers
-- Z3 integers support +, *, ==, and some other operations,
-  but don't assume that every Python operator is automatically
-  going to work on Z3 integers.
-- In Z3, everything proceeds in two stages: first, we create
-  a Z3 expression or formula for what we want, and then
-  we pass it to z3.solve or z3.prove to actually solve the
-  problem.
-
-Steps:
-    1. What are the variables?
-    2. What are the constraints?
-    3. What are the properties we want to check?
-
-(1) is talking about Z3 variables, not Python variables!
-How are they different?
-
-=== POLL ===
-
-https://forms.gle/7PZfussjfQKyJdjx9
-https://tinyurl.com/3fj6jt4x
 
 === Returning to our problem ===
 
@@ -360,30 +302,3 @@ assert output_grid == [
  [9, 6, 1, 5, 3, 7, 2, 8, 4],
  [2, 8, 7, 4, 1, 9, 6, 3, 5],
  [3, 4, 5, 2, 8, 6, 1, 7, 9]]
-
-############### Where we left off for day 10 ###############
-
-"""
-(Skipped -- Day 11 continued in task-scheduler.py.)
-
-=== Discussion questions ===
-
-How would we do this without Z3?
-
-What are the advantages of using Z3?
-
-How is Z3 different from Hypothesis?
-
-What are the drawbacks of using Z3?
-
-=== Follow up ===
-
-- Can we reorganize our code to be better?
-
-- Can we check that there is only one solution?
-
-- Can we generate valid Sudoku puzzles?
-
-- Generalize to an arbitrary N x N board.
-(This only works for certain board sizes: 4x4, 9x9, 16x16, etc.)
-"""

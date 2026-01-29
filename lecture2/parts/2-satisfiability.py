@@ -32,16 +32,12 @@ In this part:
 Along the way:
 
 - More practice with how Z3 variables and formulas work.
-
-Start with poll.
 """
 
-####################
-###     Poll     ###
-####################
-# We'll do this as a class
-
 """
+Poll
+We'll do this one as a class.
+
 The z3.prove function (or our custom prove function)
 returns one of three results:
 - PROVED - proved (demonstrate that it's true for all inputs)
@@ -128,28 +124,96 @@ rather than giving us a counterexample where the spec was false.
 We'll see that this can be used for many useful and fun applications.
 
 ****** where we ended for Tuesday, January 27 ******
-
 """
 
 #############################################################
 
-##########################
-###   Satisfiability   ###
-##########################
+"""
+Recap from last time:
+
+- Z3 can be used to prove a spec on all inputs
+
+    (Testing -> Verification)
+
+- Z3 requires us to rewrite the code in Z3.
+
+===== Before we continue! (Very important!) =====
+
+Two pitfalls:
+
+- Z3 variables are different than Python variables!
+
+- Z3 expressions do not evaluate - they are mathematical formulas
+
+Let's do another exercise to see this.
+
+Exercise:
+The ReLU function is sometimes used as an activation function in neural networks.
+If the input is positive it returns x, otherwise 0.
+
+Use Z3 to prove that applying ReLU twice is the same as applying ReLU once.
+"""
+
+def relu(x):
+    # TODO
+    raise NotImplementedError
+
+def relu_z3(x):
+    # TODO
+    raise NotImplementedError
+
+@pytest.mark.skip
+def test_prove_relu():
+    # TODO
+    raise NotImplementedError
 
 """
-Before we understand how Z3 works, we need to understand the concept
-of satisfiability
+Print out the output after some intermediate steps. What happens?
+
+Different than using Hypothesis and Python assertions!
+
+What would happen if we tried to use Python assertions above?
+"""
+
+"""
+=== Poll ===
+
+1. Which of the following are correct difference(s) between a z3.Int and a Python integer? (select all that apply)
+
+2. Which of the following is a good reason to use a Z3 variable instead of a Python variable? (select all that apply)
+
+https://forms.gle/8UzzcAPHXQK9Pzkv8
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+Let's dive in to more about how Z3 works.
+"""
+
+"""
+===== Satisfiability =====
+
+To understand how Z3 works, we need to understand the concept
+of satisfiability.
 
 A *formula* is a logical or mathematical statement that is either true or false.
 Formulas are the main subject of study in logic and they are also
 the core objects that Z3 works with.
+
 Examples:
 
-    - "x > 100 and y < 100"
-    - "x * x = 2"
-    - "x is an integer"
-    - "If Socrates is human, then socrates is mortal"
+    1. "x > 100 and y < 100"
+    2. "x * x = 2"
+    3. "x is an integer"
+    4. "If Socrates is human, then socrates is mortal"
 
 Essence of satisfiability:
 
@@ -157,22 +221,17 @@ A formula is *satisfiable* if it is true for *at least one* input.
 
 Examples:
 
-    - first one: true, for example, for x = 101 and y = 5
-        =====> Satisfiable
-    - second one: true for x = sqrt(2) (in the real numbers)
-        never true in the integers
-        =====> Satisfiable in real numbers, not satisfiable in integers
-    - third one: true for any integer x, e.g. x = 5
-        =====> Satisfiable both in real numbers or in integers
-    - fourth one: satisfiable because we can take "Socrates" to be the actual
-        Socrates and we can take "mortal" and "human" to be the usual meanings
-        of those words, and then the statement is a true statement about
-        Socrates, humans, and being mortal
-        ^^ We're not going to encode this in Z3, but we could if we really wanted
-        =====> Satisfiable because it's true for **some** examples of the terms
-            or variables involved, i.e. true for some inputs.
+    1.
 
-Key point: Satisfiable == True for at least one input.
+    2.
+
+    3.
+
+    4.
+
+Key point:
+
+    Satisfiable == True for at least one input.
 
 Side note:
 If you've taken ECS 120, you may have seen the Boolean satisfiability problem,
@@ -554,16 +613,15 @@ that answer is excluded.
 """
 === Recap ===
 
-We know what a formula is.
-- Mathematical statement that can be true or false
+Formula = Mathematical statement that can be true or false
 
-Satisfiability is the property of a formula being true for at least one input.
-Provability is the property of a formula being true for all inputs
+A formula is *satisfiable* if it is true for at least one input.
 
-Z3 can try to automatically resolve satisfiability by running
-z3.solve
-or provability by running
-z3.prove
+How Z3 works:
+
+- Solve satisfiability by running solve(formula)
+
+- To find a proof of spec, just run solve(z3.Not(spec)) !
 
 A last question:
 How does this help us prove specifications?
@@ -572,11 +630,13 @@ Remember that for a program my_prog, we defined preconditions and postconditions
 and the "spec" was the property that if the precondition holds, then the postcondition
 must hold.
 
-Roughly speaking, we can translate this to a Z3 spec by writing
+Usually we translate this to a Z3 spec by writing
 
-x = Input(..)
-y = my_prog(x)
+    x = Input(..)
+    y = my_prog(x)
+
 Then we can write the formula:
+
     z3.Implies(precondition(x), postcondition(y))
 
 If Z3 is able to prove this, then the spec holds -- the property is true for all inputs.

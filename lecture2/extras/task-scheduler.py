@@ -1,39 +1,7 @@
 """
-Day 11
+ECS 189C
 
-(to follow along: 189C/lecture4/task-scheduler.py)
-
-Announcements
-
-- HW2 due in one week
-
-- HW1 grading: comments will show up in your GitHub pull request;
-    please hold off on regrade requests until further instructions
-    are posted on Piazza.
-
-Recap:
-
-- We used Z3 to build a Sudoku solver
-
-- Z3 is likely faster and easier than what you could write by hand:
-
-    + about 30 lines of code
-    + runs in a tenth of a second
-
-Plan for today:
-
-- Start with the poll
-
-- Use Z3 to build a task scheduler
-
-- This time, we will also focus more on good style (code organization).
-
-Questions?
-
-=== Poll ===
-
-https://forms.gle/iVEGnZAneJ2ZRAAWA
-https://tinyurl.com/52e7t66z
+Z3 Applications
 
 === Task scheduler ===
 
@@ -151,33 +119,6 @@ Z3 methodology:
 - What Z3 variables I can use to describe the output and
   constraints on the output (3 steps that we've been using)
 - Then encode the problem and pass it to Z3 to solve
-
-Poll:
-Which of the following are key differences between Hypothesis and Z3?
-
-https://forms.gle/AASYVNim69Q7dPur8
-https://tinyurl.com/5y5afus3
-
-=== Day 13 ===
-
-Announcements:
-
-- HW2 due Friday
-    + Extra office hour on Friday at noon
-
-- HW3 due next Friday
-
-Plan:
-
-- Finish up the task scheduler
-
-- Move on to Lecture 5: Advanced Z3
-
-Questions?
-
-Poll:
-https://forms.gle/UpfGQeWJkFVwoyzF8
-https://tinyurl.com/yanyt88d
 
 """
 

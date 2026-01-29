@@ -1,9 +1,12 @@
 """
 ECS 189C
+Lecture 2, Part 5:
 
-Lecture 1, Part 4: Real numbers
-and other data types
+Conclusions
 """
+
+import z3
+from helper import solve, prove
 
 """
 === True Real Numbers ===
@@ -22,10 +25,10 @@ z3.Real
 z3.Reals
 """
 
-x = z3.Real('x')
-# what happens?
-print("Square root of two:")
-z3.solve(x * x == 2)
+# x = z3.Real('x')
+# # what happens?
+# print("Square root of two:")
+# z3.solve(x * x == 2)
 
 # Note: there is no floating point value x with x^2 = 2
 # It only exists as a true real number.
@@ -60,4 +63,35 @@ Q: write a function to solve the formula
 x^2 + 5x + 6 = 0
 
 First as an integer, then as a real number.
+"""
+
+"""
+=== Conclusions and summary points ===
+
+Three-step methodology (thinking about problems / Z3 mindset):
+
+
+
+Satisfiability vs. Proof:
+
+
+
+
+Advantages/disadvantages of using Z3 for proving specs of real programs?
+
+
+
+
+=== Other tips and resources ===
+
+Useful guide:
+[Z3 py guide](https://ericpony.github.io/z3py-tutorial/guide-examples.htm)
+
+Documentation:
+[Z3 py docs](https://z3prover.github.io/api/html/namespacez3py.html)
+
+The Z3 solver API:
+see helper.py.
+
+Useful on the HW.
 """

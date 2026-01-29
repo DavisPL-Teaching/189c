@@ -1,5 +1,9 @@
 """
-8 Queens Problem
+ECS 189C
+
+Z3 Applications
+
+=== 8 Queens Problem ===
 
 The 8 queens problem is a classic chess puzzle.
 A chess board is an 8x8 grid. The goal is to place 8 queens on the board such that no two queens can "attack" each other using the rules
