@@ -1,7 +1,7 @@
 """
 ECS 189C
 
-Part 3: Applications of Z3 and constraint programming.
+Part 3: Applications of Z3
 
 Satisfiability in Z3 is very powerful.
 It can be used for a different paradigm of programming often known as

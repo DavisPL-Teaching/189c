@@ -39,14 +39,18 @@ Reminders:
 
 - I am still sick, hope to be back in person soon
 
+- HW2 due a week from tomorrow
+
 - OH today 3-4pm on Zoom
 
-- Poll answers and other study materials in `review/`
-
 - Midterm Thursday, February 12 in class
+
+- Poll answers and other study materials in `review/`
 
 Plan for today:
 
 - Jump back into part 2: satisfiability
 
 - More about how Z3 works and common pitfalls.
+
+Questions?

@@ -1,7 +1,7 @@
 """
 ECS 189C
 Lecture 2, part 2:
-Logic programming
+Satisfiability
 
 === Intro ===
 
@@ -115,7 +115,7 @@ def test_poll_output_2():
     # assert prove(spec) == COUNTEREXAMPLE
 
 # Uncomment to run
-test_poll_output_2()
+# test_poll_output_2()
 
 """
 Unlike prove(), solve() gave us back an example where the spec was *true* (just one particular input),
@@ -149,25 +149,49 @@ Let's do another exercise to see this.
 
 Exercise:
 The ReLU function is sometimes used as an activation function in neural networks.
-If the input is positive it returns x, otherwise 0.
+
+    f(x):
+    If the input x is positive it returns x, otherwise 0.
+
+                      /
+                     /
+                    /
+                   /
+    ______________/
 
 Use Z3 to prove that applying ReLU twice is the same as applying ReLU once.
 """
 
 def relu(x):
-    # TODO
-    raise NotImplementedError
+    if x > 0:
+        return x
+    else:
+        return 0
 
 def relu_z3(x):
-    # TODO
-    raise NotImplementedError
+    return z3.If(x > 0, x, 0)
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_prove_relu():
-    # TODO
-    raise NotImplementedError
+
+    # Define the input x -- represents all possible inputs
+    x = z3.Int("x")
+
+    # Define the spec -- applying ReLU twice == applying once
+    spec = relu_z3(relu_z3(x)) == relu_z3(x)
+
+    # Prove the spec
+    assert prove(spec) == PROVED
 
 """
+(Note: z3.If(x > 0, x, 0)
+
+    what's happening here - Python integer 0 is being converted
+    to a Z3 integer expression 0.
+
+    ===> We can convert Python integers/expressions to Z3
+         integers/expressions, but not the other way around.
+
 Print out the output after some intermediate steps. What happens?
 
 Different than using Hypothesis and Python assertions!
@@ -211,23 +235,57 @@ the core objects that Z3 works with.
 Examples:
 
     1. "x > 100 and y < 100"
-    2. "x * x = 2"
+    2. "x * x == 2"
     3. "x is an integer"
     4. "If Socrates is human, then socrates is mortal"
 
-Essence of satisfiability:
+Definition of satisfiability:
 
-A formula is *satisfiable* if it is true for *at least one* input.
+    A formula is *satisfiable* if it is true for *at least one* input.
 
-Examples:
+    (This is the solve() function we saw last time)
 
-    1.
+Examples
+Which of 1-4 is satisfiable?
 
-    2.
+    1. That is satisfiable because it is true for at least one input:
 
-    3.
+        ex.: x == 101 and y == 50
 
-    4.
+        True for at least one input ====> Satisfiable.
+
+    2. (assume x is an integer)
+
+        Not satisfiable for an integer x, but if x was a real number,
+        we could do x = sqrt(2)
+
+        ====> Unsatisfiable if x is an integer,
+              Satisfiable if x is a real number.
+
+    3. Yes, take x = 3
+
+        ====> Satisfiable if x is an integer (take x = 3)
+        ====> Satisfiable if x is a real number variable (take x = 3)
+
+    4. Yes, satisfiable
+
+        Socrates is human = boolean value True
+
+        Socrates is mortal = boolean value True
+
+        "If true then true" which is true
+
+        ====> Satisfiable.
+
+Other examples:
+
+    True ====> Satisfiable
+
+    False ====> Unsatisfiable
+
+    False implies False
+    (if False then False)
+        ====> True, therefore satisfiable.
 
 Key point:
 
@@ -244,11 +302,10 @@ To make a Boolean variable, we use:
 - z3.Bools
 """
 
-# a = z3.Bool('a')
-# b = z3.Bool('b')
+a = z3.Bool('a')
+b = z3.Bool('b')
 
-# This defines two boolean variables, a and b.
-# We'll see what the 'a' and 'b' mean in a moment
+# a, b = z3.Bools("a b")
 
 """
 Creating a formula
@@ -256,10 +313,11 @@ Creating a formula
 We can take our boolean variables and combine them
 """
 
-# form1 = z3.And(a, b)
-# form2 = z3.Or(a, b)
-# form3 = z3.Not(a)
-# form4 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
+form1 = z3.And(a, b)
+form2 = z3.And(a, b, a)
+form3 = z3.Or(a, b)
+form4 = z3.Not(a)
+form5 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
 
 # We could run z3.prove() on these formulas or a new function called
 # z3.solve() -- we will do this in a moment
@@ -275,12 +333,17 @@ instead of just z = z3.Bool() ?
 A: this is just how z3 works -- it uses the name, NOT the Python variable name,
 to determine the identify of a variable.
 
-x = z3.Bool('a')
-y = z3.Bool('a')
-# ^^ These are actually the same variable, in Z3
+    x = z3.Int("var1")
 
-x = z3.Bool('y')
-# ^^ the variable name here, in Z3, is 'y', not x.
+    ^^^^^ not recommended, but possible
+
+    x = z3.Int("x")
+
+    ^^^^^ recommended style
+
+    x = z3.Bool('a')
+    y = z3.Bool('a')
+    # ^^ These are actually the same variable, in Z3
 
 - What is the type of a and b?
 
@@ -305,7 +368,7 @@ Same reason: Z3 needs a formula in the end, not just the final result.
 """
 
 """
-Checking satisfiability
+=== Checking satisfiability ===
 
 We can use the z3.solve() function to check if a formula is satisfiable.
 This is what all of Z3 is based on!
@@ -315,8 +378,49 @@ There are three possible outcomes:
 - z3.unsat =====> No the formula is not satisfiable
 - z3.unknown =====> I don't know
 
-Note: If this seems similar to the "prove" function from earlier, it should!
-We will discuss how prove is implemented shortly.
+Recall two functions of Z3:
+    z3.prove --> ask if the spec can be proven (for all inputs)
+    z3.solve --> ask if the spec is satisfiable (for at least one input)
+
+Note!
+
+    prove(spec) returns PROVED, COUNTEREXAMPLE, or UNKNOWN
+
+        ... but PROVED is just an alias for UNSAT and
+            COUNTEREXAMPLE is just an alias for SAT!
+
+        How can this be?
+
+    Solving whether a spec is true on all inputs, is the
+    same thing as solving satisfiability for
+
+        Not(spec).
+
+    Let's think about this...
+
+        If spec is true on all inputs ...
+
+            ... then Not(spec) is false on all inputs
+
+            ... so solve(Not(spec)) returns UNSAT.
+
+        If spec is NOT true on all inputs ...
+
+            ... then it is false for at least one input
+
+            ... so Not(spec) is true for at least one input
+
+            ... so solve(Not(spec)) return SAT.
+
+    Therefore,
+
+        prove(spec)
+
+    is truly just the same thing as
+
+        solve(not(spec)).
+
+This is how prove is internally implemented.
 
 Recall:
 form1 = z3.And(a, b)
@@ -342,61 +446,86 @@ form4 = z3.And(z3.Or(a, b), z3.Or(a, z3.Not(b)))
 # # =====> Unsatisfiable, Z3 says "no solution"
 
 """
-Two functions of Z3:
-z3.prove --> ask if something can be proven
-z3.solve --> ask if something is satisfiable
+====== Recap =====
 
-Actually, how does z3.prove work?
-If I run z3.prove(formula)
-it calls
-z3.solve(z3.Not(formula))
-- If satisfiable: that means there is an input where "NOT formula" is true
-    Therefore, "formula" must be false (on that input)
-    Therefore, "formula" is not necessarily true for all inputs, i.e. it's not
-    provable -- there is a counterexample.
-- If unsatisfiable: that means there are no inputs where "NOT formula" is true
-    Therefore, "NOT formula" is false for all inputs
-    Therefore, "formula" is true for all inputs
-    Therefore, formula is provable.
-- If unknown: we return unknown.
+We learned about common pitfalls working with Z3
 
+    Z3 vars are different than Python vars
+
+    You can go from Python to Z3, but not vice versa
+
+    Z3 expressions like == and >
+    are just symbols - they are not evaluated.
+
+We got some more practice with working with Z3 and writing
+Z3 specs
+
+    1. define your variables
+
+    2. define formulas - write the spec
+
+    3. solve the spec or prove the spec
+
+We learned about satisfiability
+
+    A formula is satisfiable (SAT) if it is true on
+    **at least one** input
+
+We learned more about z3.prove/z3.solve (or prove/solve)
+
+    Internally, prove(spec) just calls solve(z3.Not(spec))
+
+==============================
+
+=== More details about how Z3 works ===
+
+Last time we saw,
 In essence: provability and satisfiability are reducible to each other
 Specifically: provability of "P" and satisfiability of "Not P" are solving
 the same problem.
 
-When does z3.solve (or z3.prove) return unknown?
-Intuitively, if the formula is really mathematically complex, involves a lot
-of difficult operations and it's too hard to figure out whether it's satisfiable
-or not.
---> Booleans are quite easy, so this will rarely happen with booleans.
+Q: When does z3.solve (or z3.prove) return unknown?
 
-=== Summary: z3.prove vs. z3.solve ===
+    Intuitively, if the formula is really mathematically complex, involves a lot
+    of difficult operations and it's too hard to figure out whether it's satisfiable
+    or not.
+    --> Booleans are quite easy, so this will rarely happen with booleans.
 
-When should you use z3.prove vs z3.solve?
+Q: When should you use z3.prove vs z3.solve?
 
-- z3.prove tries to show that the spec holds for all
-    values of the variables
+    - z3.prove tries to show that the spec holds for all
+        values of the variables
 
-    + useful for: proving specifications, and also when
-    you want to show that some assertion or some property always holds
+        + useful for: proving specifications, and also when
+        you want to show that some assertion or some property always holds
 
-- z3.solve tries to show that the
-    spec holds for one particular assignment of values to the variables.
+    - z3.solve tries to show that the
+        spec holds for one particular assignment of values to the variables.
 
-    + useful for: solving equations, solving puzzles, and
-    similar tasks where you have some set of constraints, and
-    you want to find a solution to those constraints.
-    E.g.: you want to solve x^2 - 3x + 2 = 0
-    or you want to solve a Sudoku puzzle
+        + useful for: solving equations, solving puzzles, and
+        similar tasks where you have some set of constraints, and
+        you want to find a solution to those constraints.
+        E.g.: you want to solve x^2 - 3x + 2 = 0
+        or you want to solve a Sudoku puzzle
 
-We also saw that these are really the same thing under the
-hood. In fact they use something called a Solver API
-Under the hood:
+Q: how do these work under the hood in the helper file?
+
+    There is a single thing called a "Solver" API:
 
     z3.Solver
 
-which you can create to solve arbitrary formulas. (See the helper.py file
-for how to use the Solver API.)
+    With the Solver API, we define a system of constraints, then
+    check satisfiability with .check().
+
+    (See the helper.py file for how to use the Solver API.)
+"""
+
+###################################
+###    Additional Operations    ###
+###################################
+
+"""
+We will go through this quickly, some you can review on your own time.
 
 === Boolean operations ===
 
@@ -454,41 +583,9 @@ Similarly for Or.
 These are just shortcuts, and can be implemented using the above operations already.
 """
 
-"""
-=== Common confusion: Z3 variables versus Python variables ===
-
-We've seen this notation come up in Z3:
-b = z3.Bool('b') <---- this is a variable, i.e. an input
-x = z3.Int('x') <---- this is a variable, i.e. an input
-
-Q: x = z3.Int('x')
-Does x have to match the string?
-A: No. Z3 will use the string to determine the variable.
-y = z3.Int('x') # This is also the same variable as x
-
-"""
-
-####################
-###     Poll     ###
-####################
-
-# What would you guess is the output of the following Z3 code?
-
-# @pytest.mark.skip
-# def test_poll_output_2():
-#     x = z3.Int('x')
-#     y = z3.Int('y')
-#     spec = z3.Implies(z3.And(x >= 10, y == x * x), y >= 100)
-#     prove(spec)
-
-# print("Output:")
-# test_poll_output_2()
-
-# Let's try it out
-
-########################
-###    Data Types    ###
-########################
+###################################
+###    Additional Data Types    ###
+###################################
 
 """
 The power of Z3 is in its ability to work with more complex data types
@@ -520,9 +617,10 @@ Examples
 
 """
 What operations are supported here?
-You can use most built-in integer operations in Python
-on Z3 integers. BUT keep in mind it's not the same as Python
-integer arithmetic.
+
+Most built-in integer operations in Python have Z3 equivalents.
+
+(BUT it's not the same as Python integer arithmetic!)
 """
 
 # x + y # <- Z3 expression, NOT a Python integer
@@ -536,6 +634,8 @@ integer arithmetic.
 # work on Z3 integers.
 
 """
+===== Extended application: Pythagorean triples =====
+
 We can use functions to wrap up useful functionality.
 
 For example:

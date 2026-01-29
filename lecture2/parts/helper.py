@@ -4,11 +4,11 @@ Z3 helper functions
 This file provides three functions:
 
 - prove(spec) can be used instead of z3.prove.
-  It tries to prove that the spec is always true.
+  It tries to prove that the spec is always true (on all inputs).
   It returns PROVED, COUNTEREXAMPLE, or UNKNOWN.
 
 - solve(spec) can be used instead of z3.solve.
-  It tries to find a solution to the spec.
+  It tries to find a solution to the spec (on at least one input).
   It returns SAT, UNSAT, or UNKNOWN.
 
 - get_solution(spec) can be used to get a solution
