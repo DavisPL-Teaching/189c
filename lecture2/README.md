@@ -63,16 +63,16 @@ Reminders:
 
 - Midterm Thursday, February 12 in class
 
-Announcements:
-
-- I have updated review/ with additional study materials!
-
 Plan:
 
-- Go over study materials for midterm
+- Go over details and study materials for midterm
+
+  + I have updated review/ with additional study materials!
 
 - Finish loose ends from part 2
 
-- Sudoku.
+- Poll
+
+- Part 3, applications of Z3: Sudoku solver.
 
 Questions?

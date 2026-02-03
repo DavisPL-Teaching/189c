@@ -475,49 +475,9 @@ We learned more about z3.prove/z3.solve (or prove/solve)
 
     Internally, prove(spec) just calls solve(z3.Not(spec))
 
+****** where we ended for Thursday, January 29 ******
+
 ==============================
-
-=== More details about how Z3 works ===
-
-Last time we saw,
-In essence: provability and satisfiability are reducible to each other
-Specifically: provability of "P" and satisfiability of "Not P" are solving
-the same problem.
-
-Q: When does z3.solve (or z3.prove) return unknown?
-
-    Intuitively, if the formula is really mathematically complex, involves a lot
-    of difficult operations and it's too hard to figure out whether it's satisfiable
-    or not.
-    --> Booleans are quite easy, so this will rarely happen with booleans.
-
-Q: When should you use z3.prove vs z3.solve?
-
-    - z3.prove tries to show that the spec holds for all
-        values of the variables
-
-        + useful for: proving specifications, and also when
-        you want to show that some assertion or some property always holds
-
-    - z3.solve tries to show that the
-        spec holds for one particular assignment of values to the variables.
-
-        + useful for: solving equations, solving puzzles, and
-        similar tasks where you have some set of constraints, and
-        you want to find a solution to those constraints.
-        E.g.: you want to solve x^2 - 3x + 2 = 0
-        or you want to solve a Sudoku puzzle
-
-Q: how do these work under the hood in the helper file?
-
-    There is a single thing called a "Solver" API:
-
-    z3.Solver
-
-    With the Solver API, we define a system of constraints, then
-    check satisfiability with .check().
-
-    (See the helper.py file for how to use the Solver API.)
 """
 
 ###################################
@@ -621,6 +581,7 @@ What operations are supported here?
 Most built-in integer operations in Python have Z3 equivalents.
 
 (BUT it's not the same as Python integer arithmetic!)
+
 """
 
 # x + y # <- Z3 expression, NOT a Python integer
@@ -634,97 +595,51 @@ Most built-in integer operations in Python have Z3 equivalents.
 # work on Z3 integers.
 
 """
-===== Extended application: Pythagorean triples =====
+An application for Pythagorean triples is in extras/pythagorean_triples.py.
 
-We can use functions to wrap up useful functionality.
+=== More Q+A about how Z3 works ===
 
-For example:
-Define a Pythagorean triple as three positive integers a, b, c
-such that a^2 + b^2 = c^2.
+Last time we saw,
+In essence: provability and satisfiability are reducible to each other
+Specifically: provability of "P" and satisfiability of "Not P" are solving
+the same problem.
 
-Q1: Find a pythagorean triple.
-Q2: Find a pythagorean triple with a = 5.
+Q: When does z3.solve (or z3.prove) return unknown? (or solve/prove from helper)
 
-It's often useful to define a function which abstracts the
-behavior you're interested in.
-"""
+    Intuitively, if the formula is really mathematically complex, involves a lot
+    of difficult operations and it's too hard to figure out whether it's satisfiable
+    or not.
+    --> Booleans are quite easy, so this will rarely happen with booleans.
 
-def pythagorean_triple(a, b, c):
-    # We can just return the expression a^2 + b^2 = c^2
-    # return (a * a + b * b == c * c)
-    # Debugging: we can add the additional constraints
-    # that we forgot here
-    pythag_constraint = a * a + b * b == c * c
-    a_is_positive = a > 0
-    b_is_postive = b > 0
-    c_is_positive = c > 0
-    return z3.And([
-        pythag_constraint,
-        a_is_positive,
-        b_is_postive,
-        c_is_positive,
-    ])
-    # Here: the other constraints are silently ignored :(
-    # What's happening here?
-    # Python boolean operators (and/or) are defined for arbitrary
-    # data types. And "falsey" datatypes are treated as false
-    # and "truthy" datatypes are treated as true
-    # and/or are both short circuiting so they'll return
-    # the first value that is either false/true, respectively.
-    # Bottom line here: this doesn't work because "and" already
-    # has a definition in Python.
-    # This is not what we want.
-    # return (pythag_constraint and a_is_positive and b_is_postive and c_is_positive)
-    # TL;DR Python boolean operators are weird, so be careful with them.
+Q: When should you use z3.prove vs z3.solve? (or solve/prove from helper)
 
-# If we want an example:
-# a, b, c = z3.Ints("a b c")
-# print("Example pythagorean triple:")
-# z3.solve(pythagorean_triple(a, b, c))
+    - z3.prove tries to show that the spec holds for all
+        values of the variables
 
-"""
-Q: what if we want more than one answer?
+        + useful for: proving specifications, and also when
+        you want to show that some assertion or some property always holds
 
-We can try rerunning...
+    - z3.solve tries to show that the
+        spec holds for one particular assignment of values to the variables.
 
-The easiest way is a common technique where
-each time we get an answer, we add an assertion that
-that answer is excluded.
-"""
+        + useful for: solving equations, solving puzzles, and
+        similar tasks where you have some set of constraints, and
+        you want to find a solution to those constraints.
+        E.g.: you want to solve x^2 - 3x + 2 = 0
+        or you want to solve a Sudoku puzzle
 
-# First answer: a = 6, b = 8, c = 10
-# Second answer
-# new_constraint = z3.Or(
-#     z3.Not(a == 6),
-#     z3.Not(b == 8),
-#     z3.Not(c == 10),
-# )
-# # ^ Force the solver to give us a new answer.
-# z3.solve(z3.And([
-#     pythagorean_triple(a, b, c),
-#     new_constraint,
-# ]))
+Q: How do these work under the hood?
 
-# We can keep adding constraints for each new answer,
-# there is also a way to do this programmatically
-# (This will use the Solver API that we will shortly see.)
-# We will see how to write a wrapper around Solver to do this.
+    Under the hood, the helper file uses the "Solver" API:
 
-"""
-=== Recap ===
+    z3.Solver
 
-Formula = Mathematical statement that can be true or false
+    With the Solver API, we define a system of constraints, then
+    check satisfiability with .check().
 
-A formula is *satisfiable* if it is true for at least one input.
+    (See helper.py)
 
-How Z3 works:
-
-- Solve satisfiability by running solve(formula)
-
-- To find a proof of spec, just run solve(z3.Not(spec)) !
-
-A last question:
-How does this help us prove specifications?
+Q: How does this help us prove specifications?
 
 Remember that for a program my_prog, we defined preconditions and postconditions,
 and the "spec" was the property that if the precondition holds, then the postcondition
@@ -740,4 +655,16 @@ Then we can write the formula:
     z3.Implies(precondition(x), postcondition(y))
 
 If Z3 is able to prove this, then the spec holds -- the property is true for all inputs.
+=== Summary ===
+
+Formula = Mathematical statement that can be true or false
+
+A formula is *satisfiable* if it is true for at least one input.
+
+How Z3 works:
+
+- Solve satisfiability by running solve(formula)
+
+- To find a proof of spec, just run solve(z3.Not(spec)) !
+
 """
