@@ -31,6 +31,11 @@ To follow along with the lectures, clone the repository:
 git clone git@github.com:DavisPL-Teaching/189c.git
 ```
 
+This requires that your Git is set up to use SSH correctly. If it doesn't work, you can also try HTTPS:
+```
+git clone https://github.com/DavisPL-Teaching/189C
+```
+
 If you make changes to the code after each lecture, you will need to discard them before pulling again.
 For example, you can run:
 ```shell
