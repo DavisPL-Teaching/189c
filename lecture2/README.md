@@ -61,13 +61,21 @@ Reminders:
 
 - HW2 due Friday 11:59pm
 
+  OH: Thursday 3pm
+
 - Midterm Thursday, February 12 in class
+
+- HW1 has been graded! Regrades are due Friday 11:59pm
+
+- Reminder: Please don't use external libraries in your HW unless they are already imported.
+
+  Note: please also include helper files! (Make sure you include helper.py in your submission)
 
 Plan:
 
 - Go over details and study materials for midterm
 
-  + I have updated review/ with additional study materials!
+  + I will post updated review/study materials after class!
 
 - Finish loose ends from part 2
 
@@ -75,4 +83,4 @@ Plan:
 
 - Part 3, applications of Z3: Sudoku solver.
 
-Questions?
+Questions about the above or HW2?

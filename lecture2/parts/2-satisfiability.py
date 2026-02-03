@@ -489,13 +489,18 @@ We will go through this quickly, some you can review on your own time.
 
 === Boolean operations ===
 
+z3.Bool type
+
 What boolean operations can we use?
 
 - z3.And
 - z3.Or
 - z3.Not
 - z3.Implies
+    Implies(p, q) as "if p then q"
+        also equivalent to: "if p then q else True"
 - z3.If
+    If(P, c1, c2) means "if P then c1 else c2"
 - z3.Xor
 
 These are all standard functions on boolean numbers, but instead of evaluating
@@ -533,6 +538,21 @@ Convenient shortcuts:
 - z3.And([...])
 - z3.Or([...])
 
+Typical pattern:
+
+    constraints = []
+
+    for ...
+        constraints.append(formula)
+
+    # constraints is some list of constraints
+
+    constraint = z3.And(constraints)
+
+Note:
+
+    z3.And can also accept 3 or more arguments.
+
 You can directly write x == y
 for booleans, and Z3 knows what that means
 You can also write
@@ -553,6 +573,10 @@ The power of Z3 is in its ability to work with more complex data types
 
 Basic data types: Bool, Int, Real
 
+Also goes beyond: Z3 supports arrays, strings, trees, functions, ...
+    We will not cover these in Lecture 2, but I plan to cover some of them
+    in Lecture 3.
+
 (In fact we don't really need booleans -- we can represent them as integers.)
 """
 
@@ -567,7 +591,7 @@ Basic data types: Bool, Int, Real
 === Integers ===
 
 z3.Int
-z3.Ints -- creates multiple integers
+z3.Ints -- creates multiple integers (usually not needed)
 
 Examples
 """
@@ -596,6 +620,11 @@ Most built-in integer operations in Python have Z3 equivalents.
 
 """
 An application for Pythagorean triples is in extras/pythagorean_triples.py.
+
+    Exercise involves the following problem:
+    "Find integers a, b, c such that a^2 + b^2 = c^2"
+
+    The file shows how to do this with z3.solve()/solve().
 
 === More Q+A about how Z3 works ===
 
@@ -647,7 +676,7 @@ must hold.
 
 Usually we translate this to a Z3 spec by writing
 
-    x = Input(..)
+    x = input (e.g. x = z3.Int("x"))
     y = my_prog(x)
 
 Then we can write the formula:
@@ -655,6 +684,7 @@ Then we can write the formula:
     z3.Implies(precondition(x), postcondition(y))
 
 If Z3 is able to prove this, then the spec holds -- the property is true for all inputs.
+
 === Summary ===
 
 Formula = Mathematical statement that can be true or false

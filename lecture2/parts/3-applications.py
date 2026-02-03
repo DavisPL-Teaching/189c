@@ -8,6 +8,12 @@ It can be used for a different paradigm of programming often known as
 
     "constraint solving" or "logic programming"
 
+Idea:
+
+    Instead of telling the computer exactly what to do,
+    tell it the constraints that a solution should satisfy,
+    and let the computer come up with the solution.
+
 We will build a Sudoku solver.
 
 ===== Poll =====
@@ -20,7 +26,7 @@ B. prove(spec) returns PROVED, COUNTEREXAMPLE, or UNKNOWN
 C. prove(z3.Implies(precond, postcond)) can be used to prove a program specification
 D. prove(spec) is internally the same as solve(spec or not(spec))
 E. prove(spec) is internally the same as solve(not(spec))
-F. prove(spec) does not relate to solve(internally)
+F. prove(spec) does not relate to solve() internally
 
 https://forms.gle/uaLq4Kd1viZnmjFw7
 

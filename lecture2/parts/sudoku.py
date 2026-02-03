@@ -55,20 +55,45 @@ with the numbers from 1 to 9 to solve the puzzle.
 """
 Step 0: let's import z3 and our helper functions.
 """
+
 import z3
 import pytest
 from helper import solve, get_solution, SAT, UNSAT, UNKNOWN
 
 """
-Step 1
+Step 1: Define variables
 """
 
 def get_input():
-    # TODO
-    raise NotImplementedError
+    return [[5, 3, 0, 0, 7, 0, 0, 0, 0],
+            [6, 0, 0, 1, 9, 5, 0, 0, 0],
+            [0, 9, 8, 0, 0, 0, 0, 6, 0],
+            [8, 0, 0, 0, 6, 0, 0, 0, 3],
+            [4, 0, 0, 8, 0, 3, 0, 0, 1],
+            [7, 0, 0, 0, 2, 0, 0, 0, 6],
+            [0, 6, 0, 0, 0, 0, 2, 8, 0],
+            [0, 0, 0, 4, 1, 9, 0, 0, 5],
+            [0, 0, 0, 0, 8, 0, 0, 7, 9]]
+
+input_grid = get_input()
+
+# Need to define Z3 vars
+# what should I do here?
+
+# Suggestion: use a double for loop to define a variable
+# - for each cell of the grid?
+# - for each zero in the grid?
+
+z3_grid = [[None for i in range(9)] for j in range(9)]
+for i in range(9):
+    for j in range(9):
+        z3_grid[i][j] = z3.Int(f"a{i}{j}")
+                                # ^^^ f-string
+                                # ^^ vars will be: a00, a01, a02, ...
+                                # a + str(i) + str(j)
 
 """
-Step 2
+Step 2: Define our constraints.
 """
 
 """

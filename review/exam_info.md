@@ -8,9 +8,11 @@ Exam locations:
 - In the same room as class
 
 Study sheet: you may bring 1 single-sided cheat sheet (handwritten or typed)
-- I will collect your study sheets with the exam
 - No restrictions on font size
 - Feel free to share your study sheet with your friends and classmates
+
+Bring a pen or a #2 pencil
+  - It should write darkly on exam paper.
 
 Study resources:
 
