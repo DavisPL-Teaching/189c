@@ -3,6 +3,20 @@ ECS 189C
 Lecture 2, Part 5:
 
 Conclusion & End Notes
+
+=== Poll ===
+
+(A bit of foreshadowing)
+
+Which of the following is a reason Z3 might return "Unknown"?
+
+A. Use of a large number of Boolean and Integer variables
+B. Use of strings and regular expressions
+C. Use of functions and arrays
+D. Use of advanced quantifiers: z3.ForAll and z3.Exists
+E. Encoding a mathematically complex property, like an advanced mathematical theorem (e.g., Fermat's Last Theorem)
+
+https://forms.gle/BwpKaqL67EiE3sNm6
 """
 
 import z3

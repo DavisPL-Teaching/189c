@@ -29,3 +29,11 @@ Jan 29:
 
 Feb 3:
 B, C, and E.
+
+Feb 5:
+(This poll would not appear on the exam)
+Valid answers turn out to to be anywhere between 21 and 51, depending on the assumptions.
+We will show how to demonstrate this in Z3.
+
+Feb 10:
+C, D, and E.
