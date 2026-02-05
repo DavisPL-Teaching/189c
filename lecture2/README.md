@@ -84,3 +84,25 @@ Plan:
 - Part 3, applications of Z3: Sudoku solver.
 
 Questions about the above or HW2?
+
+## Thursday, February 5
+
+Announcements/Reminders:
+
+- HW2 due tomorrow!
+
+  OH: today 3pm
+
+- Midterm Thursday, February 12, in class
+
+- I have provided a practice exam, please find it on Piazza
+
+Plan:
+
+- Continue Part 3, applications of Z3: Sudoku solver.
+
+- We can do a second or third example (if time)
+
+- Poll
+
+- Part 4, conclusions.

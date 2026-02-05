@@ -657,7 +657,7 @@ Q: When should you use z3.prove vs z3.solve? (or solve/prove from helper)
         E.g.: you want to solve x^2 - 3x + 2 = 0
         or you want to solve a Sudoku puzzle
 
-Q: How do these work under the hood?
+Q: What are solve() and prove() based on?
 
     Under the hood, the helper file uses the "Solver" API:
 

@@ -2,7 +2,22 @@
 ECS 189C
 Lecture 2, Part 5:
 
-Conclusions
+Conclusions & End Notes
+
+=== Poll ===
+
+(A bit of foreshadowing)
+
+Which of the following is a reason Z3 might return "Unknown"?
+
+A. Use of a large number of Boolean and Integer variables
+B. Use of strings and regular expressions
+C. Use of functions and arrays
+D. Use of advanced quantifiers: z3.ForAll and z3.Exists
+E. Encoding a mathematically complex property, like an advanced mathematical theorem (e.g., Fermat's Last Theorem)
+
+https://forms.gle/KYgzj9pbQkYVcpqJA
+
 """
 
 import z3
@@ -46,14 +61,6 @@ z3.Reals
 # does.
 
 """
-More advanced data types:
-(later)
-- Functions
-- Arrays and sequences
-- Strings and regular expressions
-"""
-
-"""
 Exercises
 
 Q: Write a function to determine whether a number
@@ -66,19 +73,29 @@ First as an integer, then as a real number.
 """
 
 """
-=== Conclusions and summary points ===
+More advanced data types:
+(later)
+- Functions
+- Arrays and sequences
+- Strings and regular expressions
+"""
+
+"""
+=== Summary points ===
 
 Three-step methodology (thinking about problems / Z3 mindset):
 
 
 
-Satisfiability vs. Proof:
+Satisfiability:
 
 
 
+Solve() vs. prove()
 
-Advantages/disadvantages of using Z3 for proving specs of real programs?
 
+
+Logic programming & constraint solving, and applications.
 
 
 
