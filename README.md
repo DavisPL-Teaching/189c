@@ -54,21 +54,22 @@ at any time prior to the last day of class.
 ## Course Description
 
 In today's world, software is increasingly more complicated, and seems to malfunction in increasingly surprising ways.
-Is it possible to develop software such that it is mathematically impossible for things to go wrong?
-What tools might we use to save effort when developing mathematical proofs about software?
-And what does it mean for software to be correct or incorrect?
+Is it possible to develop software such that it is impossible for it to go wrong?
+What does it mean for software to be correct or incorrect?
+What tools might we use to develop mathematical proofs about software?
 
-This upper-level undergraduate course is an introduction to formal specification and verification of software from a tool-based perspective. We will survey topics including: writing specifications; difference between testing and verification; program verification tools; automated verification tools and SMT solvers such as Z3; and advanced type systems. Students will gain hands-on experience with writing program models and program specifications using tools used in industry at companies like Amazon and Microsoft.
-This course can be considered as an undergraduate version of [ECS 261](github.com/DavisPL-Teaching/261).
+This upper-level undergraduate course is an introduction to formal specification and verification of software from a tool-based perspective. We will survey topics including: writing specifications; difference between testing and verification; automated verification tools and SMT solvers; interactive verification, program logics, and program proofs; and advanced type systems. Students will gain hands-on experience with writing program models and program specifications using tools used in industry at companies like Amazon and Microsoft.
+
+There is a graduate level version of this course, [ECS 261](github.com/DavisPL-Teaching/261).
 
 ### Prerequisites
 
 This course is appropriate for mid- to upper-level undergraduate computer science majors.
 While there are no official prerequisites, the following are unofficial requirements:
 
-- A prior class in discrete mathematics or mathematical proofs (e.g. ECS 20) is helpful, and will generally be assumed.
+- A prior class in discrete mathematics (e.g. ECS 20) is helpful, and will generally be assumed.
 - A basic programming background (for example, the ability to write a program like [FizzBuzz](https://www.hackerrank.com/challenges/fizzbuzz/problem)) will be expected. (ECS 36A/36B/36C)
-- A course in formal logic (like PHIL 12 or PHIL 112) is helpful, but not required.
+- A course in formal logic (e.g., PHIL 112) is helpful, but not required.
 
 ### Learning Objectives
 
@@ -76,8 +77,8 @@ By the end of the course, students will be able to:
 
 1. Understand the concept of software correctness and its importance.
 2. Use random testing tools like Hypothesis for software testing.
-3. Use model-based verifiers like Z3 for software analysis.
-4. Apply program verification tools such as Dafny to ensure the correctness of software.
+3. Use automated verifiers like Z3 for software analysis.
+4. Apply interactive program verification tools like Dafny to ensure the correctness of software.
 5. Explore advanced topics in software correctness, such as advanced type systems, safety and liveness properties, and program logics.
 
 ## Schedule
@@ -96,9 +97,9 @@ Your grade is evaluated based on:
 ### Attendance and Participation
 
 To encourage class attendance, there are in-class polls that are worth a small amount of credit.
-However, if you miss class, you may make up the polls
+However, if you miss class, you may make up the polls at any point during the quarter (prior to the last day of class)
 by watching the lectures and filling out your responses offline.
-Polls may be made up at any time prior to the last day of class.
+The polls are submitted via Google forms.
 
 ### Homeworks
 
@@ -145,8 +146,8 @@ I will use this to help students who may be on the boundary between two grades a
 
 ### AI Policy
 
-AI collaboration is allowed for homework assignments.
 I encourage you to use AI in a way that is helpful to you, and to use caution that your use of AI is aiding (and not preventing) your own understanding of the material and critical thinking skills.
+AI is allowed on homework assignments to assist you or even to help with writing/rewriting code, but you should not use it to generate a solution to the entire assignment.
 Exams are held in-class and closed-book.
 Please see also [Prof. Jason Lowe-Power's advice here](https://jlpteaching.github.io/comparch/syllabus/#using-generative-ai-tools).
 
@@ -162,14 +163,16 @@ This course strictly follows the [UC Davis Code of Academic Integrity](https://o
 
 ### Late Policy
 
-In-class participation points (polls) can be made up at any point during the quarter (prior to the last day of class), by submitting the Google form link. The forms will remain open and can be found by viewing the lecture recording or lecture notes for that day.
+In-class participation points (polls) can be made up at any point during the quarter (prior to the last day of class), by submitting the Google form link offline.
+The forms will remain open and can be found by viewing the lecture recording or lecture notes.
 I will not be able to provide a consolidated list of the form links, as their purpose is to encourage you to attend and
 watch the lectures.
 
 Homeworks will generally be due at 11:59pm on the due date.
-**I cannot guarantee that late homeworks will be graded;**
-however, I encourage you to update your assignments even after the deadline -- Gradescope will allow you to upload late work up to a few days after the assignment deadline.
-At grading time, we may choose to grade the more recent version at our discretion.
+**I cannot guarantee that late homeworks will be graded,**
+however, there is a period of a few days during which late submissions are allowed via Gradescope.
+I encourage you to update your assignments within this time period;
+at grading time, we may choose to grade the more recent version at our discretion.
 
 ### Job Scams
 
@@ -179,15 +182,14 @@ You can view and report job scam emails at the [Phish Bowl](https://phishbowl.uc
 
 ### Be Nice!
 
-Finally: **please be kind to each other!**
-UC Davis has [policies against harassment and discrimination](https://hr.ucdavis.edu/departments/elr/preventing-discrimination-harassment).
+Be kind to each other! UC Davis has [policies against harassment and discrimination](https://hr.ucdavis.edu/departments/elr/preventing-discrimination-harassment).
 Be inclusive of your classmates in group study, in group work, and in your questions and answers in class.
 If you need to, you may reach me by email to report an issue with a classmate.
 
 ## Contact and Office Hours
 
 **Please use the Piazza for questions related to course material.**
-If you send me an email, I will most likely respond to post your question on Piazza :)
+If you send me an email or Canvas message, I will usually respond to post your question on Piazza :)
 
 On Piazza, please ask all questions publicly, with only one exception: if your post contains a large snippet of code then make it private. I encourage you to ask anonymously if you feel more comfortable.
 
