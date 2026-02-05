@@ -2,28 +2,15 @@
 ECS 189C
 Lecture 2, Part 5:
 
-Conclusions & End Notes
-
-=== Poll ===
-
-(A bit of foreshadowing)
-
-Which of the following is a reason Z3 might return "Unknown"?
-
-A. Use of a large number of Boolean and Integer variables
-B. Use of strings and regular expressions
-C. Use of functions and arrays
-D. Use of advanced quantifiers: z3.ForAll and z3.Exists
-E. Encoding a mathematically complex property, like an advanced mathematical theorem (e.g., Fermat's Last Theorem)
-
-https://forms.gle/KYgzj9pbQkYVcpqJA
-
+Conclusion & End Notes
 """
 
 import z3
 from helper import solve, prove
 
 """
+A few remaining things to mention...
+
 === True Real Numbers ===
 
 We've seen so far how Z3 can work with standard Python datatypes.
@@ -37,7 +24,6 @@ there are only floating point values (floats)
 But in Z3 there is.
 
 z3.Real
-z3.Reals
 """
 
 # x = z3.Real('x')
@@ -73,11 +59,40 @@ First as an integer, then as a real number.
 """
 
 """
-More advanced data types:
-(later)
+=== Advanced Z3 ===
+
+One thing missing from our discussion of Z3
+is more advanced data types.
+Z3 supports many, for example:
+
 - Functions
 - Arrays and sequences
 - Strings and regular expressions
+
+We will discuss some of these in Lecture 3.
+However, there is a risk!
+Usually, working with advanced data types (especially, functions & arrays) makes Z3 more
+likely to return unknown.
+You will see an example of this on the HW2, part 3.
+
+Sticking with Booleans, Ints is usually better for Z3 to terminate successfully.
+(Strings and regular expressions is also usually OK).
+
+=== Other reasons Z3 fails? ===
+
+Generally speaking, for mathematically complex formulas.
+Example from my own testing last year:
+
+- https://pastebin.com/D1cX6egj
+
+Another example:
+
+- https://github.com/cdstanford/curiosities/blob/master/chess-moves/chess-moves.py
+
+Q: what difference can we infer from cases hanging vs. returning unknown?
+
+A:
+
 """
 
 """

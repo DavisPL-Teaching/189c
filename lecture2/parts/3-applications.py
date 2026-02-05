@@ -62,7 +62,7 @@ This lecture will continue in
 
    sudoku.py.
 
-Additional applications can be seen in ../extras
+Additional applications can be seen in ../applications
 and additional problems (not solved) in ../other-problems.
 
 """
@@ -111,4 +111,23 @@ What are the drawbacks of using Z3?
 
 - Generalize to an arbitrary N x N board.
 (This only works for certain board sizes: 4x4, 9x9, 16x16, etc.)
+"""
+
+"""
+=== Poll ===
+
+Another puzzle we can solve :-)
+
+https://forms.gle/KYgzj9pbQkYVcpqJA
+
+=== Additional applications ===
+
+Additional applications in lecture2/applications
+
+- 8 queens puzzle: can we put 8 queens on a standard chess board such that no queen attacks any other queen?
+
+- Task scheduler: given a bunch of tasks and allowed time(s), schedule times to complete the tasks
+
+Other problems (not filled out - you are welcome to try to solve them yourself!) in lecture2/other-problems.
+
 """

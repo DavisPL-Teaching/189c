@@ -91,18 +91,17 @@ Announcements/Reminders:
 
 - HW2 due tomorrow!
 
-  OH: today 3pm
+  + OH: today 3pm
+    Extra OH on Zoom: tomorrow 3pm
 
 - Midterm Thursday, February 12, in class
 
-- I have provided a practice exam, please find it on Piazza
+  + I have provided a practice exam, please find it on Piazza
 
 Plan:
 
 - Continue Part 3, applications of Z3: Sudoku solver.
 
-- We can do a second or third example (if time)
-
-- Poll
+- A second puzzle (and a poll)
 
 - Part 4, conclusions.

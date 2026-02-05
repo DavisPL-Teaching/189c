@@ -1,7 +1,7 @@
 """
-===== Extended application: Pythagorean triples =====
+===== Pythagorean triples =====
 
-This material was cut from lecture.
+This exercise was cut from lecture.
 
 We can use functions to wrap up useful functionality.
 
