@@ -109,3 +109,27 @@ Plan:
 - Part 4, conclusions.
 
 Questions?
+
+## Tuesday, February 10
+
+- Midterm this Thursday! February 12 in class
+
+  + Reminder: bring:
+    single-sided cheat sheet (handwritten or typed),
+    a pen or a #2 pencil
+
+  + Please use the materials in `/review` to help with studying
+
+  + I have provided a practice exam, please find it on Piazza
+
+Plan:
+
+- Poll
+
+- Finish trailer puzzle
+
+- (last 30 minutes)
+  Z3 conclusions/end notes;
+  go over any requested topics for the midterm.
+
+We will move on to advanced Z3 next week.

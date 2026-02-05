@@ -1,6 +1,6 @@
 """
 ECS 189C
-Lecture 2, Part 5:
+Lecture 2, Part 4:
 
 Conclusion & End Notes
 
@@ -110,6 +110,19 @@ A:
 """
 
 """
+=== Other tips and resources ===
+
+Useful guide:
+[Z3 py guide](https://ericpony.github.io/z3py-tutorial/guide-examples.htm)
+
+Documentation:
+[Z3 py docs](https://z3prover.github.io/api/html/namespacez3py.html)
+
+The Z3 solver API:
+see helper.py.
+
+Useful to have these open when working with Z3!
+
 === Summary points ===
 
 Three-step methodology (thinking about problems / Z3 mindset):
@@ -128,16 +141,4 @@ Logic programming & constraint solving, and applications.
 
 
 
-=== Other tips and resources ===
-
-Useful guide:
-[Z3 py guide](https://ericpony.github.io/z3py-tutorial/guide-examples.htm)
-
-Documentation:
-[Z3 py docs](https://z3prover.github.io/api/html/namespacez3py.html)
-
-The Z3 solver API:
-see helper.py.
-
-Useful on the HW.
 """
