@@ -40,7 +40,7 @@ An integer x?
 
 z3_grid = [
     [
-        [z3.Bool("box{d}{i}{j}") for j in range(7)]
+        [z3.Bool(f"box{h}{i}{j}") for j in range(7)]
         for i in range(3)
     ]
     for h in range(3)
