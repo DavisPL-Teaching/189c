@@ -98,6 +98,8 @@ Announcements/Reminders:
 
   + I have provided a practice exam, please find it on Piazza
 
+  + Please review the materials in `/review`
+
 Plan:
 
 - Continue Part 3, applications of Z3: Sudoku solver.
@@ -105,3 +107,5 @@ Plan:
 - A second puzzle (and a poll)
 
 - Part 4, conclusions.
+
+Questions?

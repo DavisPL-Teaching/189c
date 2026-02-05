@@ -91,9 +91,29 @@ print("Lecture continues in sudoku.py")
 # .
 
 """
+=== Recap ===
+
+We've seen that we can solve "puzzle" questions with Z3 by
+1) defining variables, 2) defining constraints, 3) passing constraints to Z3
+  which magically comes back with a solution.
+
+We've also seen that Z3 supports Booleans and Integers with various operations;
+we will see later that Z3 supports several other data types.
+
+It can be useful to create arrays or nested arrays of Z3 variables (like a 2D
+or 3D grid of variables)
+
 === Discussion questions ===
 
 How would we do this without Z3?
+
+    We might hardcode some sort of solution by manually keeping track
+    of what each row/column can be
+
+    That won't necessarily always work; we need a "guess and check step"
+
+    Z3 will probably solve the problem faster and with less effort on our
+    part.
 
 What are the advantages of using Z3?
 
@@ -119,6 +139,17 @@ What are the drawbacks of using Z3?
 Another puzzle we can solve :-)
 
 https://forms.gle/KYgzj9pbQkYVcpqJA
+
+Answers?
+
+- Multiple possible answers - missing information
+- Minimum 35 to maximum 51
+- Minimum 28 to maximum 51
+- Are we assume side picture is for both sides?
+
+Summary of class answers:
+A general agreement that max is 51, lots of disagreement
+about minimum possible answer.
 
 === Additional applications ===
 
