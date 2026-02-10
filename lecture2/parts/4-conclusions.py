@@ -25,6 +25,57 @@ from helper import solve, prove
 """
 A few remaining things to mention...
 
+=== Returning unknown or hanging ===
+
+We have seen that Z3 can return UNKNOWN as a cop-out option -
+it basically means "I don't know".
+
+Z3 will return unknown if it *knows* it can't solve the problem.
+So are there cases Z3 fails, but does not return unknown?
+
+Yes - see HW.
+Example from my own testing last year:
+
+- https://pastebin.com/D1cX6egj
+
+Another example:
+
+- https://github.com/cdstanford/curiosities/blob/master/chess-moves/chess-moves.py
+
+Q: what difference can we infer from cases hanging vs. returning unknown?
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+A: both cases are common for mathematically complex formulas.
+However the following is the distinction:
+
+- If the formula uses some form/construct that Z3 *knows* it can't handle,
+  it will return UNKNOWN
+
+- If the formula looks solvable (e.g., only integers and Booleans), but
+  just takes a long time to solve or doesn't go anywhere, Z3 will hang
+  or return an answer very slowly.
+
+.
+.
+.
+
+A few other things...
+
 === True Real Numbers ===
 
 We've seen so far how Z3 can work with standard Python datatypes.
@@ -92,24 +143,48 @@ You will see an example of this on the HW2, part 3.
 Sticking with Booleans, Ints is usually better for Z3 to terminate successfully.
 (Strings and regular expressions is also usually OK).
 
-=== Other reasons Z3 fails? ===
+=== Recap and limitations of Z3? ===
 
-Generally speaking, for mathematically complex formulas.
-Example from my own testing last year:
+We have seen Z3! main advantages?
 
-- https://pastebin.com/D1cX6egj
+- We can prove the spec on ALL inputs
 
-Another example:
+- We can solve systems of constraints - without coding some
+  logic for how to find the solution, we instead treat
+  it as a "magic box" that gives us the answer
 
-- https://github.com/cdstanford/curiosities/blob/master/chess-moves/chess-moves.py
+Main disadvantages (there are two):
 
-Q: what difference can we infer from cases hanging vs. returning unknown?
+1. we have to rewrite the program in Z3
 
-A:
+2. Z3 might hang or return unknown.
 
 """
 
 """
+
+=== Summary points ===
+
+Three-step methodology (thinking about problems / Z3 mindset):
+
+1.
+2.
+3.
+
+Satisfiability:
+
+    A formula is satisfiable if...
+
+Solve() vs. prove()
+
+    z3.prove()
+
+Applications of Z3:
+useful for logic programming & constraint solving.
+Given any problem that can be solved by defining a system of constraints
+(Sudoku, trailer puzzle, 8 queens, traveling salesperson, etc.)
+There are many other applications.
+
 === Other tips and resources ===
 
 Useful guide:
@@ -122,23 +197,4 @@ The Z3 solver API:
 see helper.py.
 
 Useful to have these open when working with Z3!
-
-=== Summary points ===
-
-Three-step methodology (thinking about problems / Z3 mindset):
-
-
-
-Satisfiability:
-
-
-
-Solve() vs. prove()
-
-
-
-Logic programming & constraint solving, and applications.
-
-
-
 """

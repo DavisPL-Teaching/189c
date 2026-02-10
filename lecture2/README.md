@@ -112,15 +112,18 @@ Questions?
 
 ## Tuesday, February 10
 
+Announcements/reminders:
+
 - Midterm this Thursday! February 12 in class
 
-  + Reminder: bring:
+  + Reminders: bring:
     single-sided cheat sheet (handwritten or typed),
     a pen or a #2 pencil
 
-  + Please use the materials in `/review` to help with studying
+  + Study session: Wednesday 2-3pm (in Kemper 47 and on Zoom, recorded)
 
-  + I have provided a practice exam, please find it on Piazza
+  + Please use the in-class polls, the materials in `/review`, and
+    the practice exam posted on Piazza to help with studying.
 
 Plan:
 
@@ -128,7 +131,7 @@ Plan:
 
 - Finish trailer puzzle
 
-- (last 30 minutes)
+- (last ~35 minutes - from 11:15)
   Z3 conclusions/end notes;
   go over any requested topics for the midterm.
 
