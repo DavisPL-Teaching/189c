@@ -25,7 +25,7 @@ from helper import solve, prove
 """
 A few remaining things to mention...
 
-=== Returning unknown or hanging ===
+=== Failing to solve a problem: Returning unknown or hanging ===
 
 We have seen that Z3 can return UNKNOWN as a cop-out option -
 it basically means "I don't know".
@@ -92,9 +92,10 @@ z3.Real
 """
 
 # x = z3.Real('x')
+# y = z3.Real('y')
 # # what happens?
 # print("Square root of two:")
-# z3.solve(x * x == 2)
+# solve(z3.And(x * x == 2, x > 0, y == 1000000 * x))
 
 # Note: there is no floating point value x with x^2 = 2
 # It only exists as a true real number.
@@ -110,6 +111,11 @@ z3.Real
 # Just like when I write x = sqrt(2) on the board, I'm not actually
 # computing the exact value of x, that's the same thing that Z3
 # does.
+
+# x = z3.Int('x')
+# # what happens?
+# print("Square root of two:")
+# solve(z3.And(x * x == 2, x > 0))
 
 """
 Exercises
@@ -138,7 +144,7 @@ We will discuss some of these in Lecture 3.
 However, there is a risk!
 Usually, working with advanced data types (especially, functions & arrays) makes Z3 more
 likely to return unknown.
-You will see an example of this on the HW2, part 3.
+You saw an example of this on the HW2, part 3.
 
 Sticking with Booleans, Ints is usually better for Z3 to terminate successfully.
 (Strings and regular expressions is also usually OK).
@@ -155,7 +161,7 @@ We have seen Z3! main advantages?
 
 Main disadvantages (there are two):
 
-1. we have to rewrite the program in Z3
+1. We have to rewrite the program in Z3
 
 2. Z3 might hang or return unknown.
 
@@ -167,17 +173,18 @@ Main disadvantages (there are two):
 
 Three-step methodology (thinking about problems / Z3 mindset):
 
-1.
-2.
-3.
+1. Define your variables
+2. Define your constraints
+3. Call solve/prove
 
 Satisfiability:
 
-    A formula is satisfiable if...
+    A formula is satisfiable if there exists at least one input
+    such that the formula is true
 
 Solve() vs. prove()
 
-    z3.prove()
+    z3.prove(spec) equiv to z3.solve(not(spec))
 
 Applications of Z3:
 useful for logic programming & constraint solving.

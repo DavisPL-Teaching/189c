@@ -40,7 +40,9 @@ An integer x?
 
 z3_grid = [
     [
-        [z3.Bool(f"box{h}{i}{j}") for j in range(7)]
+        [
+            z3.Bool(f"box{h}{i}{j}") for j in range(7)
+        ]
         for i in range(3)
     ]
     for h in range(3)
@@ -67,22 +69,70 @@ Back view:
 constraints = []
 
 # Top view
+# Implicit assumption - gravity applies, so there should
+# be a box at height 0.
 for i in range(3):
     for j in range(7):
         constraints.append(z3_grid[0][i][j])
 
 # Side view
-for (j, d) in [(4, 2), (5, 2), (6, 1), (6, 2)]:
-    for i in range(3):
-        constraints.append(z3.Not(z3_grid[d][i][j]))
-
-# We've said that the L-shape is NOT filled;
-# We also need that the remainder of the side view is filled.
-# TODO
+for h in range(3):
+    for j in range(7):
+        if (j, h) in [(4, 2), (5, 2), (6, 1), (6, 2)]:
+            # L-shape is NOT filled
+            for i in range(3):
+                constraints.append(z3.Not(z3_grid[h][i][j]))
+        else:
+            # remainder (outside L shape) IS filled
+            # use z3.Or
+            constraints.append(z3.Or([
+                z3_grid[h][i][j] for i in range(3)
+            ]))
 
 # Back view
-# TODO
+for h in range(3):
+    for i in range(3):
+        # using z3.Or again
+        constraints.append(z3.Or([
+            z3_grid[h][i][j] for j in range(7)
+        ]))
+
+# We said we were assuming gravity ...
+# We haven't fully encoded gravity
 
 """
 Step 3: Pass the constraints to Z3
+
+Remains: ... we need total number of cubes
+
+z3.Sum ?
+
+How to convert Booleans to integers?
+
+    z3.If(b, 1, 0)
+"""
+
+total_cubes = 0
+for h in range(3):
+    for i in range(3):
+        for j in range(7):
+            total_cubes += z3.If(z3_grid[h][i][j], 1, 0)
+
+spec = z3.And(constraints)
+
+# maximum is 51:
+solve(z3.And(spec, total_cubes > 51))
+
+# Unsat
+solve(z3.And(spec, total_cubes < 31))
+
+# Sat
+solve(z3.And(spec, total_cubes == 31))
+
+"""
+i.e. for this particular set of (faulty) assumptions
+the minimum number of cubes happens to be 31.
+
+Exercise: try out different assumptions, and see how many
+answers you can get for the minimum possible number of cubes.
 """

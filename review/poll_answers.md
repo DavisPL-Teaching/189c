@@ -37,3 +37,4 @@ We will show how to demonstrate this in Z3.
 
 Feb 10:
 C, D, and E.
+(don't need to know B and D for midterm)

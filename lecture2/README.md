@@ -120,7 +120,7 @@ Announcements/reminders:
     single-sided cheat sheet (handwritten or typed),
     a pen or a #2 pencil
 
-  + Study session: Wednesday 2-3pm (in Kemper 47 and on Zoom, recorded)
+  + Review session: Wednesday 2-3pm (in Kemper 47 and on Zoom, recorded)
 
   + Please use the in-class polls, the materials in `/review`, and
     the practice exam posted on Piazza to help with studying.
@@ -129,10 +129,13 @@ Plan:
 
 - Poll
 
+- Part 4: Z3 conclusions/end notes;
+
 - Finish trailer puzzle
 
-- (last ~35 minutes - from 11:15)
-  Z3 conclusions/end notes;
+- (last ~10 minutes - from 10:40)
   go over any requested topics for the midterm.
 
-We will move on to advanced Z3 next week.
+Next week: advanced Z3.
+
+Questions?
