@@ -132,9 +132,9 @@ def pretty_print_solution(constr):
     if model is None:
         print("No solution")
         return
-    print("Height: 0         1         2")
+    print("    Height: 0         1         2")
     for i in range(3):
-        box_row = "     "
+        box_row = "         "
         for h in range(3):
             box_row += "   "
             for j in range(7):
@@ -143,12 +143,17 @@ def pretty_print_solution(constr):
         print(box_row)
 
 # maximum is 51:
+print("Total cubes > 51:")
 pretty_print_solution(total_cubes > 51)
 
-# Unsat
+print("Total cubes = 51:")
+pretty_print_solution(total_cubes == 51)
+
+# minimum is 31 - assuming gravity applies
+print("Total cubes < 31:")
 pretty_print_solution(total_cubes < 31)
 
-# Sat
+print("Total cubes = 31:")
 pretty_print_solution(total_cubes == 31)
 
 """
