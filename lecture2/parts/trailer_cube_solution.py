@@ -100,6 +100,12 @@ for h in range(3):
 # We said we were assuming gravity ...
 # We haven't fully encoded gravity
 
+# *** Gravity constraint ***
+for h in range(1, 3):
+    for i in range(3):
+        for j in range(7):
+            constraints.append(z3.Implies(z3_grid[h][i][j], z3_grid[h - 1][i][j]))
+
 """
 Step 3: Pass the constraints to Z3
 
@@ -120,14 +126,30 @@ for h in range(3):
 
 spec = z3.And(constraints)
 
+# Helper function to print solution
+def pretty_print_solution(constr):
+    model = get_solution(z3.And(spec, constr))
+    if model is None:
+        print("No solution")
+        return
+    print("Height: 0         1         2")
+    for i in range(3):
+        box_row = "     "
+        for h in range(3):
+            box_row += "   "
+            for j in range(7):
+                box = model[z3_grid[h][i][j]]
+                box_row += ('#' if box else '.')
+        print(box_row)
+
 # maximum is 51:
-solve(z3.And(spec, total_cubes > 51))
+pretty_print_solution(total_cubes > 51)
 
 # Unsat
-solve(z3.And(spec, total_cubes < 31))
+pretty_print_solution(total_cubes < 31)
 
 # Sat
-solve(z3.And(spec, total_cubes == 31))
+pretty_print_solution(total_cubes == 31)
 
 """
 i.e. for this particular set of (faulty) assumptions
