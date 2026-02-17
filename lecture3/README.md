@@ -1,11 +1,21 @@
 # Lecture 3: Advanced Z3
 
-**Please note: This lecture has not yet been updated for winter quarter 2026.**
+## Tuesday, February 17
 
-Plan:
+Announcements:
+
+- Midterm has been graded
+
+- Mid-quarter survey is out: due this Friday
+
+- HW3 is out! Due next Friday
+
+Plan for this week: advanced Z3
+
+Today:
 - Strings and regular expressions
 
-Some subset of the following:
+Next, some subset of the following:
 - Functions, arrays, etc.
 - Z3 in practice
 - Z3 internals
