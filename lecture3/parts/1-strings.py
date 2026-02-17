@@ -18,8 +18,8 @@ Complex data types
 
 We've seen the following data types in Z3:
 - Int
-- Real
 - Bool
+- Real
 
 Z3 has many more complex data types and operations!
 - Strings
@@ -34,10 +34,38 @@ We do the same thing with these complex data types.
 
 Q: why do we need all these data types and operations?
 
-A: We need these data types to be able to model real programs,
-since real programs use strings, arrays, fixed-width integers,
-etc.
+=== Poll ===
 
+Q: Why might we need complex data types and operations in Z3?
+
+https://forms.gle/arvFeDGcdBAoHDRp9
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+
+A1:
+In order to model real programs - since real programs use strings, arrays,
+fixed-width integers, etc.
+
+A2:
 Security reasons:
 
 String data is a HUGE source of security vulnerabilities.
@@ -53,11 +81,16 @@ String length issues are also a common problem:
 ===== Z3 Strings =====
 
 What is a string?
+
 - An array of chars.
+
 What are characters?
-ASCII characters? == bytes
+
+    ASCII characters? == bytes
+
 In Z3: Characters == Unicode chars
 So we will think of strings as:
+
 - A sequence of unicode chars
 - We don't care how the sequence is encoded.
 
@@ -68,12 +101,15 @@ Q: define a name that has at least 10 letters
 """
 
 import z3
-import pytest
 from helper import solve, get_solution, SAT, UNSAT, UNKNOWN
 
-name = z3.String("name")
-constraint = z3.Length(name) >= 10
-solve(constraint)
+def name_ex_1():
+    name = z3.String("name")
+    constraint = z3.Length(name) >= 10
+    solve(constraint)
+
+# Uncomment to run
+# name_ex_1()
 
 # Comment: In this case it returned ASCII!
 # But, if you play around you will quickly encounter cases
@@ -102,12 +138,16 @@ Similarly, a StringVal is a specific (constant) string like
 Q: define a message for Hello, name!
 """
 
-msg = z3.String("msg")
-name_constraint = z3.Length(name) >= 10
-# msg_constraint = (msg == z3.StringVal("Hello, ") + name + z3.StringVal("!"))
-msg_constraint = (msg == "Hello, " + name + "!")
+def name_ex_2():
+    msg = z3.String("msg")
+    name_constraint = z3.Length(name) >= 10
+    # msg_constraint = (msg == z3.StringVal("Hello, ") + name + z3.StringVal("!"))
+    msg_constraint = (msg == "Hello, " + name + "!")
 
-solve(z3.And(name_constraint, msg_constraint))
+    solve(z3.And(name_constraint, msg_constraint))
+
+# Uncomment to run
+# name_ex()
 
 # Basically, StringVal converts a Python string into a Z3 string.
 # With integers and Booleans, we didn't use this too often, because
@@ -124,16 +164,20 @@ s1 is three copies of s2
 and s2 is not empty
 """
 
-s1 = z3.String("s1")
-s2 = z3.String("s2")
-constraints = [
-  s1 == s2 + s2 + s2,
-  s2 != "",
-  s2 != "A",
-  s2 != "B",
-  z3.Length(s2) >= 2,
-]
-solve(z3.And(constraints))
+def concat_ex():
+    s1 = z3.String("s1")
+    s2 = z3.String("s2")
+    constraints = [
+    s1 == s2 + s2 + s2,
+    s2 != "",
+    s2 != "A",
+    s2 != "B",
+    z3.Length(s2) >= 2,
+    ]
+    solve(z3.And(constraints))
+
+# Uncomment to run
+# concat_ex()
 
 """
 XSS example
@@ -149,24 +193,53 @@ to be executed on a page which was not intended to execute the
 script.
 """
 
-query = z3.String("query")
-query_html = (
-    z3.StringVal("<title>Search results for:") + query + z3.StringVal("</title>")
-)
+def xss_example():
+    query = z3.String("query")
+    query_html = (
+        z3.StringVal("<title>Search results for:") + query + z3.StringVal("</title>")
+    )
 
-start = z3.String("start")
-malicious_query = z3.StringVal("<script>alert('Evil XSS Script')</script>")
-end = z3.String("end")
+    start = z3.String("start")
+    malicious_query = z3.StringVal("<script>alert('Evil XSS Script')</script>")
+    end = z3.String("end")
 
-# Make a variable for the entire contents of the HTML page.
-html = z3.String("html")
+    # Make a variable for the entire contents of the HTML page.
+    html = z3.String("html")
 
-xss_attack = z3.And(
-    html == query_html,
-    html == start + malicious_query + end
-)
+    xss_attack = z3.And(
+        html == query_html,
+        html == start + malicious_query + end
+    )
 
-z3.solve(xss_attack)
+    z3.solve(xss_attack)
+
+# Uncomment to run
+# xss_example()
+
+"""
+Exercise:
+
+Define a Z3 constraint to solve for a website URL
+that contains google.com, but where the domain name is not "google"
+"""
+
+"""
+More string operations?
+
+Length, +, and == are useful, but quite limited.
+
+For example, our "name" variable could come back with a string like
+
+    $5$%) fdsdf 180 4
+
+- What if we want to say the string only contains the letters a-z and A-Z?
+
+- What if we want to say that the string should NOT contain the letters a-z and A-Z?
+
+We have no way using just +, ==, and Length to do this.
+
+Answer: regular expressions!
+"""
 
 """
 Recap:

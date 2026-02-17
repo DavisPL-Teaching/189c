@@ -10,13 +10,22 @@ Announcements:
 
 - HW3 is out! Due next Friday
 
-Plan for this week: advanced Z3
+Plan for this week: Some topoics in advanced Z3
 
 Today:
-- Strings and regular expressions
+- Go over any Qs from midterm
 
-Next, some subset of the following:
-- Functions, arrays, etc.
-- Z3 in practice
+- Brief demo: Trailer cube solution
+
+- Poll
+
+- Part 1: Strings
+
+- Start Part 2: Regular expressions
+
+(will be used for HW3)
+
+This Thursday and next week:
+- Other advanced data types: Functions, arrays
+- Advanced techniques
 - Z3 internals
-- Z3 limitations
