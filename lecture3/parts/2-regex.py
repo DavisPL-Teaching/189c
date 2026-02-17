@@ -13,13 +13,15 @@ from helper import solve, get_solution, SAT, UNSAT, UNKNOWN
 Help notes: regex_help.md
 
 What is a regular expression?
-A "pattern" that a string may or may not satisfy.
--> you can think of it as a boolean on strings.
-For example:
-- the string contains the word "cat" inside it
-- the string is only ASCII characters
-- the string has no capital letters
-- ...
+
+  A "pattern" that a string may or may not satisfy.
+  -> you can think of it as a boolean on strings.
+  For example:
+  - the string contains the word "cat" inside it
+  - the string is only ASCII characters
+  - the string has no capital letters
+  - ...
+
 Roughly:
 a pattern of characters that is or is not present in the string.
 
@@ -28,61 +30,81 @@ Most important thing: if you have a string s and a regular expression
 
   Does s match R?
 
+  (if you're familiar with regex from a theoretical CS class - s ∈ L(R))
+
 The string "matches" the regex R if the pattern is present/true,
 and does not match if it's not present/false.
 
 Q: define a name that has at least 10 letters and only contains a-z.
-"""
 
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
+In a theoretical CS context, regex are using characters, union, concatenation, and star
 
-# # What we had before...
-# name = z3.String("name")
-# length_constraint = z3.Length(name) >= 10
-
-# # Our regex constraint...
-# # z3.Range
-# lowercase_letter = z3.Range("a", "z")
-# """
-# matches? "x" "y" "a" "b" "r" --> a single character that is a lowercase letter
-# doesn't match? "" "cat" "ASDFBDF" "$"
-# """
-# # z3.Star -- kind of like a for loop, it matches
-# # the same thing zero or more times.
-# lowercase_letters = z3.Star(lowercase_letter)
-# """
-# matches? "" "cat" "dog" "xyz" "thequickbrownfoxjumpedoverthelazydogs" etc.
-# doesn't match? "c a t" "$$$" "asdfkl;ajsdg4" etc.
-# """
-# # Last thing we need?
-# # Turn the regex into a constraint on the string.
-# # We use the fundamental operation of regexes! Does a string s match
-# # a regex R?
-# # In Z3, the operation for this is z3.InRe
-# regex_constraint = z3.InRe(name, lowercase_letters)
-
-# # Now let's solve our constraint
-# # z3.solve(z3.And(
-# #   length_constraint,
-# #   regex_constraint,
-# # ))
-# # Now our name is dcapphpppp!
-# # Hooray, no capital letters!
+In Z3, we have all of thes operations, as well as several others to support practical regex
+constructs.
+(Same is true in other regex libraries for popular programming languages.)
 
 """
+
+# What we had before...
+name = z3.String("name")
+length_constraint = z3.Length(name) >= 10
+
+# Our regex constraint...
+# z3.Range
+lowercase_letter = z3.Range("a", "z")
+                  # ^^^^^^^^^^^^^^^^ Range Regex
+                  # matches a single character 'between' lowercase a and lowercase z
+                  # (in ASCII code.)
+                  # Inclusive range
+                  # Includes both the start and the end.
+
+"""
+matches? "x" "y" "a" "b" "r" --> a single character that is a lowercase letter
+doesn't match? "" "cat" "ASDFBDF" "$"
+"""
+
+# z3.Star -- indicates repetition of the same pattern. It matches
+# the same thing zero or more times.
+lowercase_letters = z3.Star(lowercase_letter)
+
+"""
+matches? "" "cat" "dog" "xyz" "thequickbrownfoxjumpedoverthelazydogs" etc.
+doesn't match? "c a t" "$$$" "asdfkl;ajsdg4" etc.
+"""
+
+# Last thing we need?
+# Turn the regex into a constraint on the string.
+# We use the fundamental operation of regexes! Does a string s match
+# a regex R?
+# In Z3, the operation for this is z3.InRe
+# most important regex operator!!
+regex_constraint = z3.InRe(name, lowercase_letters)
+
+# Now let's solve our constraint
+z3.solve(z3.And(
+  length_constraint,
+  regex_constraint,
+))
+
+# Now our name is pppppppppp!
+
+# Hooray, no capital letters!
+
+# We can go from there to make the constraint more realistic...
+# - First letter should be capital
+# - The name contains vowels
+# - ...
+
+"""
+Today we covered: Strings part of the lecture,
+and started to see how to use regex to define more interesting/complicated constraints
+on general strings.
+We will see that this is very useful for writing Z3 applications which solve or prove
+for specifications involving strings using the Z3 string datatype,
+and will be used on HW3.
+
+----- Where we ended for today -----
+
 === Exercise ===
 
 Define a string 'name' such that only the first letter is capitalized.
