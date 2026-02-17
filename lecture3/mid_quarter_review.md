@@ -1,5 +1,7 @@
 # Mid-quarter review
 
+**This is a file from last iteration of the course. It has not been updated for Winter Quarter 2026.**
+
 Review (list of topics) for the first half of the course:
 
 ## Hypothesis
