@@ -52,6 +52,24 @@ Questions?
 
 Announcements/Reminders:
 
+- Midterm curve: will be entered out of 79.5.
+
+    Please use the midterm feedback to help figure out what concepts you could
+    improve for the final!
+
+    I am happy to go over questions you got wrong in OH or after class.
+
+    Practically, this means:
+
+        - If you got 70 or above, you are in very good shape (on track for an A)
+
+        - If you got 60 or above: you are in good shape (on track for a B or better)
+
+        - If you got 50 or above: You are on track to pass the class, or better
+            (currently on track for a C, could improve to a B or better)
+
+            (please use this to figure out what you got wrong to improve for the final!)
+
 - Today's OH will be on Zoom
 
 - Mid-quarter survey: due tomorrow
