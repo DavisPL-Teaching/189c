@@ -240,12 +240,12 @@ What do we do if Z3 is having trouble with a problem?
 - relax the postcondition to something weaker
 - add lemmas!
 
-  z3.Implies(precond, hard_postcondition)
-  Z3 hangs :(
+    z3.Implies(precond, hard_postcondition)
+    Z3 hangs :(
 
-  Split my problem up into two steps:
-  z3.Implies(precond, lemma)
-  z3.Implies(z3.And(precond, lemma), hard_postcondition)
+    Split my problem up into two steps:
+    z3.Implies(precond, lemma)
+    z3.Implies(z3.And(precond, lemma), hard_postcondition)
 
 Ask Z3 to prove each of the two statements separately!
 
@@ -260,12 +260,12 @@ Example: we already saw an example of this
 - Pigeonhole principle on HW2 part 3!
 
 4. Do some enumeration or search outside of Z3,
-   for example using itertools.
+     for example using itertools.
 
-Example: we saw this on HW2 part 2
+Example: HW2 part 2
 
-Python itertools is a way of conveniently enumerating all
-permutations (reorderings) of a list.
+    one could use Python itertools is a way of conveniently enumerating all
+    permutations (reorderings) of a list.
 
 =====
 
@@ -273,15 +273,15 @@ Recall:
 Q: when does Z3 know to return unknown rather than hang?
 
 A: Z3 tries to identify if it sees a case where it knows it
-   beyond the capabilities of its automated decision procedures.
+    beyond the capabilities of its automated decision procedures.
 
-  EXAMPLE:
-  one of the cases that Z3 solves very efficiently is if
-  using Int and all your constraints are what's called linear constraints:
-  a + b + c > 3 * d - e + 4 * f
-  No two variables are multiplied
-  Z3 has a specific built-in technique that knows how to very efficiently
-  solve all linear constraints.
+    EXAMPLE:
+    one of the cases that Z3 solves very efficiently is if
+    using Int and all your constraints are what's called linear constraints:
+    a + b + c > 3 * d - e + 4 * f
+    No two variables are multiplied
+    Z3 has a specific built-in technique that knows how to very efficiently
+    solve all linear constraints.
 
 If your constraint doesn't lie in one of the known solvable sets,
 apply one of our four techniques above for what to try

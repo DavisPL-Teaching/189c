@@ -89,3 +89,15 @@ If extra time (probably next time):
 - Part 4: How Z3 works: the DPLL algorithm.
 
 Questions?
+
+## Tuesday, February 24
+
+Reminders:
+
+- HW3 due Friday, 11:59pm
+
+Plan:
+
+- Part 3 loose ends
+
+- Part 4: How Z3 works: the DPLL algorithm.
