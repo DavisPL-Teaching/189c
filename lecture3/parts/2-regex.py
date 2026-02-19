@@ -123,13 +123,19 @@ capital_letter = z3.Range("A", "Z")
 # z3.Concat
 
 def capital_name_regex():
-    # TODO
-    raise NotImplementedError
+    # return a regex that matches a "name" consisting of a capital letter
+    # followed by lowercase letters
+
+	# Start with a capital letter
+    # then, lowercase letters
+	return z3.Concat(capital_letter, lowercase_letters)
 
 # Uncomment to run
 # name = z3.String("name")
 # length_constraint = z3.Length(name) >= 10
-# solve(z3.And(length_constraint, z3.InRe(name, capital_name_regex()))
+# solve(z3.And(length_constraint, z3.InRe(name, capital_name_regex())))
+
+# Now we are: Ppupmfpthp
 
 """
 Exercise: Modify the string to allow spaces.
@@ -144,27 +150,54 @@ So how can we do this?
 """
 
 def full_name_regex():
-    # TODO
-    raise NotImplementedError
+	# we need a regex for a space
+    # space = z3.Range(" ", " ")
+	space = z3.Re(" ")
+	capital_name = capital_name_regex()
+
+	# Concat - case Firstname Lastname
+	first_last = z3.Concat(capital_name, space, capital_name)
+
+	# Suggestions:
+	# z3.Or?
+	# Union
+	# z3.Or(matches_regex_case1, matches_regex_case2)
+	# regex = z3.Union(regex_case1, regex_case2)
+	# matches_regex
+
+	# Concat - case Firstname Middle Lastname
+	first_middle_last = z3.Concat(capital_name, space, capital_name, space, capital_name)
+
+	return z3.Union(first_last, first_middle_last)
 
 def full_name_regex_generalized():
     # Is the above too specific? Write a version that allows
-    # any number of parts.
-    # TODO
-    raise NotImplementedError
+    # any number of names (separated by one or more spaces)
+
+	space = z3.Re(" ")
+	capital_name = capital_name_regex()
+
+	# use z3.Star
+	# Star - repeated concatenation of zero or more repeats
+
+	return z3.Concat(capital_name, z3.Star(z3.Concat(space, capital_name)))
 
 # Uncomment to run
-# solve(z3.And(length_constraint, z3.InRe(name, full_name_regex()))
-# solve(z3.And(length_constraint, z3.InRe(name, full_name_regex_generalized()))
+# solve(z3.And(length_constraint, z3.InRe(name, full_name_regex())))
+# Name: Paypd S Schikk
+# solve(z3.And(length_constraint, z3.InRe(name, full_name_regex_generalized())))
+# Pfr P K P C T
+# ^^^^^^^^^^^^^ making fewer assumptions about names.
 
 """
 Q: How do length_constraint and z3.InRe both know to
 constrain the entire string?
 
-A:
+A: length_constraint and the second constraint both refer to the
+   same variable name - z3.String("name")
 
 Q: Above, full_name_regex describes a name with any number of spaces
-and the second refers to a name with
+and full_name_regex_generalized refers to a name with
 only 2-3 parts.
 
 Is full_name_regex_generalized actually more general?
@@ -188,30 +221,25 @@ we could show that
 
 How we write that in Z3?
 
-    z3.Implies(z3.InRe(s, r1), z3.InRe(s, r2))
+    z3.Implies(z3.InRe(s, R1), z3.InRe(s, R2))
 """
 
 from helper import prove, PROVED
 
 # Does this pass?
 # assert prove(z3.Implies(
-#     z3.InRe(name, full_name_regex),
-#     z3.InRe(name, full_name_regex_generalized),
+#     z3.InRe(name, full_name_regex()),
+#     z3.InRe(name, full_name_regex_generalized()),
 # )) == PROVED
 
 """
 What happened?
 
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
+Unfortunately, we ran into one of the problems with Z3 again
+
+Z3 is hanging :-(
+
+	maybe not hanging on 4.15.4  (or some versions)?
 """
 
 # What do we do to fix this?
@@ -219,15 +247,17 @@ What happened?
 # Add a constraint that the string is at most, e.g.
 # 25 or 100 characters.
 
-# assert prove(z3.Implies(
-#     z3.And(
-#       z3.InRe(name, full_name_regex),
-#       z3.Length(name) <= 20
-#     ),
-#     z3.InRe(name, full_name_regex_generalized),
-# )) == PROVED
+assert prove(z3.Implies(
+    z3.And(
+      z3.InRe(name, full_name_regex()),
+      z3.Length(name) <= 20
+    ),
+    z3.InRe(name, full_name_regex_generalized()),
+)) == PROVED
 
 """
+Now it returns very quickly.
+
 ===== Poll =====
 
 What regex operators would be useful to write a Z3 formula to define strings that are US phone numbers?
@@ -241,6 +271,7 @@ B. Concat
 C. Star
 D. Range
 E. InRe
+F. Re
 
 (Let's not worry about (+1) a the beginning, parentheses, or other formats)
 
@@ -251,8 +282,33 @@ https://forms.gle/r415JQ3H9eT8jTuEA
 .
 .
 .
+
+To find out the answer...
 """
 
+digit = z3.Range("0", "9")
+hyphen = z3.Re("-")
+# z3.Range("-", "-")
+
+phone_regex = z3.Concat(
+	digit,
+	digit,
+	digit,
+	hyphen,
+	digit,
+	digit,
+	digit,
+	hyphen,
+	digit,
+	digit,
+	digit,
+	digit,
+)
+
+phone = z3.String("phone")
+solve(z3.InRe(phone, phone_regex))
+
+# phone: 000-000-0000
 
 """
 ===== Finishing up strings and regexes =====
@@ -270,10 +326,16 @@ to assert that a string matches a regex R.
 Other Regex operators we haven't seen yet (see regex_help.md):
 
 - z3.Plus
-  Like Star but one or more times, insetad of zero or more times.
+  Like Star but one or more times, instead of zero or more times.
+
+  e.g.
+
+	lowercase_one_or_more = z3.Plus(lowercase_letter)
 
 - z3.IntToStr
-  z3.IntToStr(9) to get the digit 9
+  z3.IntToStr(9) to get the digit string "9"
+  z3.IntToStr(17) string "17"
+
   z3.IntToStr(n) to get the string corresponding to the Z3 int n.
 
 - z3.CharIsDigit
@@ -307,15 +369,18 @@ Example:
 Q: Use a regex to define a string that is NOT equal to the empty string.
 """
 
-# not_empty = z3.String("s")
+# s = z3.String("s")
 # regex_constraint = z3.Complement(z3.Re(""))
 
-# solve(z3.InRe(not_empty, regex_constraint))
+# solve(z3.InRe(s, regex_constraint))
 
 # We could have also done this with z3.Length(s) >= 1.
 # or simply s != "".
 
 """
+Intersect and complement are also not typically available
+in practical regex libraries.
+
 === Revisiting the CSV example from HW1 ===
 
 (Optional or skip for time)
@@ -325,10 +390,10 @@ serialization and deserialization function for a User class.
 It looked like this:
 
 def to_csv(user):
-  ...
+	...
 
 def from_csv(csv):
-  ...
+	...
 
 It was possible to show using Hypothesis that some inputs can
 cause to_csv and from_csv to break.
@@ -357,6 +422,9 @@ Z3 could be used to prove that both of these work.
 Q: How does Z3 regex differ from practical regex libraries?
 (e.g., re library in Python)
 
+Some operations are present in Z3 but not most practical libraries
+	(saw: IntToStr, Intersect, Complement)
+
 Some operations present in practical regex libraries may not
 be present in Z3 and will require encoding them in some way,
 for example:
@@ -366,17 +434,21 @@ for example:
     'a' and 'A' to be the same
   - matching any alphanumeric character
 
-While there are more advanced solutions, the easiest way
-to do these sorts of constraints is to write your own Ranges and
-similar for the different characters you're interested in.
+To encode these sorts of constraints in Z3, you may need to
+manually encode them by writing your own Ranges or unions
+
+	if you wanted 'a' or 'A' you might just need to do e.g.,
+
+		z3.Union(z3.Re("a"), z3.Re("A"))
 """
 
 """
 === Recap: Part 3 ===
 
-- We learned how Z3 regex can be used to provide constraints on strings
+- We learned how Z3 regex can be used as a very versatile way
+  to provide constraints on strings
 
-- We described the regex operators available in Z3 (union, star, concat, range, etc.)
+- We described the regex operators available in Z3 (union, star, concat, range, Re, etc.)
 
 - I encourage to read regex_help.md as you're using Z3 regex, in
   addition to the lecture material to remind yourself about

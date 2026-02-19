@@ -38,3 +38,12 @@ We will show how to demonstrate this in Z3.
 Feb 10:
 C, D, and E.
 (don't need to know B and D for midterm)
+
+Feb 17:
+Multiple answers are possible! Good answers include:
+- Because real programs use complex operations, and we want to prove those programs correct
+- It may be difficult to encode more complex operations using just Int and Bool
+- To keep everything standardized (standard library of possible data types that are commonly used)
+
+Feb 19:
+BDEF (Concat, Range, InRe, and Re).
