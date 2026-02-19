@@ -47,3 +47,27 @@ This Thursday and next week:
 - Z3 internals
 
 Questions?
+
+## Thursday, February 19
+
+Announcements/Reminders:
+
+- Today's OH will be on Zoom
+
+- Mid-quarter survey: due tomorrow
+
+- HW3: due next Friday (Feb 27), 11:59pm
+
+Plan:
+
+- finish part 2: Regex in Z3
+
+- Poll (along the way)
+
+- Part 3: advanced Z3 techniques
+
+If extra time (probably next time):
+
+- Part 4: How Z3 works: the DPLL algorithm.
+
+Questions?

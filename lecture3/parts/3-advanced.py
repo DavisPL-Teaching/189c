@@ -1,17 +1,17 @@
 """
-===== Poll =====
+Lecture 3, Part 3:
+Advanced Z3 features
 
-Oh no, Z3 is hanging! What are some things to try?
+This is a shorter part. It is a brief tour of some of the other
+advanced features available in Z3.
 """
 
 import z3
-import pytest
-from helper import solve, get_solution, SAT, UNSAT, UNKNOWN
+from helper import solve, prove, get_solution, SAT, UNSAT, UNKNOWN
 
 """
 ===== Other data types =====
 
-(Briefly)
 Some of the other most useful types:
 - Z3 arrays
 - Z3 functions
@@ -26,7 +26,9 @@ x = z3.Int('x')
 y = z3.Int('y')
 f = z3.Function('f', I, I)
 constraints = [f(f(x)) == x, f(x) == y, x != y]
-solve(z3.And(constraints))
+
+# Uncomment to run
+# solve(z3.And(constraints))
 
 # Z3 is actually able to come up with a function! Not just integer
 # and string values.
@@ -40,20 +42,24 @@ solve(z3.And(constraints))
 # a value.
 
 A = z3.Array('A', I, I)
-solve(A[0] + A[1] + A[2] >=0)
+
+# Uncomment to run
+# solve(A[0] + A[1] + A[2] >=0)
 
 # we can store things in the array
 x = z3.Int('x')
-print(A[x])
-print(z3.Store(A, x, 10))
 
-# Q: how is the array different from a list of integers?
-# [z3.Int("x1"), z3.Int("x2"), z3.Int("x3")]
-# We can only define a fixed finite number of Z3 variables this way.
-# Arrays (and functions) have infinitely many possible indices
-# and so can be used to model very general scenarios.
+# What do you think happens when we run this :-)
+# print(A[x])
+# print(z3.Store(A, x, 10))
 
 """
+Q: how is the array different from a list of integers?
+[z3.Int("x1"), z3.Int("x2"), z3.Int("x3")]
+A:
+
+===== Custom datatypes =====
+
 You can even create your own datatypes:
 """
 
@@ -67,22 +73,23 @@ You can even create your own datatypes:
 # Tree, TreeList = CreateDatatypes(Tree, TreeList)
 
 """
-===== Z3 techniques =====
+===== Z3 troubleshooting =====
+AKA: What to do when Z3 gets stuck?
 
-Recall that on Monday, we saw that Z3 had trouble with proving one regex
+Recall that in the regex lecture, we saw that Z3 had trouble with proving one regex
 constraint implies another!
 """
 
 # Regex example from earlier
-
-assert prove(z3.Implies(
-    z3.And(
-      z3.InRe(name, full_name_regex),
-      z3.Length(name) <= 50
-      # if you had other string variables, add more constraints here
-    ),
-    z3.InRe(name, full_name_regex_generalized),
-)) == PROVED
+# (This won't run here, we would need to import from part 2)
+# assert prove(z3.Implies(
+#     z3.And(
+#       z3.InRe(name, full_name_regex),
+#       z3.Length(name) <= 50
+#       # if you had other string variables, add more constraints here
+#     ),
+#     z3.InRe(name, full_name_regex_generalized),
+# )) == PROVED
 
 # (You will need this on HW3 problem 11!)
 
@@ -184,35 +191,39 @@ constraints.append(z3.ForAll(i, z3.Implies(
 # Now define our problem
 
 # Simpler version of the problem
-constraints.append(array_sum(5) > 0)
-precond = z3.And(constraints)
+easy_version = constraints + [array_sum(5) > 0]
+precond = z3.And(easy_version)
 postcond = z3.Exists(i, array[i] > 0)
 
-# Prove
-prove(z3.Implies(precond, postcond))
+
+# Uncomment to run
+# prove(z3.Implies(precond, postcond))
 # This one works.
 
 # Harder version of the problem?
-# N = z3.Int('N')
-# constraints.append(N >= 0)
-# constraints.append(array_sum(N) > 0)
-# This one doesn't work.
+N = z3.Int('N')
+hard_version = constraints + [N >= 0, array_sum(N) > 0]
+precond = z3.And(hard_version)
+postcond = z3.Exists(i, array[i] > 0)
 
+# This one doesn't work. (At least not within a few minutes.)
+# prove(z3.Implies(precond, post
 """
-If it didn't work?
-
+Recall:
 Q: when does Z3 know to return unknown rather than hang?
 
 A: Z3 tries to identify if it sees a case where it knows it
    beyond the capabilities of its automated decision procedures.
 
-  Ex: one of the cases that Z3 solves very efficiently is if
+  EXAMPLE:
+  one of the cases that Z3 solves very efficiently is if
   using Int and all your constraints are what's called linear constraints:
   a + b + c > 3 * d - e + 4 * f
   No two variables are multiplied
   Z3 has a specific built-in technique that knows how to very efficiently
   solve all linear constraints.
 
-Apply one of our four techniques above for what to try
+If your constraint doesn't lie in one of the known solvable sets,
+apply one of our four techniques above for what to try
 when getting stuck.
 """

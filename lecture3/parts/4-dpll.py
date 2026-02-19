@@ -1,5 +1,5 @@
 """
-Lecture 3, Part 3:
+Lecture 3, Part 4:
 Z3 Internals: The DPLL algorithm.
 
 ===== Z3 internals =====
@@ -157,21 +157,19 @@ We saw that the main limitation of Hypothesis was?
 
 - It can find a bug, but it can never prove that there are no bugs!
 
-Main limitations of Z3?
-(There are two)
+Main limitations of Z3:
 
 1. We have to rewrite the program in Z3
 2. Z3 might hang or return unknown
 
-And that's where we are going next!
+And that's where we are going next,
+with general program verification frameworks!
 
-With general program verification frameworks!
-
-The program and the proof will both be written in the same
+Solve 1: The program and the proof will both be written in the same
 framework.
 
-===== Mid quarter review =====
-
-This concludes the first half of the course!
-See the file `mid_quarter_review.md`.
+Solve 2: the framework will allow us to help out by writing the proof
+ourselves, so that we don't need to rely on automated solvers.
+(This sounds like more work - it is! But it also means that we will never
+get stuck.)
 """

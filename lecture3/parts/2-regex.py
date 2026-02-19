@@ -52,11 +52,11 @@ length_constraint = z3.Length(name) >= 10
 # Our regex constraint...
 # z3.Range
 lowercase_letter = z3.Range("a", "z")
-                  # ^^^^^^^^^^^^^^^^ Range Regex
-                  # matches a single character 'between' lowercase a and lowercase z
-                  # (in ASCII code.)
-                  # Inclusive range
-                  # Includes both the start and the end.
+                    # ^^^^^^^^^^^^^^^^ Range Regex
+                    # matches a single character 'between' lowercase a and lowercase z
+                    # (in ASCII code.)
+                    # Inclusive range
+                    # Includes both the start and the end.
 
 """
 matches? "x" "y" "a" "b" "r" --> a single character that is a lowercase letter
@@ -81,10 +81,10 @@ doesn't match? "c a t" "$$$" "asdfkl;ajsdg4" etc.
 regex_constraint = z3.InRe(name, lowercase_letters)
 
 # Now let's solve our constraint
-z3.solve(z3.And(
-  length_constraint,
-  regex_constraint,
-))
+# z3.solve(z3.And(
+#     length_constraint,
+#     regex_constraint,
+# ))
 
 # Now our name is pppppppppp!
 
@@ -105,65 +105,34 @@ and will be used on HW3.
 
 ----- Where we ended for today -----
 
+Starting here for Thu, Feb 19.
+
+Starting with an exercise.
+
 === Exercise ===
 
 Define a string 'name' such that only the first letter is capitalized.
 """
 
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
-# .
+# First step: using Range
+capital_letter = z3.Range("A", "Z")
 
-# capital_letter = z3.Range("A", "Z")
+# We already have our lowercase character regex... so let's combine them!
+# How do we combine two regex constraints?
+# If you want pattern1 **followed by** pattern 2, we use
+# z3.Concat
 
-# # We already have our lowercase character regex... so let's combine them!
-# # How do we combine two regex constraints?
-# # If you want pattern1 **followed by** pattern 2, we use
-# # z3.Concat
+def capital_name_regex():
+    # TODO
+    raise NotImplementedError
 
-# name_regex = z3.Concat(capital_letter, lowercase_letters)
-# regex_constraint = z3.InRe(name, name_regex)
-
-# z3.solve(z3.And(
-#   length_constraint,
-#   regex_constraint,
-# ))
+# Uncomment to run
+# name = z3.String("name")
+# length_constraint = z3.Length(name) >= 10
+# solve(z3.And(length_constraint, z3.InRe(name, capital_name_regex()))
 
 """
-How does Z3 regex differ from practical regexes?
-
-Some operations present in practical regex libraries may not
-be present in Z3 and will require encoding them in some way,
-for example:
-  - capture groups
-  - anchors like ^ and $
-  - case-insensitivity, where we want to automatically consider
-    'a' and 'A' to be the same
-  - matching any alphanumeric character
-
-While there are more advanced solutions, the easiest way
-to do these sorts of constraints is to write your own Ranges and
-similar for the different characters you're interested in.
-"""
-
-"""
-Q: Modify the string to allow spaces.
+Exercise: Modify the string to allow spaces.
 
 But: we don't spaces at the beginning or end of the string, we want
 something like
@@ -174,74 +143,29 @@ something like
 So how can we do this?
 """
 
-# # Let's reuse what we already have!
-# # How do we convert " " to a Regex (from a Python string)?
-# # We could use z3.Range, but there's a simpler way
-# # Let's refer to regex_help.md
-# # We can use z3.Re
-# full_name_regex = z3.Concat(
-#   name_regex,
-#   z3.Re(" "),
-#   name_regex,
-# )
+def full_name_regex():
+    # TODO
+    raise NotImplementedError
 
-# solve(z3.And(
-#   length_constraint,
-#   z3.InRe(name, full_name_regex),
-# ))
+def full_name_regex_generalized():
+    # Is the above too specific? Write a version that allows
+    # any number of parts.
+    # TODO
+    raise NotImplementedError
 
-# # Middle names?
-# # We could do one for 3 names, one for 2 names,
-# # and z3.Or them
-# # Let's actually use z3.Union: basically OR for regexes
-
-# full_name_regex = z3.Concat(
-#   # Firstname
-#   name_regex,
-#   z3.Re(" "),
-#   # Middlename
-#   z3.Union(
-#     z3.Re(""),
-#     z3.Concat(name_regex, z3.Re(" "))
-#   ),
-#   # Lastname
-#   name_regex,
-# )
-
-# solve(z3.And(
-#   length_constraint,
-#   z3.InRe(name, full_name_regex),
-# ))
-
-# # What if we want to allow more than just 3 names?
-# # (Real names can have any number of parts)
-# # Use z3.Star?
-# # Generalization of z3.Concat for any number
-# # of parts.
-
-# full_name_regex_generalized = z3.Concat(
-#   # Firstname
-#   name_regex,
-#   z3.Star(
-#     # Any further names here (Middle name, last name, etc.)
-#     z3.Concat(z3.Re(" "), name_regex)
-#   ),
-# )
-
-# solve(z3.And(
-#   length_constraint,
-#   z3.InRe(name, full_name_regex),
-# ))
-
-# Q: How do length_constraint and z3.InRe both know to
-# constraint the entire string?
-# A: because they both refer to the 'name' variable.
+# Uncomment to run
+# solve(z3.And(length_constraint, z3.InRe(name, full_name_regex()))
+# solve(z3.And(length_constraint, z3.InRe(name, full_name_regex_generalized()))
 
 """
-Q: We know that full_name_regex_generalized
-refers to a name with any number of spaces
-and full_name_regex refers to a name with
-exactly 2 or 3 parts.
+Q: How do length_constraint and z3.InRe both know to
+constrain the entire string?
+
+A:
+
+Q: Above, full_name_regex describes a name with any number of spaces
+and the second refers to a name with
+only 2-3 parts.
 
 Is full_name_regex_generalized actually more general?
 In other words,
@@ -267,15 +191,28 @@ How we write that in Z3?
     z3.Implies(z3.InRe(s, r1), z3.InRe(s, r2))
 """
 
-# from helper import prove, PROVED
+from helper import prove, PROVED
 
-# This should pass
+# Does this pass?
 # assert prove(z3.Implies(
 #     z3.InRe(name, full_name_regex),
 #     z3.InRe(name, full_name_regex_generalized),
 # )) == PROVED
 
-# Z3 hangs! :O
+"""
+What happened?
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+"""
 
 # What do we do to fix this?
 # Tip: bound your variables.
@@ -291,68 +228,54 @@ How we write that in Z3?
 # )) == PROVED
 
 """
-===== Poll/Exercise =====
+===== Poll =====
 
-What regex operators would be useful to write a Z3 regex to match US phone numbers?
+What regex operators would be useful to write a Z3 formula to define strings that are US phone numbers?
+(Select all that apply)
+
+e.g.
   555-555-5555
 
+A. Union
+B. Concat
+C. Star
+D. Range
+E. InRe
+
+(Let's not worry about (+1) a the beginning, parentheses, or other formats)
+
+https://forms.gle/r415JQ3H9eT8jTuEA
+
+.
+.
+.
+.
+.
 """
 
-# phone_number = z3.String("phone_number")
-# number = z3.Range("0","9")
-# hyphen = z3.Re("-")
-
-# length_constraint = z3.Length(phone_number) >= 12
-
-# # Start to concatenate them!
-# regex_constraint = z3.Concat(
-#   number,
-#   number,
-#   number,
-#   hyphen,
-#   number,
-#   number,
-#   number,
-#   hyphen,
-#   number,
-#   number,
-#   number,
-#   number,
-# )
-
-# z3.solve(z3.InRe(phone_number, regex_constraint))
-
-# # Four numbers?
-# z3.Concat(number, number, number, number)
-
-# last_part = z3.String("last_part")
-# z3.And(
-#   z3.Length(last_part) == 4,
-#   z3.InRe(last_part, z3.Star(number))
-# )
-
-# # Would also have to use string concatenation like...
-# # phone_number = first_part + "-" + second_part + "-" + last_part
-
-# # What is star? 0 or more repetitions.
-# # "" or number or number, number or number, number, number or
-# #      number, number, number, number, ....
 
 """
 ===== Finishing up strings and regexes =====
 
-Recap: we have seen:
+We have seen:
+
   Concat, Union, Star, Range, Re
+
 and the fundamental operation
+
   InRe(s, R)
+
 to assert that a string matches a regex R.
 
-Other Regex operators we haven't seen in class (see regex_help.md):
+Other Regex operators we haven't seen yet (see regex_help.md):
+
 - z3.Plus
   Like Star but one or more times, insetad of zero or more times.
+
 - z3.IntToStr
   z3.IntToStr(9) to get the digit 9
   z3.IntToStr(n) to get the string corresponding to the Z3 int n.
+
 - z3.CharIsDigit
 """
 
@@ -371,12 +294,12 @@ Other Regex operators we haven't seen in class (see regex_help.md):
 # Basically, serializing a number using its base 10 representation.
 
 """
-There are others!
 Union is like OR.
 What about AND and NOT? Those also have regex equivalents.
 
 - z3.Intersect(R1, R2): a regex
   matching all strings that match both R1 and R2
+
 - z3.Complement(R)
   matches all strings that DON'T match R.
 
@@ -390,9 +313,10 @@ Q: Use a regex to define a string that is NOT equal to the empty string.
 # solve(z3.InRe(not_empty, regex_constraint))
 
 # We could have also done this with z3.Length(s) >= 1.
+# or simply s != "".
 
 """
-=== CSV example from HW1 ===
+=== Revisiting the CSV example from HW1 ===
 
 (Optional or skip for time)
 
@@ -430,11 +354,31 @@ Z3 could be used to prove that both of these work.
 """
 
 """
+Q: How does Z3 regex differ from practical regex libraries?
+(e.g., re library in Python)
+
+Some operations present in practical regex libraries may not
+be present in Z3 and will require encoding them in some way,
+for example:
+  - capture groups
+  - anchors like ^ and $
+  - case-insensitivity, where we want to automatically consider
+    'a' and 'A' to be the same
+  - matching any alphanumeric character
+
+While there are more advanced solutions, the easiest way
+to do these sorts of constraints is to write your own Ranges and
+similar for the different characters you're interested in.
+"""
+
+"""
 === Recap: Part 3 ===
 
-- Showed some of the remaining Z3 regex operators
-- Encourage to read regex_help.md as you're using Z3 regex, in
+- We learned how Z3 regex can be used to provide constraints on strings
+
+- We described the regex operators available in Z3 (union, star, concat, range, etc.)
+
+- I encourage to read regex_help.md as you're using Z3 regex, in
   addition to the lecture material to remind yourself about
-  what each regex constructor does.
-- Advanced data types: Functions and Arrays.
+  what each regex constructor does! This will be useful on the HW.
 """
