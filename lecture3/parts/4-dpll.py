@@ -14,10 +14,28 @@ Z3 is known as an "SMT solver": Satisfiability Modulo Theories.
 Example:
 Boolean satisfiability:
 
-(p or q or r) and (~p or ~q or ~s) and (s)
+  (p or q or r) and (~p or ~q or ~s) and (s)
 
 We said it's "satisfiable" if there exists some values of the input
 variables such that the formula is true.
+
+(Quiz: is this satisfiable?)
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
 
 The traditional problem of satisfiability, or SAT, is with boolean
 variables -- if you've taken a CS theory class, you may have seen
@@ -49,6 +67,27 @@ Then it will apply a solver for boolean satisfiability.
 How do we solve boolean satisfiability?
 
   (p or q or r) and (~p or ~q or ~s) and (s)
+
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
 
 Simplest idea: try values of the variables.
 First try p = True, then try p = False.
@@ -116,34 +155,19 @@ we will not go over them in detail:
   https://en.wikipedia.org/wiki/Conflict-driven_clause_learning
   Optimized/better version
 
-===== Z3 Review =====
+===== Z3 Quick Review =====
 
-Proofs and satisfiability
+Proofs and satisfiability:
 
-We saw that:
-Using the problem of satisfiability, we can:
-- solve() constraints
-- and we can prove() specifications.
+Z3 is based on the satisfiability problem.
+It can be used to solve() constraints and to prove() specifications.
 
 We should now be comfortable with using Z3 to set up a problem:
 1. Declare variables
 2. Declare constraints
 3. Ask Z3 to solve the constraints
 
-Z3 has two "modes" that we have used: solve() and prove().
-- solve(): find a solution for *at least one* input
-- prove(): prove that the statement is true *for all* inputs
-
-How do program specifications relate to Z3?
-(Problem 1B on HW2 is about this)
-
-    inputs = ... # Z3 variables
-    output = call_program(inputs)
-    precondition = ...
-    postcondition = ...
-    spec = z3.Implies(precondition, postcondition)
-    prove(spec)
-
+Comparison with Hypothesis?
 We can also use Z3 more like Hypothesis to generate example inputs.
 How?
 
@@ -151,25 +175,27 @@ How?
     precondition = ...
     example = get_solution(precondition)
 
-^^ This is basically how Hypothesis works!
+^^ If you squint your eyes and ignore the details, this is basically how Hypothesis works!
 
 We saw that the main limitation of Hypothesis was?
 
 - It can find a bug, but it can never prove that there are no bugs!
 
-Main limitations of Z3:
+Main limitations of Z3? (see Lecture 2, part 4, conclusions)
 
-1. We have to rewrite the program in Z3
-2. Z3 might hang or return unknown
+L1. We have to rewrite the program in Z3
+L2. Z3 might hang or return unknown
 
 And that's where we are going next,
 with general program verification frameworks!
 
-Solve 1: The program and the proof will both be written in the same
-framework.
+Z3 is "push button verification" - we push a button, and Z3 solves the problem for us!
+Without any human input. We will have to give up the idea of "push button verification" for the
+rest of the course. This will take two forms:
 
-Solve 2: the framework will allow us to help out by writing the proof
+L1. The program, the spec, and the proof will all be written in the same framework.
+
+L2. The framework will allow us to help out by writing the proof
 ourselves, so that we don't need to rely on automated solvers.
-(This sounds like more work - it is! But it also means that we will never
-get stuck.)
+(This sounds like more work - it is! But it also means that we can never get stuck.)
 """

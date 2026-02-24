@@ -207,8 +207,14 @@ postcond = z3.Exists(i, array[i] > 0)
 """
 ***** where we ended for Feb 19 *****
 
+===== Poll =====
+
+Oh no, Z3 is hanging! What are some things to try?
+(Select all that apply)
+
+https://forms.gle/aSLtDhemrrhrj1CL8
+
 ===== Z3 troubleshooting =====
-(we'll cover this next time)
 
 AKA: What to do when Z3 gets stuck?
 
