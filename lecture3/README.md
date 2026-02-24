@@ -96,8 +96,21 @@ Reminders:
 
 - HW3 due Friday, 11:59pm
 
+    + OH: Thursday
+
+    + Some people using things like Arrays, z3.Forall, sequence access for strings
+        s[i]
+
+        Note: all problems can be solved purely using regular expressions
+
+- Please double-check + mark your calendar for final exam: 1030am on March 20
+
 Plan:
 
 - Part 3 loose ends
 
+    + Start with poll
+
 - Part 4: How Z3 works: the DPLL algorithm.
+
+Questions?

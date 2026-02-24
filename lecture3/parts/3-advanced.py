@@ -255,7 +255,8 @@ What do we do if Z3 is having trouble with a problem?
 
 Ask Z3 to prove each of the two statements separately!
 
-To draw an analogy with Hypothesis: it's like putting
+To draw an analogy with Hypothesis: it's kind of
+like putting
 assert() statements earlier on in your program.
 
 3. Use a different encoding
