@@ -226,42 +226,5 @@ method Main()
     *strongest possible* description of what the function does.
     What does that mean?
 
-    Let's define:
-
-    - Going forwards:
-        Given a precondition,
-        the *strongest postcondition* of a statement (or program) is the strongest property
-        that is guaranteed to hold after executing the statement
-        (assuming that the precondition holds)
-
-    - Going backwards:
-        Given the postcondition,
-        the *weakest precondition* of a statement (or program) is the weakest condition
-        that guarantees that the postcondition will hold after executing the statement.
-
-    Here are some examples based on the Abs function;
-    we will see more about this later!
-*/
-
-method StrongestPostconditionEx(x: int) returns (y: int)
-    requires x >= 5
-    // What ensures statement should go here?
-    ensures y == abs(x + x)
-    ensures y >= 10
-    ensures x >= 5
-{
-    y := abs(x + x);
-}
-
-method WeakestPreconditionEx(x: int) returns (y: int)
-    // What requires statement should go here?
-    // requires false // Replace this line
-    requires x >= 5 || x <= -5
-    ensures y >= 10
-{
-    y := abs(x + x);
-}
-
-/*
-    We will get more practice with this in the next part.
+    We will define this in the next part.
 */

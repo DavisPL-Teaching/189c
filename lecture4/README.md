@@ -6,6 +6,9 @@ Announcements/reminders:
 
 - HW3 is due tomorrow
 
+    + OH: today 3-4pm
+    + Extra OH: tomorrow 3-4pm
+
 - HW4: Dafny will be released early next week and will be the last homework.
 
 - Final exam: March 20, 1030am-12:30pm.
