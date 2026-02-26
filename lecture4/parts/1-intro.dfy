@@ -203,11 +203,11 @@ method MultipleReturns(x: int, y: int) returns (more: int, less: int)
     - basic syntax (if then else, assignments, etc.)
     - preconditions (requires) postconditions (ensures)
     - return statements / multiple returns
-    - assume{:axiom} (very dangerous) and assert
+    - assume{:axiom} (very dangerous) and assert, which are erased from the code after verification passes.
 */
 
 /*
-    Mini-exercise:
+    ===== Mini-exercise =====
 
     Implement a Max function that returns the maximum of three integers,
     and write pre- and post-conditions for it.
@@ -238,82 +238,3 @@ method TestMax()
     // Note that we've "tested" the code without actually running it!
     // We will circle back to that soon as well.
 }
-
-/*
-    ===== Interfaces and abstraction =====
-
-    The idea of preconditions/postconditions is a useful way to think about
-    code in any programming language! But fundamentally, it is a form of
-    abstraction:
-
-    - Precondition: what does the method need to do its job?
-    - Postcondition: what does the method guarantee to do when it's done?
-
-    Fun fact: the idea of preconditions/postconditions is also known as
-    "Design by Contract". The idea is that you can think of a method as
-    a contract between the caller who wants something from the method, and the
-    method, which provides that thing.
-
-    There's a bit of a problem with Abs, though.
-    To see what it is,
-    in Dafny, let's see what happens when we try to use a test with Abs!
-*/
-
-method TestAbs()
-{
-    // What should we assert about Abs?
-
-    var x: int := Abs(5);
-    assert x >= 0;
-    // Uncomment these lines, what happens?
-    // var x := Abs(5);
-    // assert x == 5;
-}
-
-/*
-    Why didn't this work?
-
-    This is because Dafny abstracts methods away by their pre and postconditions
-    to simplify verification. This means that it doesn't look inside Abs' definition
-    to verify the assertion, but rather uses the knowledge that it has of Abs' model.
-
-    What's left of the method is only the pre and postconditions!
-
-    This is a common scenario in formal verification: it often happens
-    that the verifier doesn't have enough information to prove a property.
-    And, we need to strengthen the model by making the postcondition stronger.
-
-    What postconditions should we add to Abs to fix it?
-*/
-
-method AbsFixed(x: int) returns (y: int)
-    // Fixed postcondition:
-    ensures y >= 0
-    ensures y == x || y == -x
-    // The interface is complete! The contract fully specifies
-    // what the output should be on every input.
-{
-    if x >= 0 {
-        y := x;
-    } else {
-        y := -x;
-    }
-}
-
-method TestAbsFixed()
-{
-    var x := AbsFixed(5);
-    assert x == 5;
-}
-
-/*
-    However, our spec now describes exactly the body of the method, which is a bit redundant.
-
-    That's what functions are for! We will see this next time.
-
-    Recap:
-    - We saw how to define basic methods (procedures) in Dafny
-    - We saw the basic syntax for preconditions, postconditions,
-        assume/assert, and how to write tests.
-    - We will continue with more Dafny features next time!
-*/

@@ -2,6 +2,25 @@
     Lecture 4, Part 3:
     Strongest postconditions and weakest preconditions
 
+    ===== Overview =====
+
+    We saw that in order to prove properties about
+    methods like Abs and Double,
+    we needed to strengthen the postcondition to be stronger
+    (or use a function instead of a method.)
+    Is the new postcondition really as strong as it can be?
+
+    Is ensures y == x + x really the strongest possible?
+
+    We will see that the answer is yes: this is in a formal
+    sense, the strongest possible statement about the output.
+
+    On HW1, part 1B, you were asked to write specifications that are the
+    *strongest possible* description of what the function does.
+    What does that mean?
+
+    We will define this in this part.
+
     ===== Definitions =====
 
     Let's define:
@@ -22,7 +41,7 @@
 */
 
 // include for abs()
-include "2-functions-expressions.dfy"
+include "2-abstraction.dfy"
 
 method StrongestPostconditionEx(x: int) returns (y: int)
     requires x >= 5
@@ -213,10 +232,12 @@ method WeakestPreconditionEx2(x: int) returns (y: int)
     The way it does it is basically the process we did above.
     It can be done in a completely automatic way, just like with Z3.
 
-    This works great!
-    But there is one problem with.
+    (In fact, Dafny uses Z3 under the hood.)
 
-    Any guesses - what is missing from our discussion so far?
+    This works great!
+    But there is one problem with the above.
+
+    What is missing from our discussion so far?
 
     A:
 */

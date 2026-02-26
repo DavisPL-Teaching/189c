@@ -32,3 +32,25 @@ Then, we will continue with `lecture4/parts/1-intro.dfy`
 Questions?
 
 (Switch to slides)
+
+### Tuesday, March 3
+
+Announcements/reminders:
+
+- HW4 is released! This is the last HW.
+
+    + Due: Friday, March 13, 11:59pm
+
+- HW2 grades released
+
+- Final exam: March 20, 1030am-12:30pm.
+
+Plan:
+
+- A quick programming example
+
+- Part 2: the power of abstraction
+
+    + Poll
+
+- If time: Part 3, strongest postconditions and weakest preconditions.

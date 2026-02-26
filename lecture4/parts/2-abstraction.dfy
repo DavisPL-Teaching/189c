@@ -1,18 +1,106 @@
 /*
     Lecture 4, Part 2:
-    Functions and expression
+    Abstraction
 
-    Two main concepts:
+    ===== Overview =====
+
+    We've learned about basic Dafny syntax and Dafny methods.
+
+    Let's talk more about how Dafny works, and the power
+    of abstraction.
+    Starting with a mini-exercise.
+
+    Some upcoming concepts:
+    - Interfaces & abstraction; writing unit tests
     - Function/method distinction
+    - Compile time/runtime distinction
     - Weakest preconditions and strongest postconditions
+*/
+
+include "1-intro.dfy"
+
+/*
+    ===== Interfaces and abstraction =====
+
+    The idea of preconditions/postconditions is a useful way to think about
+    code in any programming language! But fundamentally, it is a form of
+    abstraction:
+
+    - Precondition: what does the method need to do its job?
+    - Postcondition: what does the method guarantee to do when it's done?
+
+    Fun fact: the idea of preconditions/postconditions is also known as
+    "Design by Contract". The idea is that you can think of a method as
+    a contract between the caller who wants something from the method, and the
+    method, which provides that thing.
+
+    There's a bit of a problem with Abs, though.
+    To see what it is,
+    in Dafny, let's see what happens when we try to use a test with Abs!
+*/
+
+method TestAbs()
+{
+    // What should we assert about Abs?
+
+    var x: int := Abs(5);
+    assert x >= 0;
+    // Uncomment these lines, what happens?
+    // var x := Abs(5);
+    // assert x == 5;
+}
+
+/*
+    Why didn't this work?
+
+    This is because Dafny abstracts methods away by their pre and postconditions
+    to simplify verification. This means that it doesn't look inside Abs' definition
+    to verify the assertion, but rather uses the knowledge that it has from Abs' specification.
+
+    What's left of the method is only the pre and postconditions!
+
+    This is a common scenario in formal verification: it often happens
+    that the verifier doesn't have enough information to prove a property.
+    And, we need to strengthen the model by making the postcondition stronger.
+
+    What postconditions should we add to Abs to fix it?
+*/
+
+method AbsFixed(x: int) returns (y: int)
+    // Fixed postcondition:
+    ensures y >= 0
+    // The interface is complete! The contract fully specifies
+    // what the output should be on every input.
+    // TODO: fill in below: ...
+    // ensures ...
+{
+    if x >= 0 {
+        y := x;
+    } else {
+        y := -x;
+    }
+}
+
+method TestAbsFixed()
+{
+    // ... after uncommenting this unit test
+    // var x := AbsFixed(5);
+    // assert x == 5;
+}
+
+/*
+    However, our spec now describes exactly the body of the method, which is a bit redundant.
+
+    That's what functions are for!
+*/
+
+/*
+    Before we get to functions, today's poll.
 
     ===== Poll =====
 
     Consider the following Double method:
 */
-
-// Import from part 1
-include "1-intro.dfy"
 
 method Double(x: int) returns (y: int)
     // requires ... ensures ...
@@ -50,7 +138,7 @@ method TestDouble()
 /*
     ===== Functions =====
 
-    Last time, we saw that we can't prove that Abs(5) == 5
+    Above, we saw that we can't prove that Abs(5) == 5
     unless we give it a strong postcondition.
     This same problem occurs with options (1) and (2) above
     (Double(5) == 10):
@@ -74,8 +162,9 @@ function abs(x: int): int
 
 method TestAbsEasier()
 {
-    assert abs(5) == 5; // passes
-    assert abs(-4) == 4; // passes
+    // Uncomment to check if the tests pass
+    // assert abs(5) == 5;
+    // assert abs(-4) == 4;
 }
 
 /*
@@ -91,11 +180,11 @@ method TestAbsEasier()
 
 method TestAbsExpression()
 {
-    var x := AbsFixed(5); // This is fine
-    // assert AbsFixed(5) == 5; // Error
-    assert x == 5; // This passes
-    var y := abs(5); // This is fine
-    assert abs(5) == 5; // This is fine
+    // var x := AbsFixed(5); // This is fine
+    // // assert AbsFixed(5) == 5; // Error
+    // assert x == 5; // This passes
+    // var y := abs(5); // This is fine
+    // assert abs(5) == 5; // This is fine
 }
 
 /*
@@ -124,19 +213,14 @@ method TestAbsExpression()
     from functions and implemented separately, and only functions can be used
     in expressions.
 
-    Recap:
-    We've already learned the basics of verifying simple Dafny code!
-    Methods (and tests), functions, expressions, preconditions, postconditions,
-    and assert/assume.
-
     (One big thing missing: we haven't looked at loops or recursive functions!)
-
-    Before we continue with more complex examples,
-    I have a couple of digressions to make.
 */
 
 /*
-    ===== Digression 1: Running the code? =====
+    Finally, let's talk about compile time vs. runtime.
+    AKA: how do actually we run the code?
+
+    ===== Running the code? =====
 
     You may have noticed something odd: we haven't run any code yet!
     In fact, even in our Tests, all we did was ask Dafny to verify that the test
@@ -207,24 +291,18 @@ method Main()
     (You can ignore the other files.)
 */
 
-
 /*
-    ===== Digression 2: strongest postconditions and weakest preconditions =====
+    Recap:
 
-    We saw above that in order to prove properties about
-    methods like Abs and Double,
-    we needed to strengthen the postcondition to be stronger
-    (or use a function instead of a method.)
-    Is the new postcondition really as strong as it can be?
+    - We learned about abstraction in Dafny: abstraction via preconditions/postconditions
 
-    Is ensures y == x + x really the strongest possible?
+    - How to write tests to verify the spec we wrote is strong enough.
 
-    We will see that the answer is yes: this is in a formal
-    sense, the strongest possible statement about the output.
+    - Function/method distinction:
+        "methods are opaque, functions are transparent"
 
-    On HW1, part 1B, you were asked to write specifications that are the
-    *strongest possible* description of what the function does.
-    What does that mean?
+    - Compile time vs. runtime distinction;
+        how to run the code
 
-    We will define this in the next part.
+    - We will continue with more Dafny features next time!
 */
