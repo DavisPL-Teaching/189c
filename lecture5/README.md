@@ -1,4 +1,4 @@
-# Lecture 8: Safety properties and Rust
+# Lecture 5: Safety properties and Rust
 
 **Please note: This lecture has not yet been updated for winter quarter 2026.**
 

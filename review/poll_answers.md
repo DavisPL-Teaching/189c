@@ -52,3 +52,4 @@ Feb 24:
 2, 3, 4, 6, 7, 8 (all except 1st and 5th options) are good choices.
 
 Feb 26:
+B, D, and E
