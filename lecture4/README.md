@@ -6,8 +6,8 @@ Announcements/reminders:
 
 - HW3 is due tomorrow
 
-    + OH: today 3-4pm
-    + Extra OH: tomorrow 3-4pm
+    + OH: today in person 3-4pm
+    + Extra OH: tomorrow on Zoom 3-4pm
 
 - HW4: Dafny will be released early next week and will be the last homework.
 
@@ -27,7 +27,7 @@ Extra materials:
 - `lecture4/intro-summary.md` - summary of the slides & additional resources
 
 We will start with some general motivational slides.
-Then, we will continue with this file.
+Then, we will continue with `lecture4/parts/1-intro.dfy`
 
 Questions?
 

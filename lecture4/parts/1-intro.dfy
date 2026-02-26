@@ -36,10 +36,12 @@
     .
 */
 
-// Here is the simple Dafny program that we introduced last time:
+// Here is the simple Dafny program corresponding to python/Z3 abs:
 
 method Abs(x: int) returns (y: int)
     ensures y >= 0 // <-- specification! (postcondition)
+    // Uncomment to see red squigglies / counterexample
+    // ensures y == 0
 {
     if x >= 0 {
         return x;
@@ -53,7 +55,7 @@ method Abs(x: int) returns (y: int)
 
     Let's go over the syntax of the code above:
 
-    - "Methods" are functions in standard languages.
+    - "Methods" are functions in other languages.
 
         A method is something that you can execute.
 
@@ -74,9 +76,11 @@ method Abs(x: int) returns (y: int)
 
 // Equivalent example
 method Abs2(x: int) returns (y: int)
+    // requires x == 0
     ensures y >= 0
 {
     if x >= 0 {
+        // return x;
         y := x;
     } else {
         y := -x;
@@ -89,7 +93,7 @@ method Abs2(x: int) returns (y: int)
     We use `requires` to indicate a precondition, and
     `ensures` to indicate a postcondition.
 
-    Last time, we saw that if we modify the code to do something wrong,
+    If we modify the code to do something wrong,
     Dafny will catch the error:
     - modifying ensures to a postcondition that is wrong?
     - modifying the return value to return -1 (e.g.)?
@@ -99,32 +103,15 @@ method Abs2(x: int) returns (y: int)
     - for *all* inputs satisfying the precondition, after the program
         is run, the output satisfies the postcondition.
 
+    Q: is requires like assume() in Hypothesis?
+
+        Yes, you can think of it that way.
+
     Some design questions:
 
         Q1: Why are return values (like y) named?
 
         Q2: Why are values (like x and y) typed?
-
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
-        .
 
         A1: So that we can refer to them in the postcondition
 
@@ -144,8 +131,8 @@ method Abs2(x: int) returns (y: int)
     - We can also use assertions to tell Dafny to prove
         that some condition holds at a certain point in the code.
 
-    As we learned with Hypothesis, preconditions and postconditions are
-    just special cases of assumptions and assertions!
+    As we learned with Hypothesis, preconditions and postconditions can
+    be thought of as special cases of assumptions and assertions.
 
     What assumptions and assertions might we want to add to Abs?
 */
@@ -153,6 +140,9 @@ method Abs2(x: int) returns (y: int)
 method Abs3(x: int) returns (y: int)
     ensures y >= 0
 {
+    // Uh oh...
+    // assume{:axiom} false;
+
     if x >= 0 {
         y := x;
         // What assertion could we check here?
@@ -162,14 +152,23 @@ method Abs3(x: int) returns (y: int)
         // What assertion could we check here?
         assert y == -x;
         // What assumption + assertion could we add here?
-        // assume x == -3;
+        // assume{:axiom} x == -3;
         // assert y == 3;
-        // What else?
-        // assume x == -2;
+        // // What else?
+        // assume{:axiom} x == -2;
+        // // what happens here?
+
+        // // The code is unreachable here...
+        // assert false;
+
+        // return 100;
+
         // assert false; // unreachable
         // ^ Assume is dangerous!
     }
 }
+
+// There is one important way that assume/assert are different in Hypothesis and Dafny!
 
 // Once the code gets compiled, assume and assert statements go away
 // in the final binary. That means that assume() statements are like
@@ -189,6 +188,23 @@ method MultipleReturns(x: int, y: int) returns (more: int, less: int)
     less := x - y;
     // comments: are not strictly necessary, of course!
 }
+
+/*
+    Quick recap:
+
+    We talked about interactive formal verification and its advantages
+
+    We talked about conditions when it's worth investing in the extra effort
+    for interactive verification (correctness is critical, security, & high financial cost)
+
+    We introduced Dafny syntax and saw the beginnings of writing code & proofs together in
+    the same language (i.e. verification language + programming language)
+    - methods
+    - basic syntax (if then else, assignments, etc.)
+    - preconditions (requires) postconditions (ensures)
+    - return statements / multiple returns
+    - assume{:axiom} (very dangerous) and assert
+*/
 
 /*
     Mini-exercise:
