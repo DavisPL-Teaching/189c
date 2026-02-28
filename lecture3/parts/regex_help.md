@@ -54,13 +54,34 @@ Here are a few of the key regular expression operators that you will need:
     then `z3.IntToStr(d)` would be the string "42".
 
 - `z3.CharIsDigit`: a boolean expression that is true if
-    a character is a digit.
-    To use this: if you have a string `s`, and an integer `d`,
-    `s[d]` is a specific digit (for example), then
-    `z3.CharIsDigit(s[d])` to get a Boolean for whether `s[d]` is
-    a digit.
+    a character is a digit. To use this: if you have a string `s`,
+    and an integer `d`, so `s[d]` is a specific digit (for example), then
+    use `z3.CharIsDigit(s[d])` to get a Boolean for whether `s[d]` is a digit.
+    You may need to also constrain the string length of this to work properly, i.e.:
+    ```
+    is_digit = z3.And(z3.CharIsDigit(s[d]), z3.Length(s) > d)
+    ```
 
 - `z3.CharToInt`: this converts a character to its integer
     character code. If you use this, you will need to refer to
     the ASCII table to see full list of codes. The codes for the
     numbers "0" through "9" are 48 through 57.
+
+### Advanced constructors
+
+These are additional advanced regular expression operators that you may find useful.
+(HW3 can be done entirely just using the above, not using the advanced constructors, but these
+are available if you find them useful for your solutions.)
+
+- `z3.Intersect(R1, R2)`: creates a regex that matches a string if it matches *both* `R1` and `R2`.
+    For example, `z3.Intersect(z3.Re("cat"), z3.Re("dog"))` matches nothing because there are no strings
+    matching both "cat" and "dog".
+
+- `z3.Complement(R)`: creates a regex that matches a string if it does *not* match `R`. For example,
+    `z3.Complement(z3.Re("cat"))` matches all strings that are not equal to the string "cat", including strings
+    such as "c", "ca", "at", "dog", and the empty string "".
+    Note that this is not the same as complement of a character class that is available in some regex libraries
+    (e.g., characters that are not equal to c, a, or t.)
+
+- `z3.Diff(R1, R2)`: creates a regex that matches a string if it matches `R1` but not `R2`. This is a shorthand
+    for `z3.Intersect(R1, z3.Complement(R2))`.
