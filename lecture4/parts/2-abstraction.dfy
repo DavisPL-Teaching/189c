@@ -300,8 +300,9 @@ method Main()
     var y: int := Abs(x);
     print "x = ", x, ", y = ", y, "\n";
 
-    // TBD: skip for now
-    // assume x    == 0; // Uncomment to raise a warning about a bad assumption
+    // TBD: Skip for now
+    // Example of a warning - uncomment to raise a warning about a bad assumption
+    // assume x == 0;
 }
 
 /*
@@ -314,49 +315,43 @@ method Main()
 
     2. `dafny build 2-abstraction.dfy` -- to compile to a library, dafny.dll
          (This is also run by default with `dafny 2-abstraction.dfy`)
-         We won't use this option much in this class.
+
+         If you use this option, you can then run the code with the dotnet
+         runtime:
+
+            dotnet 2-abstraction.dll
 
     3. `dafny run 2-abstraction.dfy` -- to run the code!
 
-    If we have warnings in the code, Dafny will refuse to compile the code;
-    however, you can turn this off by adding the flag
+        If we have warnings in the code, Dafny will refuse to compile the code;
+        however, you can turn this off by adding the flag
 
-        --allow-warnings
+            --allow-warnings
 
-    You will get warnings if you use `assume` for example! (Why?)
-    In general, it's best to remove all warnings before running the code.
-*/
+        You will get warnings if you use `assume` improperly for example!
+        In general, it's best to remove all warnings before running the code.
 
-// Here's another example from the Dafny reference:
-// datatype Tree = Empty | Node(left: Tree, data: int, right: Tree)
-// method Main()
-// {
-//     var x : Tree := Node(Node(Empty, 1, Empty), 2, Empty);
-//     print "x=", x, "\n";
-// }
-
-/*
     There's also a fourth option to run Dafny!
     Perhaps you remember from last time, that one of the advantages of Dafny
     is that it can produce output in other languages, so it can integrate
     with your existing workflow.
-    Try this:
+    To compile to Python:
 
     4. `dafny build --target:py 2-abstraction.dfy`
 
-    This produces output in: lecture-py/module_.py.
-    You can run the code with
+        This produces output in: lecture-py/module_.py.
+        You can run the code with
 
-    ```
-    python3 __main__.py
-    ```
+        ```
+        python3 __main__.py
+        ```
 
-    And take a look at `module_.py`.
+        And take a look at `module_.py`.
 
-    (You can ignore the other files!
-    This and the previous command also generate a bunch of auxiliary files,
-    which we don't want to check into our repo.
-    See `.gitignore` for what target files I'm hiding.)
+        (You can ignore the other files!
+        This and the previous command also generate a bunch of auxiliary files,
+        which we don't want to check into our repo.
+        See `.gitignore` for what target files I'm hiding.)
 */
 
 /*
@@ -370,12 +365,22 @@ method Main()
         "methods are opaque and possibly impure,
          functions are transparent and pure"
 
-    - Compile time vs. runtime distinction;
+    - Compile time vs. runtime distinction:
+
+        assertions are compiled out in the final code!'
+        We don't need them as they've already been proven.
 
         how to run the code --
         or compile it to a target language
         (Python, Java, C#, etc.)
         and then run it there.
-
-    - We will continue with more Dafny features next time!
 */
+
+// Another example to try with dafny run if you like.
+// From the Dafny reference:
+// datatype Tree = Empty | Node(left: Tree, data: int, right: Tree)
+// method Main()
+// {
+//     var x : Tree := Node(Node(Empty, 1, Empty), 2, Empty);
+//     print "x=", x, "\n";
+// }
