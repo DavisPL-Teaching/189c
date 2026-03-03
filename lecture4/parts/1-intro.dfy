@@ -212,16 +212,41 @@ method MultipleReturns(x: int, y: int) returns (more: int, less: int)
     Implement a Max function that returns the maximum of three integers,
     and write pre- and post-conditions for it.
 
-    What kind of pre and postconditions would we like to have here?
+    TODO list:
+    1. Implementing the function
+    2. Write pre/postconditions
+    3. Verify it (check that it's working)
+    4. Test it (write unit tests - we'll talk more about why these are useful)
 */
 
 method Max(a: int, b: int, c: int) returns (result: int)
     // Placeholder - makes the function a "stub"
-    requires false
+    // Precondition
+    // requires false
     // What postcondition should go here, so that the function operates as expected?
-    // ensures ....
+    ensures result == a || result == b || result == c
+    ensures result >= a && result >= b && result >= c
 {
-    // TODO: fill in the code here
+    if a > b {
+        if a > c {
+            return a;
+        } else {
+            // if b > c {
+            //     assert false;
+            //     return b;
+            // } else {
+            //     return c;
+            // }
+
+            return c;
+        }
+    } else {
+        if b > c {
+            return b;
+        } else {
+            return c;
+        }
+    }
 }
 
 // Let's test to see if our method is working!
@@ -229,11 +254,11 @@ method Max(a: int, b: int, c: int) returns (result: int)
 method TestMax()
 {
     // Uncomment to run
-    // var a: int := 5; // The 'int' annotation is optional (it is inferred)
-    // var b: int := 50;
-    // var c: int := 100;
-    // var y := Max(a, b, c);
-    // assert y == 50;
+    var a: int := 5; // The 'int' annotation is optional (it is inferred)
+    var b: int := 50;
+    var c: int := 100;
+    var y := Max(a, b, c);
+    assert y == 100;
 
     // Note that we've "tested" the code without actually running it!
     // We will circle back to that soon as well.

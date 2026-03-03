@@ -49,7 +49,7 @@ Announcements/reminders:
 
 Plan:
 
-- A quick programming example
+- A quick programming exercise
 
 - Part 2: the power of abstraction
 

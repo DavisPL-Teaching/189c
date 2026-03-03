@@ -8,7 +8,6 @@
 
     Let's talk more about how Dafny works, and the power
     of abstraction.
-    Starting with a mini-exercise.
 
     Some upcoming concepts:
     - Interfaces & abstraction; writing unit tests
@@ -16,8 +15,6 @@
     - Compile time/runtime distinction
     - Weakest preconditions and strongest postconditions
 */
-
-include "1-intro.dfy"
 
 /*
     ===== Interfaces and abstraction =====
@@ -39,15 +36,19 @@ include "1-intro.dfy"
     in Dafny, let's see what happens when we try to use a test with Abs!
 */
 
+include "1-intro.dfy"
+
 method TestAbs()
 {
     // What should we assert about Abs?
 
     var y1: int := Abs(5);
     assert y1 >= 0;
+
     // Uncomment these lines, what happens?
     // var y2 := Abs(5);
     // assert y2 == 5;
+    // assert y1 >= 1;
 }
 
 /*
@@ -57,11 +58,11 @@ method TestAbs()
     to simplify verification. This means that it doesn't look inside Abs' definition
     to verify the assertion, but rather uses the knowledge that it has from Abs' specification.
 
-    What's left of the method is only the pre and postconditions!
+    What's left of the method is only its specification!
 
     This is a common scenario in formal verification: it often happens
     that the verifier doesn't have enough information to prove a property.
-    And, we need to strengthen the model by making the postcondition stronger.
+    And, we need to strengthen the specification by making the postcondition stronger.
 
     What postconditions should we add to Abs to fix it?
 */
@@ -72,7 +73,10 @@ method AbsFixed(x: int) returns (y: int)
     // The interface is complete! The contract fully specifies
     // what the output should be on every input.
     // TODO: fill in below: ...
-    // ensures ...
+    ensures y == x || y == -x
+    // ensures x >= 0 ==> y == x
+    // ensures x <= 0 ==> y == -x
+    // ensures if x > 0 then y == x else y == -x
 {
     if x >= 0 {
         y := x;
@@ -84,8 +88,8 @@ method AbsFixed(x: int) returns (y: int)
 method TestAbsFixed()
 {
     // ... after uncommenting this unit test
-    // var x := AbsFixed(5);
-    // assert x == 5;
+    var x := AbsFixed(5);
+    assert x == 5;
 }
 
 /*
@@ -103,6 +107,7 @@ method TestAbsFixed()
 
 method Double(x: int) returns (y: int)
     // requires ... ensures ...
+    // ensures y == x + x
 {
     y := x + x;
 }
@@ -171,8 +176,8 @@ function abs(x: int): int
 method TestAbsEasier()
 {
     // Uncomment to check if the tests pass
-    // assert abs(5) == 5;
-    // assert abs(-4) == 4;
+    assert abs(5) == 5;
+    assert abs(-4) == 4;
 }
 
 /*
@@ -180,19 +185,19 @@ method TestAbsEasier()
     only functions can be used in expressions!
     Methods cannot be used in expressions.
 
-    (We ran into this problem last time!)
-
     What happens when we try to call AbsFixed(5) in an expression?
     What happens when we try to call abs(5) in an expression?
 */
 
 method TestAbsExpression()
 {
-    // var x := AbsFixed(5); // This is fine
-    // // assert AbsFixed(5) == 5; // Error
-    // assert x == 5; // This passes
-    // var y := abs(5); // This is fine
-    // assert abs(5) == 5; // This is fine
+    var y1 := AbsFixed(5); // This is fine
+    assert y1 == 5; // This passes
+    // assert AbsFixed(5) == 5; // Error
+
+    var y2 := abs(5); // This is fine
+    assert y2 == 5; // This is fine
+    assert abs(5) == 5; // This is fine
 }
 
 /*
@@ -219,7 +224,11 @@ method TestAbsExpression()
 
     Pragmatically speaking: you just have to remember that methods are different
     from functions and implemented separately, and only functions can be used
-    in expressions.
+    in assertions or expressions.
+
+    === When is using a method better than a function? ===
+
+    Sometimes we *want* to allow multiple implementations!
 
     Here is another example where this power of abstraction can get quite interesting:
 */
@@ -258,6 +267,17 @@ method ArgMin(a: int, b: int, c: int) returns (result: int)
     Deciding which is useful is an art as much as it is a science.
 */
 
+// Determinism? Example:
+method TestArgMin() {
+    var y1 := ArgMin(1, 2, 3);
+    var y2 := ArgMin(1, 2, 3);
+    assert y1 == y2;
+
+    // var y3 := ArgMin(1, 1, 1);
+    // var y4 := ArgMin(1, 1, 1);
+    // assert y3 == y4;
+}
+
 /*
     ===== Compile time vs. Runtime -- AKA: Running the code? =====
 
@@ -278,8 +298,10 @@ method Main()
 {
     var x: int := -5; // Type annotation is optional
     var y: int := Abs(x);
-    // assume x    == 0; // Uncomment to raise a warning about a bad assumption
     print "x = ", x, ", y = ", y, "\n";
+
+    // TBD: skip for now
+    // assume x    == 0; // Uncomment to raise a warning about a bad assumption
 }
 
 /*
@@ -298,7 +320,9 @@ method Main()
 
     If we have warnings in the code, Dafny will refuse to compile the code;
     however, you can turn this off by adding the flag
+
         --allow-warnings
+
     You will get warnings if you use `assume` for example! (Why?)
     In general, it's best to remove all warnings before running the code.
 */
@@ -343,10 +367,15 @@ method Main()
     - How to write tests to verify the spec we wrote is strong enough.
 
     - Function/method distinction:
-        "methods are opaque, functions are transparent"
+        "methods are opaque and possibly impure,
+         functions are transparent and pure"
 
     - Compile time vs. runtime distinction;
-        how to run the code
+
+        how to run the code --
+        or compile it to a target language
+        (Python, Java, C#, etc.)
+        and then run it there.
 
     - We will continue with more Dafny features next time!
 */
