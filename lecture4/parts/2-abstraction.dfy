@@ -43,11 +43,11 @@ method TestAbs()
 {
     // What should we assert about Abs?
 
-    var x: int := Abs(5);
-    assert x >= 0;
+    var y1: int := Abs(5);
+    assert y1 >= 0;
     // Uncomment these lines, what happens?
-    // var x := Abs(5);
-    // assert x == 5;
+    // var y2 := Abs(5);
+    // assert y2 == 5;
 }
 
 /*
@@ -91,12 +91,11 @@ method TestAbsFixed()
 /*
     However, our spec now describes exactly the body of the method, which is a bit redundant.
 
-    That's what functions are for!
+    That's what functions are for! We will see functions next
+    after the poll.
 */
 
 /*
-    Before we get to functions, today's poll.
-
     ===== Poll =====
 
     Consider the following Double method:
@@ -104,9 +103,6 @@ method TestAbsFixed()
 
 method Double(x: int) returns (y: int)
     // requires ... ensures ...
-    // requires false // this function cannot be called
-    // ensures false // this function never returns
-    ensures y == x + x
 {
     y := x + x;
 }
@@ -116,8 +112,8 @@ method Double(x: int) returns (y: int)
 
 method TestDouble()
 {
-    var x := Double(4);
-    assert x == 8; // Uncomment this line
+    var y := Double(5);
+    // assert y == 10; // Uncomment this line
 }
 
 /*
@@ -127,12 +123,25 @@ method TestDouble()
     4. ensures y == x + x
     5. requires x == 0 ensures y == x + x
     6. requires x == 5 ensures y == 10
-    7. requires false
-    8. ensures false
+    7. requires false // this function can never be called
+    8. ensures false // this function never returns
     9. requires (x == 5 ==> y == 10)
     10. ensures (x == 5 ==> y == 10)
 
-    (After poll: try it out)
+    https://forms.gle/X8QZYHemnSvsWCVbA
+
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+
+    (After poll: try out a couple of these)
 */
 
 /*
@@ -140,16 +149,15 @@ method TestDouble()
 
     Above, we saw that we can't prove that Abs(5) == 5
     unless we give it a strong postcondition.
-    This same problem occurs with options (1) and (2) above
-    (Double(5) == 10):
-    (Why?)
+    This same problem occurs with some of the Double options above.
 
-    The reason? *Abstraction:* A Dafny method is "opaque":
+    The reason?
+    *Abstraction:* A Dafny method is "opaque":
     considered abstracted by only its pre/postcondition behavior.
 
-    There is an easier way:
+    There is an easier way!
     Dafny allows us to define mathematical functions
-    that are not opaque when the Dafny verifier runs:
+    that are transparent (i.e., not opaque) when the Dafny verifier runs:
 */
 
 function abs(x: int): int
@@ -213,14 +221,45 @@ method TestAbsExpression()
     from functions and implemented separately, and only functions can be used
     in expressions.
 
-    (One big thing missing: we haven't looked at loops or recursive functions!)
+    Here is another example where this power of abstraction can get quite interesting:
+*/
+
+method ArgMin(a: int, b: int, c: int) returns (result: int)
+    ensures result == 0 || result == 1 || result == 2
+    ensures result == 0 ==> a <= b && a <= c
+    ensures result == 1 ==> b <= a && b <= c
+    ensures result == 2 ==> c <= a && c <= b
+{
+    var min := a;
+    var idx := 0;
+
+    if b < min {
+        min := b;
+        idx := 1;
+    }
+    if c < min {
+        min := c;
+        idx := 2;
+    }
+
+    return idx;
+}
+
+/*
+    Notice that there is a design choice here!
+
+    There are at least possibilities for how to specify ArgMin:
+        - Leave the behavior underspecified; has to return one min index, any is OK on tie
+        - Exclude the behavior by adding a precondition (require all vals are distinct)
+        - Specify the behavior in the case of ties: e.g., return the first or the last index
+        of a min value.
+
+    Which choice we take may depend on the application and what we care about!
+    Deciding which is useful is an art as much as it is a science.
 */
 
 /*
-    Finally, let's talk about compile time vs. runtime.
-    AKA: how do actually we run the code?
-
-    ===== Running the code? =====
+    ===== Compile time vs. Runtime -- AKA: Running the code? =====
 
     You may have noticed something odd: we haven't run any code yet!
     In fact, even in our Tests, all we did was ask Dafny to verify that the test
@@ -247,15 +286,15 @@ method Main()
     To run from the command line, we can use the `dafny` command.
     Here are some of the options:
 
-    1. `dafny verify lecture.dfy` -- to run the verifier only.
+    1. `dafny verify 2-abstraction.dfy` -- to run the verifier only.
             This is equivalent to what we've been doing so far (checking the green
             bar on the left in VSCode).
 
-    2. `dafny build lecture.dfy` -- to compile to a library, dafny.dll
-         (This is also run by default with `dafny lecture.dfy`)
+    2. `dafny build 2-abstraction.dfy` -- to compile to a library, dafny.dll
+         (This is also run by default with `dafny 2-abstraction.dfy`)
          We won't use this option much in this class.
 
-    3. `dafny run lecture.dfy` -- to run the code!
+    3. `dafny run 2-abstraction.dfy` -- to run the code!
 
     If we have warnings in the code, Dafny will refuse to compile the code;
     however, you can turn this off by adding the flag
@@ -279,7 +318,7 @@ method Main()
     with your existing workflow.
     Try this:
 
-    4. `dafny build --target:py lecture.dfy`
+    4. `dafny build --target:py 2-abstraction.dfy`
 
     This produces output in: lecture-py/module_.py.
     You can run the code with
@@ -288,7 +327,12 @@ method Main()
     python3 __main__.py
     ```
 
-    (You can ignore the other files.)
+    And take a look at `module_.py`.
+
+    (You can ignore the other files!
+    This and the previous command also generate a bunch of auxiliary files,
+    which we don't want to check into our repo.
+    See `.gitignore` for what target files I'm hiding.)
 */
 
 /*

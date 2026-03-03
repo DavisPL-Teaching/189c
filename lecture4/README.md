@@ -37,11 +37,13 @@ Questions?
 
 Announcements/reminders:
 
-- HW4 is released! This is the last HW.
+- HW4 is ready! This is the last HW.
+
+    + https://github.com/DavisPL-Teaching/189c-hw4
+
+    + I haven't yet made an announcement on Piazza, will do that after class.
 
     + Due: Friday, March 13, 11:59pm
-
-- HW2 grades released
 
 - Final exam: March 20, 1030am-12:30pm.
 
@@ -53,4 +55,6 @@ Plan:
 
     + Poll
 
-- If time: Part 3, strongest postconditions and weakest preconditions.
+- If extra time: Part 3, strongest postconditions and weakest preconditions.
+
+Questions?
