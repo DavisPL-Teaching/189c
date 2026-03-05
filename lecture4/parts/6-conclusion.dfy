@@ -15,7 +15,6 @@
   What happens when we try a more complicated unit test?
 */
 
-// Import syntax
 
 lemma MissingStep(
   a: array<int>,
