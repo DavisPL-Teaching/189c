@@ -58,3 +58,22 @@ Plan:
 - If extra time: Part 3, strongest postconditions and weakest preconditions.
 
 Questions?
+
+## Thursday, March 5
+
+Announcements/reminders:
+
+- HW2 grades released (regrade requests by Friday March 13)
+
+- HW4 due Friday March 13 (11:59pm)
+
+    + One Q on part 1 and Part 3 require loop invariants! This will be covered in
+      class today and/or next time
+
+- Final exam: March 20, 1030am-12:30pm.
+
+Plan:
+
+- Part 3: Strongest postconditions and weakest preconditions
+
+- Part 4: Loops and loop invariants.

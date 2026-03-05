@@ -152,19 +152,12 @@ method ComputeFib(n: nat) returns (b: nat)
 method CopyInt(a: nat) returns (b: nat)
     // Uncomment to try the example
     // requires a >= 0
-    ensures b == a
+    // ensures b == a
 {
     var i: nat := a;
     b := 0;
     while i > 0
-        // Technically these were not needed
-        invariant i <= a
-        invariant b >= 0
-        invariant i >= 0
-        // The right invariant!
-        invariant a == b + i
-        // This also works
-        // invariant a - i == b
+        // TODO: add invariants here
     {
         i := i - 1;
         b := b + 1;
@@ -212,14 +205,14 @@ method AddOne(a: nat) returns (b: nat)
 */
 
 method Find(a: seq<int>, key: int) returns (index: int)
-    ensures 0 <= index < |a| ==> a[index] == key
-    ensures index == |a| ==> forall k :: 0 <= k < |a| ==> a[k] != key
+    // Uncomment to try
+    // ensures 0 <= index < |a| ==> a[index] == key
+    // ensures index == |a| ==> forall k :: 0 <= k < |a| ==> a[k] != key
 {
     // Can we write code that satisfies the postcondition?
     index := 0;
     while (index < |a|) && (a[index] != key)
-        invariant index <= |a|
-        invariant forall k :: 0 <= k < index ==> a[k] != key
+        // TODO: add invariants here
     {
         index := index + 1;
     }

@@ -10,16 +10,19 @@
     (or use a function instead of a method.)
     Is the new postcondition really as strong as it can be?
 
-    Is ensures y == x + x really the strongest possible?
+    For example, for Double:
+
+        Is ensures y == x + x really the strongest possible?
 
     We will see that the answer is yes: this is in a formal
     sense, the strongest possible statement about the output.
 
-    On HW1, part 1B, you were asked to write specifications that are the
-    *strongest possible* description of what the function does.
-    What does that mean?
+    Recall: Full functional correctness:
+    - A **full functional correctness spec** exactly specifies what the output
+      is for each input.
+    - see HW1, part 1B
 
-    We will define this in this part.
+    Strongest postconditions and weakest preconditions are related!
 
     ===== Definitions =====
 
@@ -31,13 +34,20 @@
         that is guaranteed to hold after executing the statement
         (assuming that the precondition holds)
 
+        Sometimes written:
+
+            SP(MyProg, pre) = post
+
     - Going backwards:
         Given the postcondition,
         the *weakest precondition* of a statement (or program) is the weakest condition
         that guarantees that the postcondition will hold after executing the statement.
 
-    Here are some examples based on the abs function;
-    we will see more about this later!
+        Sometimes written:
+
+            WP(MyProg, post) = pre
+
+    Here are some examples based on the abs function:
 */
 
 // include for abs()
@@ -63,7 +73,6 @@ method WeakestPreconditionEx(x: int) returns (y: int)
 }
 
 /*
-
     ===== Poll =====
 
     Consider the following method:
@@ -74,14 +83,36 @@ method WeakestPreconditionEx(x: int) returns (y: int)
     }
 
     1. If the precondition is
+
         age >= 0
+
     then what is the strongest postcondition?
 
     2. If the postcondition is
+
         new_age == age + 1 && new_age >= 0
+
     then what is the weakest precondition?
 
-    ===== A more complicated example =====
+    https://forms.gle/qYdirit7qtvJFB9KA
+
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+
+    ===== Testing it out =====
 */
 
 method birthday(age: int) returns (new_age: int)
@@ -98,16 +129,17 @@ method birthday(age: int) returns (new_age: int)
 /*
     Another definition:
     StrongestPostcondition(P):
+
         Describe (the set of) all output states y such that
         running the method on an input state x satisfying
         P may produce output y
 
     WeakestPrecondition(Q):
+
         Describe (the set of) all input states x such that running
         the method on input x produces an output y satisfying Q
 
-    The set of: just to emphasize there may be
-    zero or more than one.
+    The set of: emphasize there may be zero or more than one.
 
     input states/output states: we want to describe
     all variables in scope at input/output to the
@@ -119,10 +151,16 @@ method birthday(age: int) returns (new_age: int)
 
     At every point in your program, write down exactly
     everything that is known to be true about the state of the program
-    at that point.
+    at that point!
+
+        This is a more general debugging technique in Dafny!
+
+        Querying what Dafny knows/doesn't know is often useful.
 
     To do strongest postconditions: work forwards.
     To do weakest preconditions: work backwards.
+
+    ===== Working forwards: =====
 */
 
 // What about this? (A harder one)
@@ -130,102 +168,38 @@ method StrongestPostconditionEx2(x: int) returns (y: int)
     requires x >= 5
     // TODO: what ensures statement should go here?
     // Let's figure it out!
-    // What Dafny would do internally
-    // ensures (
-    //                     (5 <= x <= 10 && y == 3 * x)
-    //                     ||
-    //                     (x > 10 && y == 2 * x)
-    //                 )
-    // What we might come up with by hand
-    ensures 5 <= x
-    ensures (5 <= x <= 10) ==> y == 3 * x
-    ensures (x > 10) ==> y == 2 * x
-    // The two are equivalent.
+    // ensures ...
 {
-    // What is true here?
-    assert x >= 5;
-
     if x <= 10 {
-        // What is true here?
-        assert x >= 5 && x <= 10;
-
         y := abs(x +    x + x);
-
-        // What is true here?
-        assert x >= 5 && x <= 10 && y == abs(x + x + x);
-        // Simplify (optional)
-        assert 5 <= x <= 10 && y == x + x + x;
-
     } else {
-        // What is true here?
-        assert x >= 5 && x > 10;
-        // Simplify (optional)
-        assert x > 10;
-
         y := abs(x + x);
-
-        // What is true here?
-        assert x > 10 && y == abs(x + x);
-        // Simplify
-        assert x > 10 && y == x + x;
-
     }
-    // What is true here?
-    // What do we do at the end of an if block?
-    assert (
-            (5 <= x <= 10 && y == x + x + x)
-            ||
-            (x > 10 && y == x + x)
-        );
-
-    assert (
-            (5 <= x <= 10 && y == 3 * x)
-            ||
-            (x > 10 && y == 2 * x)
-        );
-
 }
+
+/*
+    ===== Working backwards: =====
+*/
 
 // The working backwords method!
 method WeakestPreconditionEx2(x: int) returns (y: int)
     // TODO: uncomment
-    ensures y >= 5
+    // ensures y >= 5
     // TODO: what requires statement should go here?
     // Let's figure it out!
-    // What Dafny would come up with automatically
-    requires (
-                         x <= 10 ==> abs(x + x + x) >= 5)
-                     &&
-                     (x > 10 ==> abs(x + x) >= 5
-                     )
-
+    // requires ...
 {
 
-    assert (
-            (x <= 10 ==> abs(x + x + x) >= 5)
-            &&
-            (x > 10 ==> abs(x + x) >= 5)
-        );
-
     if x <= 10 {
-        assert abs(x + x + x) >= 5;
-
         y := abs(x +    x + x);
-
-        assert y >= 5;
     } else {
-        // Evaluate the assignment y := abs(x + x)
-        // in reverse!
-        assert abs(x + x) >= 5;
-
         y := abs(x + x);
-
-        assert y >= 5;
     }
-    assert y >= 5;
 }
 
 /*
+    ===== Recap and conclusions =====
+
     Strongest postconditions and weakest preconditions are a key part of how
     Dafny works internally -- it is calculating them implicitly all the time!
 
