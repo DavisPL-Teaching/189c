@@ -1,33 +1,63 @@
 /*
-  Lecture 4, Part 6:
-  Conclusions
+    Lecture 4, Part 6:
+    Conclusions
 
-  === When assertions do not pass ===
+    === A problem: when assertions do not pass ===
 
-    assert P;
-    assert Q;
+        assert P;
+        assert Q;
 
-    ^^^ suppose P ==> Q is logically true, but P passes and Q fails, why might
-        this be?
+        ^^^ suppose P ==> Q is logically true, but P passes and Q fails, why might
+                this be?
 
-  Sometimes, Dafny assertions do not pass.
+    This can happen!
+    Sometimes, Dafny assertions do not pass.
 
-  What happens when we try a more complicated unit test?
+    What happens when we try a more complicated unit test?
 */
 
+// Here is a MinList function to calculate the minimum of a list
+// It's similar to the Max function from Part 1.
+
+method MinList(a: array<int>) returns (min: int)
+    // Precondition
+    requires a.Length >= 1
+    // Postcondition
+    // - The value min should be one of the elements of the array
+    //   "There exists an index i (within correct bounds) such that a[i] == min"
+    ensures exists i :: (0 <= i < a.Length) && a[i] == min
+    // - The value min should be <= each element of the array.
+    ensures forall i :: 0 <= i < a.Length ==> min <= a[i]
+{
+    min := a[0];
+    var i := 1;
+    while i < a.Length
+        invariant 1 <= i <= a.Length
+        invariant forall j :: 0 <= j < i ==> min <= a[j]
+        invariant exists j :: 0 <= j < i && min == a[j]
+    {
+        if a[i] < min {
+            min := a[i];
+        }
+        i := i + 1;
+    }
+
+    // Optional
+    // return min;
+}
 
 lemma MissingStep(
-  a: array<int>,
-  result: int
+    a: array<int>,
+    result: int
 )
-  requires a.Length > 3
-  requires a[1] == 2
-  requires a[2] == 3
-  requires a[3] == 4
-  ensures result == 1
+    requires a.Length > 3
+    requires a[1] == 2
+    requires a[2] == 3
+    requires a[3] == 4
+    ensures result == 1
 {
-  // Omit for now
-  assume{:axiom} false;
+    // Omit for now
+    assume{:axiom} false;
 }
 
 method TestMinList2() {
@@ -97,30 +127,37 @@ method TestMinList2() {
 
     If you've simplified the property at all - you've made progress!
     That's all we need in order to guarantee we eventually complete it.
+*/
 
-=== End notes ===
+/*
+    === End notes ===
 
-What are the main advantages of Dafny?
+    What are the main advantages of Dafny?
 
-1. Prove arbitrary code correct
-2. Don't need to rewrite the code in verification language (executable/verifiable code in same framework)
-3. Compile & integrate with other languages
+    1. Prove arbitrary code correct
+    2. Don't need to rewrite the code in verification language (executable/verifiable code in same framework)
+    3. Compile & integrate with other languages
 
-What are the main limitations of Dafny?
+    What are the main limitations of Dafny?
 
-1. High effort to write and verify real-world software
-  (10x estimate)
-2. Q is true, but not provable from P?
+    1. High effort to write and verify real-world software
+    (10x estimate)
+    2. Q is true, but not provable from P?
 
-    could be: your code is actually correct, and you can't prove it!
+        could be: your code is actually correct, and you can't prove it!
 
-(1) is true, but not fundamental.
-(2) is actually possible and is more fundamental.
+    (1) is true, but not fundamental.
+    (2) is actually possible and is more fundamental.
+    This is a topic that we could get to if we cover the foundations of Dafny,
+    including the foundational logics (such as first-order logic, or FOL, and Hoare logic),
+    on which it is built.
+*/
 
-To understand the more fundamental limits of Dafny,
-then, we need to go back to the logics on which Dafny is built,
-and in particular to proofs in first-order logic (FOL) and Hoare logic.
-We will spend some more time going forward on foundations.
+/*
+    Finishing with a quote from the Dafny tutorial:
+    https://dafny.org/latest/OnlineTutorial/guide
+
+    Even if you do not use Dafny regularly, the idea of writing down exactly what it is that the code does is a precise way, and using this to prove code correct is a useful skill. Invariants, pre- and post conditions, and annotations are useful in debugging code, and also as documentation for future developers. When modifying or adding to a codebase, they confirm that the guarantees of existing code are not broken. They also ensure that APIs are used correctly, by formalizing behavior and requirements and enforcing correct usage. Reasoning from invariants, considering pre- and postconditions, and writing assertions to check assumptions are all general computer science skills that will benefit you no matter what language you work in.
 */
 
 /*
@@ -172,69 +209,4 @@ We will spend some more time going forward on foundations.
     - The argument is that despite a much greater effort, we also get a greater payoff.
       Verify your library ==> greater assurance against threats, more people want to use it,
       maintain the verification conditions on all future software updates
-*/
-
-// FYI: same thing happens for seq<int> instead of array<int>.
-
-method MinList3(a: seq<int>) returns (min: int)
-    requires |a| >= 1
-    ensures exists i :: (0 <= i < |a|) && a[i] == min
-    ensures forall i :: 0 <= i < |a| ==> min <= a[i]
-{
-    min := a[0];
-    var i := 1;
-    while i < |a|
-        invariant 0 < i <= |a|
-        // invariant: min <= any value in the array before index i
-        invariant forall j :: 0 <= j < i ==> min <= a[j]
-        // invariant: min is an element of the array so far
-        invariant exists j :: 0 <= j < i && min == a[j]
-    {
-        if a[i] < min {
-            min := a[i];
-        }
-        i := i + 1;
-    }
-    return min;
-}
-
-method TestMinList3() {
-    var a1 := [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-    var result1 := MinList3(a1);
-
-    // Needed for the proof to go through
-    // (Try commenting this out)
-    assert a1[0] == 1;
-
-    assert result1 == 1;
-}
-
-
-/*
-    What are the main advantages and limitations of Dafny?
-
-    - Invariants are very difficult to figure out (even for a human!) and very
-        effort intensive
-
-    - It inherits some of the same limitations of Z3
-        + If Z3 returns unknown or times out, Dafny also doesn't know what to do
-        + This is exactly what makes verification sometimes so difficult: we need
-            to add more information to help Dafny get through the assertion and give
-            it enough information to pass to Z3 so that Z3 knows the assertion is true.
-        + This is actually both a benefit and a drawback, as unlike
-            with Z3 where it can be unclear what additional information
-            to add to get the proof to work (we saw this somewhat in HW3),
-            with Dafny we at least know that we can add some additional
-            information to eventually get the proof to go through.
-
-    Summary:
-        - A lot more expressive and general; but
-        - A lot more effort intensive to get the proofs to go through.
-*/
-
-/*
-    Finishing with a quote from the Dafny tutorial:
-    https://dafny.org/latest/OnlineTutorial/guide
-
-    Even if you do not use Dafny regularly, the idea of writing down exactly what it is that the code does is a precise way, and using this to prove code correct is a useful skill. Invariants, pre- and post conditions, and annotations are useful in debugging code, and also as documentation for future developers. When modifying or adding to a codebase, they confirm that the guarantees of existing code are not broken. They also ensure that APIs are used correctly, by formalizing behavior and requirements and enforcing correct usage. Reasoning from invariants, considering pre- and postconditions, and writing assertions to check assumptions are all general computer science skills that will benefit you no matter what language you work in.
 */

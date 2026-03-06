@@ -1,6 +1,10 @@
 /*
     An activity / extended exercise.
-    See repeated-squares-solution for the solution.
+
+    WQ26: We did not get to this activity in class this year!
+    But you may find it fun to try on your own time.
+
+    If you get stuck, see repeated-squares-solution for the solution.
 
     ===== Activity today =====
 

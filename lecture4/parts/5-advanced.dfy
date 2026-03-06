@@ -1,5 +1,25 @@
 /*
+    Lecture 4, Part 5:
     Selection of other/advanced concepts
+
+    === Contents ===
+
+    This part contains advanced topics that we did not cover in lecture.
+    This will not appear on the exam!
+    Some of it is useful on the homework.
+
+    - Lemmas
+    - Predicates
+    - Arrays (and mutation)
+    - Ghost variables and auxiliary state
+    - Program termination
+    - Philosophical discussion: the limits of verification
+
+    Shamless plug :-)
+    We go into all of these topics (and more) in a lot more detail
+    in my graduate class, ECS 261!
+    There is a considerable amount of overlap with 189C (probably about 4 weeks).
+    The course goes into more depth and includes a final project.
 
     ===== Lemmas =====
 
@@ -63,18 +83,6 @@ function pow(x: int, exp: nat): int
     version of the power function.
 
     **See repeated_squares for this exercise.**
-*/
-
-/*
-    ----------------------
-
-    Advanced topics that we did not cover in lecture
-
-    - Predicates
-    - Arrays (and mutation)
-    - Ghost variables and auxiliary state
-    - Program termination
-    - Philosophical discussion: the limits of verification
 */
 
 /*

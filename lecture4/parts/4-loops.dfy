@@ -1,22 +1,24 @@
 /*
     Lecture 4, Part 4: Loops and loop invariants.
 
-    ===== Loops and recursion =====
+    === Intro ===
 
     So far, the examples we've seen are quite simple; we could have done
     any of this in Z3 pretty easily!
 
-    Loops and recursion is where program verifiers (like Dafny) become both
-    much more powerful (expressive) -- as well as more effort-intensive,
+    Loops and recursion is where interactive program verifiers (like Dafny) become both
+    much more powerful (expressive) -- but at the same time, more effort-intensive,
     since verifying a program with loops is a hard problem in general,
     and can't always be done automatically.
 
     Remember: we saw that we could use weakest preconditions and
     strongest postconditions to basically automatically verify (or
     generate correct pre/postcondition specs) for any function.
-    However, this only worked for programs without loops or recursion.
+    However, this only works for programs without loops or recursion.
 
-    Missing piece of the puzzle: what to do about loops and recursion?
+    ===== Loops and recursion =====
+
+    The missing piece of the puzzle!
 
     Let's start with recursion:
     Functions support recursion and can appear in expressions!
@@ -69,8 +71,10 @@ function fib(n: nat): nat
 
     What is a loop invariant?
 
+    First informally:
     A loop invariant is an assertion that must hold
-    after *every* loop iteration. Like this:
+    *before* the loop executes and
+    *after* every loop iteration. Like this:
 
         assert <invariant>; // loop invariant
         while P {
@@ -81,6 +85,10 @@ function fib(n: nat): nat
     Loop invariants are the key to verifying real-world code,
     (real-world code has a lot of loops in it)
     and they are often the hardest part to come up with.
+
+    The above is not quite a definition that works for Dafny to check
+    automatically though! (Why not?)
+
     We need to "guess" an invariant that both
     (i) is satisfied before the loop runs
     (ii) is preserved by the loop
@@ -129,13 +137,42 @@ method ComputeFib(n: nat) returns (b: nat)
             curr, prev := curr + prev, curr;
             i := i + 1;
         }
+
         // What information does Dafny have here?
-        // After a while loop, Dafny isn't sure what's true or not
+        // After a while loop, Dafny isn't sure what's true or not - so
+        // it uses the invariant we wrote and forgets everything else!
+
         return curr;
     }
 }
 
 /*
+    This brings us to our formal definition.
+    (This is stronger than the "informal" characterization above!)
+
+    Given a loop
+
+        // precond
+        while cond {
+            BODY;
+        }
+        // postcond
+
+    A loop invariant is a condition Inv such that:
+
+        (i) Inv is true before executing the loop -- implied by the precondition
+
+        (ii) Inv is preserved by the loop: on *any* state satisfying
+
+                Inv && while cond,
+
+            after executing the loop, Inv holds;
+
+            (NOTE: this is not the same as simply being true after each iteration of the loop!)
+            (think of this as pulling BODY out as its own program with a pre/postcondition.)
+
+        (iii) Inv && !cond implies the postcondition.
+
     ===== Poll =====
 
     Here's a very inefficient version of a function

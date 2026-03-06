@@ -79,3 +79,19 @@ Plan:
 - Part 4: Loops and loop invariants.
 
 Questions?
+
+## Tuesday, March 10
+
+Announcements/reminders:
+
+- Course evals through the registrar are open! Please fill these out (they close on Friday 13th)
+
+- HW4 due Friday, 13th 11:59pm
+
+- Final exam: March 20, 1030am-12:30pm.
+
+Plan:
+
+- Clarification on strongest postconditions and weakest preconditions
+
+- Loop invariants.
