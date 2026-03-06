@@ -23,8 +23,11 @@
     - See HW1, part 1B (and a question on the midterm)
     - Think of it as: check/verify every piece of data in the output is as intended
 
-    Strongest postconditions and weakest preconditions can be used to give a formal
-    definition of what we mean by full functional correctness.
+    Strongest postconditions can be used to define this a little more formally,
+    but also, both strongest postconditions and weakest preconditions will be
+    useful to give a fully automated (or algorithmic) way to calculate strong
+    specs for any function. We will see that this is roughly how Dafny works
+    internally.
 
     Sneak peak: along the way, we'll see some useful techniques for writing/debugging
     Dafny code with assertions that will be very useful later on.
@@ -34,10 +37,15 @@
     Let's define:
 
     - Going forwards:
-        Given a precondition,
-        the *strongest postcondition* of a statement (or program) is the strongest property
+        Given a precondition and a statement (or program),
+        the *strongest postcondition* is the strongest property
         that is guaranteed to hold after executing the statement (or program)
-        (assuming that the precondition holds)
+        (assuming that the precondition holds).
+
+        **Important:** (Addendum after discussion on 3/5):
+        We conventionally include both the input variable(s) and output variable(s)
+        when defining strongest postconditions:
+        so if f(x) = y, it is a statement on both x and y.
 
         Sometimes written:
 
@@ -47,6 +55,10 @@
         Given the postcondition,
         the *weakest precondition* of a statement (or program) is the weakest condition
         that guarantees that the postcondition will hold after executing the statement.
+
+        Unlike the SP, the weakest precondition is conventionally given only on the
+        input variables (since the output is not known yet!)
+        So if f(x) = y, it is a statement on x only.
 
         Sometimes written:
 
@@ -80,12 +92,9 @@ method StrongestPostconditionEx(x: int) returns (y: int)
     ensures y == abs(x + x)
     // We can also say other things...
     // Do we need the following?
-    // BELOW:
-    // - part of the strongest possible postcondition, but not necessary
-    // to state in Dafny as they are know to be true before the program executes,
+    // A: Yes! (part of the strongest possible postcondition)
+    // - Even though: not necessary to state in Dafny as they are know to be true before the program executes,
     // and Dafny knows that the input was not modified, so they remain true afterwards.
-    // - In general, if the input is modified or we are in some other language, we might
-    //   want to include this information in the postcondition, so it is part of the strongest postcondition.
     // - See discussion below.
     //
     // We also know that x >= 5. (This was true before
@@ -123,17 +132,41 @@ method WeakestPreconditionEx(x: int) returns (y: int)
 /*
     A few points:
 
-    - It could be that after taking the strongest postcondition, and going backwards to the weakest precondition,
-      we might end up with a different precondition that we started.
+    1. Strongest postcondition and weakest precondition are not always inverses!
 
-      ^^^^^ Q about this - will revisit & post after class
+        For example, in this program, if we start from the postcondition y >= 10, and go to the WP,
+        we will get x <= -5 || x >= 5; if we forwards again though we get
+        (x <= -5 || x >= 5) && abs(x + x) == y,
+        which is stronger than before.
 
-    - Multiple strongest postconditions (or weakest preconditions) may be possible, as long as they are equivalent;
+    2. Strongest postcondition is NOT the same as the information that we need to state in Dafny
 
-    - We may need to restate information known about the input (i.e. restate preconditions in the strongest postcondition) to get the strongest possible statement about the output
+        + In fact, it is actually the strongest set of information that is *inferred* internally by Dafny,
 
-        + Even though sometimes this information would be known to Dafny
-        + May not be known/guaranteed in some other language like Python, and is not logically equivalent.
+        + We may need to restate information known about the input (i.e. restate preconditions
+          in the strongest postcondition) to get the strongest possible statement about the output),
+
+        + Typical case: (strongest postcond) = precond && (Dafny postcond)
+
+    3. More generally, strongest postcondition depends on the set of variables that are in scope.
+
+        By convention: x, y in scope for a program for postcondition; x only for a precondition
+
+        In the context of verifying a larger program it depends on the scope of the variables!
+
+    4. Multiple strongest postconditions (or weakest preconditions) may be possible, as long as they are
+      logically equivalent; i.e. for post1 and post2
+
+            z3.prove(z3.Implies(post1, post2)) == PROVED
+            z3.prove(z3.Implies(post2, post1)) == PROVED
+
+        Example:
+
+            y == abs(x + x) && x >= 5
+
+            equivalent to
+
+            y == abs(x + x) && x >= 5 && y >= 10
 
     ===== Poll =====
 
@@ -174,52 +207,34 @@ method WeakestPreconditionEx(x: int) returns (y: int)
     .
     .
 
-    Answer for #1:
+    Valid answers for #1:
 
-        new_age >= 1
-        new_age == age + 1
-        age >= 0 && new_age >= 1
-        both first and second
+        new_age == age + 1 && age >= 0
+        new_age == age + 1 && new_age >= 1
 
-        Interesting question:
+        Note:
 
-        is:
             new_age == age + 1
 
-        enough, or do we need:
-
-            age >= 0 && new_age == age + 1
-
-            new_age >= 1 && new_age == age + 1
-
-        Clearing things up...
-
-        These would not be needed in Dafny, because Dafny already knows that age >= 0
-        from before the method call.
-
-        However, let's take a look at the definition:
+        is not enough! Go back to the definition from above:
 
             Strongest Postcondition should be the strongest possible property that is
             guaranteed to hold after executing the program.
 
-        Based on this definition (imagine in Python for example)
+        Based on this definition (think in Python for example)
 
             After executing the program, we know that new_age == age + 1, but we also still
             know that age >= 0 (or equivalently, new_age >= 1).
 
             To specify the strongest postcondition, we should include one of these two statements.
 
-        Revise our discussion from earlier:
+    Valid answers for #2:
 
-            1. The strongest postcondition, by definition and
-                for the purposes of this class (and in general),
-                includes all possible statements that we know to be true
-                after executing the program,
-                (even including statements about the input)
+        age >= -1 (or logically equivalent, e.g. age + 1 >= 0)
 
-            2. In Dafny, we may not need to re-state properties about the input,
-               as Dafny will have carried them over from the precondition
-               and still knows them to be true (as long as the input was not modified).
+        - "true" is weaker, but not satisfied by this program
+
+        - "age >= 0" is satisfied, but not the weakest possible.
 
     ===== Testing it out =====
 */
@@ -238,24 +253,19 @@ method birthday(age: int) returns (new_age: int)
 
 /*
     Another definition:
-    StrongestPostcondition(P):
+
+    SP(MyProg, pre):
 
         Describe (the set of) all input output pairs (x, y) such that
         running the method on an input state x satisfying
-        P may produce output y
+        pre may produce output y
 
-    WeakestPrecondition(Q):
+    WP(MyProg, post):
 
         Describe (the set of) all input states x such that running
-        the method on input x produces an output y satisfying Q
+        the method on input x produces an output y satisfying post
 
     The set of: emphasize there may be zero or more than one.
-
-    input states/output states: we want to describe
-    all variables in scope at input/output to the
-    program, respectively.
-    For the final: what variables are in scope
-    will be mentioned.
 
     === Computing strongest postconditions and weakest preconditions ===
 
@@ -275,7 +285,6 @@ method birthday(age: int) returns (new_age: int)
     ===== Working forwards: =====
 */
 
-// What about this? (A harder one)
 method StrongestPostconditionEx2(x: int) returns (y: int)
     requires x >= 5
     // TODO: what ensures statement should go here?
@@ -343,37 +352,74 @@ method StrongestPostconditionEx2(x: int) returns (y: int)
 
 /*
     ===== Working backwards: =====
+
+    (We will go through this one already filled)
 */
 
 // The working backwords method!
 method WeakestPreconditionEx2(x: int) returns (y: int)
     // TODO: uncomment
-    // ensures y >= 5
+    ensures y >= 5
     // TODO: what requires statement should go here?
     // Let's figure it out!
-    // requires ...
+    // What we get with the automatic "working backwards" method:
+    // requires (
+    //     x <= 10 ==> (x >= 2 || x <= -2)
+    // )
+    // requires (
+    //     x > 10 ==> (x >= 3 || x <= -3)
+    // )
+    // Simplied (logically equivalent):
+    requires x <= -2 || x >= 2
 {
 
+    // What does Dafny need to be true here?
+    assert (
+        x <= 10 ==> (x >= 2 || x <= -2)
+    );
+    assert (
+        x > 10 ==> (x >= 3 || x <= -3)
+    );
+
     if x <= 10 {
-        y := abs(x +    x + x);
+        // What does Dafny need to be true here?
+        assert x >= 2 || x <= -2;
+
+        y := abs(x + x + x);
+
+        // What does Dafny need to be true here?
+        assert y >= 5;
     } else {
         y := abs(x + x);
+
+        // What does Dafny need to be true here?
+        assert y >= 5;
     }
+
+    // What does Dafny need to be true here?
+    assert y >= 5;
 }
 
 /*
-    ===== Recap and conclusions =====
+    ===== Conclusion and Segue =====
 
-    Strongest postconditions and weakest preconditions are a key part of how
-    Dafny works internally -- it is calculating them implicitly all the time!
+    You can think of Dafny as doing both of these steps internally, whenever
+    it verifies programs!
+    (I.e., under the hood: Dafny is calculating weakest preconditions and strongest postconditions
+    automatically)
 
-    The way it does it is basically the process we did above.
-    It can be done in a completely automatic way, just like with Z3.
+    How?
+    Pseudocode: For each program Prog with postcondition post:
 
-    (In fact, Dafny uses Z3 under the hood.)
+        - Calculate WP(Prog, post)
+
+        - Check that pre ==> WP(Prog, post) (query to Z3!).
+
+    (Weakest preconditions work a little better than strongest postconditions for this purpose,
+     for reasons we will not get into.)
 
     This works great!
-    But there is one problem with the above.
+    But there is one problem.
 
     What is missing from our discussion so far?
 
