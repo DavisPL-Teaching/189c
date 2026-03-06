@@ -1,41 +1,13 @@
-# Lecture 6: Formal Verification in Dafny
-
-**Please note: This lecture has not yet been updated for winter quarter 2026.**
-
-(Day 18 and the following days)
-
-This lecture begins the second half of the course!
-
-To follow along:
-- `lecture6/README.md`
-- `lecture6/Slides.pdf`
-- [Repo](https://github.com/DavisPL-Teaching/189C/)
-
-We will start with some general motivational slides.
-Then, we will continue with this file.
-
-(Switch to slides)
-
 ## Summary from the slides
 
-We know about:
-- Writing code
-- Writing specifications (Hypothesis and Z3)
-- Proving specifications correct (Z3)
+This is a summary of the introductory slides
+(you may want to review on your own time).
+There are also additional resources at the bottom.
 
-### What is formal verification?
-
-Combination of all of the above!
-
-## Poll link (if you missed it)
-
-https://forms.gle/MashpCJkwJc64teNA
-https://tinyurl.com/49vatd6f
-
-### Why use formal verification?
+### Why use interactive formal verification?
 
 Answer:
-Formal verification is especially useful in cases where:
+Interactive verification is especially useful in cases where:
 - **Correctness is critical**: if the software fails, some very
   serious consequence will occur
 - **Security**: if the software is vulnerable to attack, you may
@@ -94,7 +66,7 @@ Formal verification is especially useful in cases where:
 
   + [Veridise](https://veridise.org/) blockchain verification tools
 
-## Approaches to verification
+## Approaches to interative verification
 
 Most of this part was not covered in the slides, but may be of general interest to some of you!
 
@@ -105,7 +77,7 @@ Most of this part was not covered in the slides, but may be of general interest 
 - It can *cross-compile* to other languages: such as C#, Go, Python, Java, and JavaScript.
 - It has a good IDE (VSCode extension)
 
-### Verification tools for popular programming languages
+### Interactive verification tools for popular programming languages
 
 - [CMBC](https://www.cprover.org/cbmc/) for C and C++
   [CPROVER manual](https://www.cprover.org/cprover-manual/)
@@ -169,3 +141,12 @@ See `INSTALL.md` for instructions.
 - [Dafny cheat sheet](https://dafny.org/latest/DafnyCheatsheet.pdf)
 - [Reference manual and user guide](https://dafny.org/latest/DafnyRef/DafnyRef)
 - Textbook: *Program Proofs,* by Rustan M. Leino -- [link](https://mitpress.mit.edu/9780262546232/program-proofs/)
+
+## Additional/misc
+
+Thanks to Konstantinos Kallas for an earlier version of some of my notes.
+https://github.com/angelhof/penn-cis673-hw-dafny
+
+There are some good PDF tutorials as well, such as
+(the slightly out of date):
+https://leino.science/papers/krml221.pdf

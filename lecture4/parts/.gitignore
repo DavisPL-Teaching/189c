@@ -1,0 +1,7 @@
+2-abstraction-py/
+2-abstraction
+*.cs
+*.csproj
+*.deps.json
+*.pdb
+obj/

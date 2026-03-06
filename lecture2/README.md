@@ -98,6 +98,8 @@ Announcements/Reminders:
 
   + I have provided a practice exam, please find it on Piazza
 
+  + Please review the materials in `/review`
+
 Plan:
 
 - Continue Part 3, applications of Z3: Sudoku solver.
@@ -105,3 +107,35 @@ Plan:
 - A second puzzle (and a poll)
 
 - Part 4, conclusions.
+
+Questions?
+
+## Tuesday, February 10
+
+Announcements/reminders:
+
+- Midterm this Thursday! February 12 in class
+
+  + Reminders: bring:
+    single-sided cheat sheet (handwritten or typed),
+    a pen or a #2 pencil
+
+  + Review session: Wednesday 2-3pm (in Kemper 47 and on Zoom, recorded)
+
+  + Please use the in-class polls, the materials in `/review`, and
+    the practice exam posted on Piazza to help with studying.
+
+Plan:
+
+- Poll
+
+- Part 4: Z3 conclusions/end notes;
+
+- Finish trailer puzzle
+
+- (last ~10 minutes - from 10:40)
+  go over any requested topics for the midterm.
+
+Next week: advanced Z3.
+
+Questions?

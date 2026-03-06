@@ -1,5 +1,5 @@
 /*
-    Simple Dafny program
+    Simple Dafny program - same example written in Dafny
 
     (To check your installation)
 

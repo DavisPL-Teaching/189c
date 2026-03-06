@@ -1,5 +1,5 @@
 """
-Contains the solution to the Sudoku solver from last year.
+This file contains the solution to the Sudoku solver from Spring 2024.
 
 We will build this from scratch in sudoku.py.
 """

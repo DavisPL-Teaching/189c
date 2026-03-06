@@ -1,5 +1,5 @@
 """
-This example was from lecture 3
+This example was from lecture 2
 """
 
 import z3

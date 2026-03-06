@@ -29,3 +29,38 @@ Jan 29:
 
 Feb 3:
 B, C, and E.
+
+Feb 5:
+(This poll would not appear on the exam)
+Valid answers turn out to to be anywhere between 21 and 51, depending on the assumptions.
+We will show how to demonstrate this in Z3.
+
+Feb 10:
+C, D, and E.
+(don't need to know B and D for midterm)
+
+Feb 17:
+Multiple answers are possible! Good answers include:
+- Because real programs use complex operations, and we want to prove those programs correct
+- It may be difficult to encode more complex operations using just Int and Bool
+- To keep everything standardized (standard library of possible data types that are commonly used)
+
+Feb 19:
+BDEF (Concat, Range, InRe, and Re).
+
+Feb 24:
+2, 3, 4, 6, 7, 8 (all except 1st and 5th options) are good choices.
+
+Feb 26:
+B, D, and E
+
+March 3:
+4, 6, and 10
+
+March 5:
+1. new_age == age + 1 AND age >= 0 (or any answer that is logically equivalent)
+2. age >= -1 (or any answer that is logically equivalent)
+
+March 10:
+
+March 12:
