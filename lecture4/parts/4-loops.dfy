@@ -173,12 +173,12 @@ method ComputeFib(n: nat) returns (b: nat)
 
         (iii) Inv && !cond implies the postcondition.
 
-    ===== Poll =====
+    ===== Exercise =====
 
     Here's a very inefficient version of a function
     that copies a nonnegative integer.
 
-    Write a loop invariant that will allow us to prove CopyInt.
+    Let's write a loop invariant that will allow us to prove CopyInt.
 
     Remember, a loop invariant must be:
     (i) true before entering the loop,
@@ -188,7 +188,7 @@ method ComputeFib(n: nat) returns (b: nat)
 
 method CopyInt(a: nat) returns (b: nat)
     // Uncomment to try the example
-    // requires a >= 0
+    // requires a >= 0 // (technically redundant as a: nat)
     // ensures b == a
 {
     var i: nat := a;
@@ -200,15 +200,9 @@ method CopyInt(a: nat) returns (b: nat)
         b := b + 1;
     }
     // What do I know here?
-    // (For the invariant above: i <= a, b >= 0)
-    // a - i == b? (no)
-    // i == 0, b == a? (no)
-    // i <= 0 <-- since the loop terminated
-    // i <= a && b >= 0 <-- invariant
-    // We don't know that a == b.
 }
 
-// Another one -- SKIP
+// Another one for the following poll
 method AddOne(a: nat) returns (b: nat)
     // Uncomment to try the example
     // ensures b == a + 1
@@ -220,6 +214,41 @@ method AddOne(a: nat) returns (b: nat)
         b := b + 1;
     }
 }
+
+/*
+    ===== Poll =====
+
+    Consider the AddOne method above.
+
+    Which of conditions (i), (ii), and (iii) is satisfied by each of the following
+    possible invariants?
+
+    1. b > 0
+    2. b >= 0
+    3. b < a + 1
+    4. b <= a + 1
+    5. b == a + 1
+    6. a + 1 < b <= 2 * a
+    7. b >= 100
+
+    https://forms.gle/76wZFH4mBcq79bQq6
+
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+*/
 
 /*
     ===== Sequences =====

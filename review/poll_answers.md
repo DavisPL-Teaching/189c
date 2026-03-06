@@ -62,5 +62,12 @@ March 5:
 2. age >= -1 (or any answer that is logically equivalent)
 
 March 10:
+1. (ii) only
+2. (i) and (ii)
+3. (i) and (iii)
+4. (i), (ii), and (iii)
+5. (ii) and (iii)
+6. (ii) only
+7. None of the three.
 
 March 12:
