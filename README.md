@@ -54,13 +54,13 @@ at any time prior to the last day of class.
 ## Course Description
 
 In today's world, software is increasingly more complicated, and seems to malfunction in increasingly surprising ways.
-Is it possible to develop software such that it is impossible for it to go wrong?
-What does it mean for software to be correct or incorrect?
-What tools might we use to develop mathematical proofs about software?
+Is it possible to develop software such that it is impossible for things to go wrong?
+What tools might we use to save effort when developing mathematical proofs about software?
+And what does it mean for software to be correct or incorrect?
 
 This upper-level undergraduate course is an introduction to formal specification and verification of software from a tool-based perspective. We will survey topics including: writing specifications; difference between testing and verification; automated verification tools and SMT solvers; interactive verification, program logics, and program proofs; and advanced type systems. Students will gain hands-on experience with writing program models and program specifications using tools used in industry at companies like Amazon and Microsoft.
 
-There is a graduate level version of this course, [ECS 261](github.com/DavisPL-Teaching/261).
+I also teach a graduate level version of this course, [ECS 261](github.com/DavisPL-Teaching/261).
 
 ### Prerequisites
 
