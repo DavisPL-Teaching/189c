@@ -1,6 +1,6 @@
 # Tentative Schedule
 
-**TBD: The schedule has not yet been updated for winter quarter 2026.**
+**TBD: This is a tentative schedule, provided only for informational purposes. The schedule has not been updated for winter quarter 2026.**
 
 **Important note:**
 This schedule is subject to change.
