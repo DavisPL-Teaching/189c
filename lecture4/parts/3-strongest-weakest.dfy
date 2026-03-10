@@ -427,5 +427,5 @@ method WeakestPreconditionEx2(x: int) returns (y: int)
 
     What is missing from our discussion so far?
 
-    A:
+    A: Loops.
 */

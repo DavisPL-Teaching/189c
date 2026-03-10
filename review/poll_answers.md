@@ -68,6 +68,7 @@ March 10:
 4. (i), (ii), and (iii)
 5. (ii) and (iii)
 6. (ii) only
-7. None of the three.
+7. (ii) only
+    (Note: something like 100 <= b <= 200 would be none of the three.)
 
 March 12:

@@ -88,7 +88,16 @@ Announcements/reminders:
 
 - HW4 due Friday, 13th 11:59pm
 
+    Loop invariants needed for pt1/pt3 - covered today!
+
 - Final exam: March 20, 1030am-12:30pm.
+
+- My students in ECS 261 are talking about their final projects in Dafny - feel free to drop by this week
+  (Tue/Thu, 4:40pm in Olson Hall 146)
+
+- Tony Hoare has passed away at age 92.
+  creator of QuickSort but also Hoare Logic, which is the primary foundation on which Dafny and other tools like it are built.
+  https://blog.computationalcomplexity.org/2026/03/tony-hoare-1934-2026.html
 
 Plan:
 

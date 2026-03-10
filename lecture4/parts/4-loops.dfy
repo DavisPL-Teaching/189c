@@ -28,6 +28,14 @@
 
     nat: a shorthand for a "natural number", i.e. nonnegative integer
     int with precondition n >= 0 and postcondition output >= 0
+
+    Fibonacci sequence:
+        fib(0) = 0
+        fib(1) = 1
+        fib(2) = 0+1=1
+        fib(3) = 1+1=2
+        fib(4) = 2+1=3
+        and so on.
 */
 
 function fib(n: nat): nat
@@ -35,6 +43,10 @@ function fib(n: nat): nat
     if n == 0 then 0
     else if n == 1 then 1
     else fib(n-1) + fib(n-2)
+}
+
+method TestFibFunction() {
+    assert fib(5) == 5;
 }
 
 // Reminder: since function syntax uses expressions, there are
@@ -55,6 +67,8 @@ function fib(n: nat): nat
 
     Very inefficient! The same value, like fib(3) or fib(2), is getting
     expanded out multiple times.
+
+    In fact, this is an O(2^n) implementation (exponential, not good).
 
     It becomes much worse if we calculate something like fib(10) or
     fib(20).
@@ -93,7 +107,7 @@ function fib(n: nat): nat
 
     We need to "guess" an invariant that both
     (i) is satisfied before the loop runs
-    (ii) is preserved by the loop
+    (ii) is preserved by the loop body
     (iii) is strong enough to prove what we want after the loop
 
     ^^^^^ Loop invariant == conditions (i)-(iii) above!
@@ -112,7 +126,7 @@ method ComputeFib(n: nat) returns (b: nat)
     if (n == 0)
     {
         // No while loop -- simple enough for Dafny to verify
-        return n;
+        return 0;
     }
     else
     {
@@ -126,6 +140,7 @@ method ComputeFib(n: nat) returns (b: nat)
             // Loop invariant syntax
             invariant i >= 1
             invariant i <= n
+            invariant n >= 1
             invariant curr == fib(i)
             invariant prev == fib(i-1)
         {
@@ -136,6 +151,10 @@ method ComputeFib(n: nat) returns (b: nat)
             // ...
 
             curr, prev := curr + prev, curr;
+
+            // curr = fib(10) + fib(9) = fib(11)
+            // prev = fib(10)
+
             i := i + 1;
 
         }
@@ -158,11 +177,27 @@ method ComputeFib(n: nat) returns (b: nat)
         */
 
         // What information does Dafny have here?
+        assert i >= 1;
+        assert i <= n;
+        assert curr == fib(i);
+        assert prev == fib(i-1);
+        // But dafny also knows that...
+        // it knows i = n!
+        // it knows -- i >= n ==> i == n.
+        assert curr == fib(n);
+        assert prev == fib(n-1);
+
         // After a while loop, Dafny isn't sure what's true or not - so
         // it uses the invariant we wrote and generally forgets everything else!
 
         return curr;
     }
+}
+
+method TestComputeFib(n: nat) {
+    assert fib(5) == 5;
+    var fib_5 := ComputeFib(5);
+    assert fib_5 == 5;
 }
 
 /*
@@ -181,18 +216,26 @@ method ComputeFib(n: nat) returns (b: nat)
 
 method CopyInt(a: nat) returns (b: nat)
     // Uncomment to try the example
-    // requires a >= 0 // (technically redundant as a: nat)
-    // ensures b == a
+    requires a >= 0 // (technically redundant as a: nat)
+    ensures b == a
 {
     var i: nat := a;
     b := 0;
+    // <--- invariant should be true here
     while i > 0
         // TODO: add invariants here
+        invariant 0 <= i <= a
+        invariant 0 <= b <= a
+        invariant i + b == a
+        // invariant 0 <= i <= a && 0 <= b <= a && i + b == a
+        // invariant
     {
         i := i - 1;
         b := b + 1;
+        // <--- invariant should be true here
     }
-    // What do I know here?
+
+    // return b;
 }
 
 // Another example for the following poll
@@ -203,9 +246,15 @@ method AddOne(a: nat) returns (b: nat)
     b := 0;
     while b < a + 1
         // invariant ...
+        // invariant b > 0
     {
         b := b + 1;
     }
+    // check condition (iii)
+    // what do we know here?
+    // b > 0 <-- loop invariant
+    // b >= a + 1
+    // ^^^^ not enough to show b == a + 1
 }
 
 /*
@@ -214,7 +263,7 @@ method AddOne(a: nat) returns (b: nat)
     Consider the AddOne method above.
 
     Which of conditions (i), (ii), and (iii) is satisfied by each of the following
-    possible invariants?
+    possible loop invariants?
 
     1. b > 0
     2. b >= 0
