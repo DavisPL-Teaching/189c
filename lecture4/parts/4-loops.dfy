@@ -130,24 +130,36 @@ method ComputeFib(n: nat) returns (b: nat)
             invariant prev == fib(i-1)
         {
             // Let's think about what the code is doing.
+            // Example: i = 10
             // On entering the loop:
-            // curr, prev == 1, 0 (i == 1)
-            // After first iteration of the loop:
-            // curr, prev := 1 + 0, 1 ---> 1, 1, (i == 2)
-            // After second iteration of the loop:
-            // curr, prev := 1 + 1, 1 ---> 2, 1 (i == 3)
-            // After third iteration of the loop:
-            // curr, prev := 2 + 1, 2 ---> 3, 2 (i == 4)
-            // After fourth iteration of the loop:
-            // curr, prev := 3 + 2, 3 --> 5, 3 (i == 5)
+            // curr, prev == fib(10), fib(9)
+            // ...
 
             curr, prev := curr + prev, curr;
             i := i + 1;
+
         }
+
+        /*
+            Why does this work?
+            Let's check that conditions (i)-(iii) hold.
+
+            Condition (i):
+
+            Condition (ii):
+
+            Condition (iii):
+
+            Some things to try:
+
+            - What happens when we comment out some of the loop invariants?
+
+            - What happens when replace them with false statements?
+        */
 
         // What information does Dafny have here?
         // After a while loop, Dafny isn't sure what's true or not - so
-        // it uses the invariant we wrote and forgets everything else!
+        // it uses the invariant we wrote and generally forgets everything else!
 
         return curr;
     }
@@ -182,6 +194,54 @@ method CopyInt(a: nat) returns (b: nat)
     }
     // What do I know here?
 }
+
+// Another example for the following poll
+method AddOne(a: nat) returns (b: nat)
+    // Uncomment to try the example
+    // ensures b == a + 1
+{
+    b := 0;
+    while b < a + 1
+        // invariant ...
+    {
+        b := b + 1;
+    }
+}
+
+/*
+    ===== Poll =====
+
+    Consider the AddOne method above.
+
+    Which of conditions (i), (ii), and (iii) is satisfied by each of the following
+    possible invariants?
+
+    1. b > 0
+    2. b >= 0
+    3. b < a + 1
+    4. b <= a + 1
+    5. b == a + 1
+    6. a + 1 < b <= 2 * a
+    7. b >= 100
+
+    https://forms.gle/76wZFH4mBcq79bQq6
+
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+    .
+*/
 
 /*
     ===== Recap and precise definition of conditions (i)-(iii) =====
@@ -233,7 +293,7 @@ method CopyInt(a: nat) returns (b: nat)
     4. For condition (iii): Dafny forgets about all information following the loop unless it's explicitly stated
        in the invariant!
 
-            Often, we have to be very explicit in Dafny when writing loop invariants!
+            For this reason, often, we have to be very explicit in Dafny when writing loop invariants!
 
             Loops are the thing Dafny doesn't bother to solve automatically - Dafny asks for our help.
 
@@ -242,54 +302,6 @@ method CopyInt(a: nat) returns (b: nat)
         From there, Dafny can just do the weakest precond / strongest post calculations automatically,
         as in part 2.
 
-*/
-
-// Another example for the following poll
-method AddOne(a: nat) returns (b: nat)
-    // Uncomment to try the example
-    // ensures b == a + 1
-{
-    b := 0;
-    while b < a + 1
-        // invariant ...
-    {
-        b := b + 1;
-    }
-}
-
-/*
-    ===== Poll =====
-
-    Consider the AddOne method above.
-
-    Which of conditions (i), (ii), and (iii) is satisfied by each of the following
-    possible invariants?
-
-    1. b > 0
-    2. b >= 0
-    3. b < a + 1
-    4. b <= a + 1
-    5. b == a + 1
-    6. a + 1 < b <= 2 * a
-    7. b >= 100
-
-    https://forms.gle/76wZFH4mBcq79bQq6
-
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
-    .
 */
 
 /*
