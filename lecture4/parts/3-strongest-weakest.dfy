@@ -139,20 +139,20 @@ method WeakestPreconditionEx(x: int) returns (y: int)
         (x <= -5 || x >= 5) && abs(x + x) == y,
         which is stronger than before.
 
-    2. Strongest postcondition is NOT the same as the information that we need to state in Dafny
+    2. Strongest postcondition depends on the set of variables that are in scope.
 
-        + In fact, it is actually the strongest set of information that is *inferred* internally by Dafny,
+        By convention: x, y in scope for a program for postcondition; x only for a precondition
+
+        In the context of a larger program: depends on the scope in each block!
+
+    3. Strongest postcondition is NOT the same as the maximum information that we need to state in Dafny
+
+        + In fact, it is actually the maximum information that is *inferred* internally by Dafny,
 
         + We may need to restate information known about the input (i.e. restate preconditions
           in the strongest postcondition) to get the strongest possible statement about the output),
 
         + Typical case: (strongest postcond) = precond && (Dafny postcond)
-
-    3. More generally, strongest postcondition depends on the set of variables that are in scope.
-
-        By convention: x, y in scope for a program for postcondition; x only for a precondition
-
-        In the context of verifying a larger program it depends on the scope of the variables!
 
     4. Multiple strongest postconditions (or weakest preconditions) may be possible, as long as they are
       logically equivalent; i.e. for post1 and post2
@@ -384,6 +384,10 @@ method WeakestPreconditionEx2(x: int) returns (y: int)
     if x <= 10 {
         // What does Dafny need to be true here?
         assert x >= 2 || x <= -2;
+
+        // Equivalently (!)
+        // What happened here?
+        assert abs(x + x + x) >= 5;
 
         y := abs(x + x + x);
 

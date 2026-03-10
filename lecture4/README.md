@@ -92,6 +92,12 @@ Announcements/reminders:
 
 Plan:
 
-- Clarification on strongest postconditions and weakest preconditions
+- Clearing things up: strongest postconditions and weakest preconditions
 
-- Loop invariants.
+- Part 4: Loop invariants.
+
+Structure of today:
+    For the first part, a little less interactive than usual!
+    I will do the poll near the middle/end of Part 4.
+
+Questions?

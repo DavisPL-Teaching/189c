@@ -3,6 +3,8 @@
 
     === Intro ===
 
+    The missing piece of the puzzle!
+
     So far, the examples we've seen are quite simple; we could have done
     any of this in Z3 pretty easily!
 
@@ -14,19 +16,17 @@
     Remember: we saw that we could use weakest preconditions and
     strongest postconditions to basically automatically verify (or
     generate correct pre/postcondition specs) for any function.
-    However, this only works for programs without loops or recursion.
+
+    However, this only works for programs without loops or recursion!
 
     ===== Loops and recursion =====
-
-    The missing piece of the puzzle!
 
     Let's start with recursion:
     Functions support recursion and can appear in expressions!
 
-    Let's define a function that computes a given fibonaci number:
+    Let's define a function that computes a given Fibonacci number:
 
     nat: a shorthand for a "natural number", i.e. nonnegative integer
-    BTW: nat is just shorthand for
     int with precondition n >= 0 and postcondition output >= 0
 */
 
@@ -55,6 +55,7 @@ function fib(n: nat): nat
 
     Very inefficient! The same value, like fib(3) or fib(2), is getting
     expanded out multiple times.
+
     It becomes much worse if we calculate something like fib(10) or
     fib(20).
     (Exercise: try this out in Python.)
@@ -87,15 +88,21 @@ function fib(n: nat): nat
     and they are often the hardest part to come up with.
 
     The above is not quite a definition that works for Dafny to check
-    automatically though! (Why not?)
+    automatically though!
+    It turns out we actually need something stronger.
 
     We need to "guess" an invariant that both
     (i) is satisfied before the loop runs
     (ii) is preserved by the loop
     (iii) is strong enough to prove what we want after the loop
 
+    ^^^^^ Loop invariant == conditions (i)-(iii) above!
+
     Dafny will verify that all of (i), (ii), (iii) is true.
     It will not allow you to pick an invariant that's wrong.
+
+    NOTE: (i), (ii), and (iii) are not quite the same as the informal
+    characterization above! (In fact, they are stronger.)
 */
 
 method ComputeFib(n: nat) returns (b: nat)
@@ -147,32 +154,6 @@ method ComputeFib(n: nat) returns (b: nat)
 }
 
 /*
-    This brings us to our formal definition.
-    (This is stronger than the "informal" characterization above!)
-
-    Given a loop
-
-        // precond
-        while cond {
-            BODY;
-        }
-        // postcond
-
-    A loop invariant is a condition Inv such that:
-
-        (i) Inv is true before executing the loop -- implied by the precondition
-
-        (ii) Inv is preserved by the loop: on *any* state satisfying
-
-                Inv && while cond,
-
-            after executing the loop, Inv holds;
-
-            (NOTE: this is not the same as simply being true after each iteration of the loop!)
-            (think of this as pulling BODY out as its own program with a pre/postcondition.)
-
-        (iii) Inv && !cond implies the postcondition.
-
     ===== Exercise =====
 
     Here's a very inefficient version of a function
@@ -202,7 +183,68 @@ method CopyInt(a: nat) returns (b: nat)
     // What do I know here?
 }
 
-// Another one for the following poll
+/*
+    ===== Recap and precise definition of conditions (i)-(iii) =====
+
+    Definition:
+    A loop invariant is any formula satisfying conditions (i)-(iii).
+
+    More precisely:
+
+    Given a loop
+
+        // precond
+        while cond {
+            BODY;
+        }
+        // postcond
+
+    A loop invariant is a condition Inv such that:
+
+        (i) Inv is true before executing the loop -- implied by the precondition
+
+        (ii) Inv is preserved by the loop: on *any* state satisfying
+
+                Inv && while cond,
+
+            after executing the loop, Inv holds;
+
+            (NOTE: this is not the same as simply being true after each iteration of the loop!)
+            (think of this as pulling BODY out as its own program with a pre/postcondition.)
+
+        (iii) Inv && !cond implies the postcondition.
+
+    A few points:
+
+    1. This is not the same as saying that the formula is true before executing, and after every loop iteration!
+        (see above)
+
+        --> However, any loop invariant will be true before executing the loop and after each iteration!
+
+        --> It will also be true at the start of the loop. (But not necessarily during the middle of the loop body)
+
+    2. Notice that conditions (ii) and (iii) involve the while loop condition cond.
+
+    3. For condition (ii), think of it as pulling the while loop body out of the loop, and popping it into its own
+        method with a pre/postcondition
+
+            This is how loop invariants can be used to reduce the verification
+
+    4. For condition (iii): Dafny forgets about all information following the loop unless it's explicitly stated
+       in the invariant!
+
+            Often, we have to be very explicit in Dafny when writing loop invariants!
+
+            Loops are the thing Dafny doesn't bother to solve automatically - Dafny asks for our help.
+
+    5. It will turn out that this is enough to verify all real-world programs: we have reduced the verification
+        of programs involving loops to those not involving loops!
+        From there, Dafny can just do the weakest precond / strongest post calculations automatically,
+        as in part 2.
+
+*/
+
+// Another example for the following poll
 method AddOne(a: nat) returns (b: nat)
     // Uncomment to try the example
     // ensures b == a + 1
@@ -262,12 +304,11 @@ method AddOne(a: nat) returns (b: nat)
         b := [];
         b := [1, 2, 3];
 
-    The homework will be mostly about more basic data types, but there
-    are a few questions about sequences.
+    On your homework, there are a few questions about sequences.
 
     Sequences are immutable.
     Dafny supports sequences seq<int> and imperative arrays array<int>,
-    which are mutable. Wwe won't use arrays on the homework.
+    which are mutable. We won't use arrays on the homework.
 */
 
 method Find(a: seq<int>, key: int) returns (index: int)
