@@ -72,3 +72,4 @@ March 10:
     (Note: something like 100 <= b <= 200 would be none of the three.)
 
 March 12:
+D, E, F, and H.

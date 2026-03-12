@@ -117,15 +117,21 @@ Today is the last lecture!
 
 Announcements/reminders:
 
-- Course evals through the registrar are open! Please fill these out (they close on Friday 13th)
-
 - ALL in-class polls due by tomorrow 11:59pm!
     + I will post today's in-class poll (and sync all other polls)
       after class, so that you have time to review any missed polls.
 
 - HW4 due tomorrow, 11:59pm
 
+    + If you need help, come by OH!
+    + Today 3-4pm (in person), tomorrow 3-4pm (on Zoom)
+
 - Final exam: March 20, 1030am-12:30pm.
+    (1 week from tomorrow)
+
+- Course evals through the registrar are open! Please fill these out (they close on Friday 13th)
+
+- Dafny presentations in my graduate class continue today (440pm Olson hall 146)
 
 Plan:
 

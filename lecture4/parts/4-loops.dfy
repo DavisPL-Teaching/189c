@@ -338,6 +338,7 @@ method AddOne(a: nat) returns (b: nat)
         method with a pre/postcondition
 
             This is how loop invariants can be used to reduce the verification
+            of loop-containing programs to loop-free code.
 
     4. For condition (iii): Dafny forgets about all information following the loop unless it's explicitly stated
        in the invariant!
@@ -374,14 +375,20 @@ method AddOne(a: nat) returns (b: nat)
 
 method Find(a: seq<int>, key: int) returns (index: int)
     // Uncomment to try
-    // ensures 0 <= index < |a| ==> a[index] == key
-    // ensures index == |a| ==> forall k :: 0 <= k < |a| ==> a[k] != key
+    ensures 0 <= index < |a| ==> a[index] == key
+    ensures index == |a| ==> forall k :: 0 <= k < |a| ==> a[k] != key
 {
     // Can we write code that satisfies the postcondition?
     index := 0;
     while (index < |a|) && (a[index] != key)
         // TODO: add invariants here
+        invariant 0 <= index <= |a|
+        invariant forall k :: 0 <= k < index ==> a[k] != key
     {
+        // Should be equivalent:
+        // if a[index] == key {
+        //     return index;
+        // }
         index := index + 1;
     }
     // We know that index == |a| OR a[index] == key

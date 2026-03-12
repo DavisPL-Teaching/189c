@@ -23,7 +23,7 @@ Summary, you should know:
 - Stronger and weaker specifications (*)
     + examples
     + weaker precondition ==> stronger spec
-    + stronger precondition ==> weaker spec
+    + stronger postcondition ==> stronger spec
 
 - Types of specifications: functional correctness, full functional correctness,
     safety properties, liveness properties;
@@ -53,7 +53,7 @@ Summary, you should know:
 
 - Basic data types: Int, Bool, Real
 
-- Limitations of Z3; UNKNOWN and timeouts
+- Advantages and limitations of Z3; UNKNOWN and timeouts
 
 ## Lecture 3: Advanced Z3
 
@@ -82,14 +82,14 @@ Summary, you should know:
 
 - Abstraction in Dafny
     + method/function distinction; "methods are opaque"
-    + unit tests and verification as a black box
+    + unit tests and verification - methods treated as a black box
     + compile time/runtime distinction
         * preconditions, postconditions, assume/assert get compiled out!
         * dangers of assume
 
 - Strongest postconditions and weakest preconditions (*)
     + SP is on input, output; WP is on input
-    + should be able to calculate these for example programs
+    + should be able to calculate these for simple example programs
     + how Dafny works "under the hood"
     + loop-free code
 
@@ -101,9 +101,11 @@ Summary, you should know:
         (true before start of loop; true after each iteration)
         Intuitive characterization is not the same as (i)-(iii)!
 
-- (Maybe)
-    Dafny as a "computationally bounded verifier"; why it needs help;
-    troubleshooting
+- Briefly: Dafny as a "computationally bounded verifier"
+    + These topics were covered at a high level on 3/12 and on the in-class poll
+    + You should know the rough idea and why Dafny might get stuck, and that you
+      can troubleshoot by adding lemmas or intermediate assertions to help Dafny
+      understand a proof.
 
 - Advantages and limitations of Dafny.
 
@@ -117,6 +119,6 @@ For example:
 - The programmer only has limited about of time/effort, what tool should they use?
 - The programmer cares about proving the program is safe on ALL inputs, which
   tool should they use?
-- The software code needs to be verified but still interact with an existing Python code base,
+- The software needs to be verified but still interact with an existing Python code base,
   which tool should the use?
 - Use critical thinking, and rely on what you have learned about the tools in this class!

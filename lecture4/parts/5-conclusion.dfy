@@ -13,7 +13,7 @@
                 this be?
 
     This can happen!
-    Sometimes, Dafny assertions do not pass.
+    Sometimes, Dafny assertions do not pass, even if they are true.
 
     === Poll ===
 
@@ -86,13 +86,17 @@ method TestMinList2() {
 
     // New example syntax:
     var a1 := new int[][1, 2, 3, 4, 5];
-    // var a1 := new int[][1, 2, 3, 4, 0];
     var result2 := MinList(a1);
 
     // Uncomment to try
-    // assert result2 == 1;
+    assert a1[0] == 1;
+    assert a1[1] == 2;
+    assert a1[2] == 3;
+
+    assert result2 == 1;
 
     // Debugging?
+    // var a1 := new int[][1, 2, 3, 4, 0];
     // Try to figure out what Dafny knows:
     // assert a1[0] == 1;
     // assert a1[1] == 2;
@@ -199,6 +203,8 @@ lemma MissingStep(
     This is a topic that we could get to if we cover the foundations of Dafny,
     including the foundational logics (such as first-order logic, or FOL, and Hoare logic),
     on which it is built.
+    This is covered in my graduate class, ECS 261
+    Fortunately, in practice, this does not come up often.
 */
 
 /*
