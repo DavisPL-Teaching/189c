@@ -110,3 +110,33 @@ Structure of today:
     I will do the poll near the middle/end of Part 4.
 
 Questions?
+
+## Thursday, March 12
+
+Today is the last lecture!
+
+Announcements/reminders:
+
+- Course evals through the registrar are open! Please fill these out (they close on Friday 13th)
+
+- ALL in-class polls due by tomorrow 11:59pm!
+    + I will post today's in-class poll (and sync all other polls)
+      after class, so that you have time to review any missed polls.
+
+- HW4 due tomorrow, 11:59pm
+
+- Final exam: March 20, 1030am-12:30pm.
+
+Plan:
+
+- Go over the study guide for the final
+
+- Finish part 4: loop invariants
+    + (and any questions from last time's poll)
+
+- Part 5: conclusion (and the poll)
+
+- Optional: Part 6: selection of advanced topics.
+  I will cover any topic by popular demand.
+
+Questions?

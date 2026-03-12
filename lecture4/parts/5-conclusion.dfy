@@ -18,6 +18,7 @@
     === Poll ===
 
     This is the last in-class poll!
+    All polls due by tomorrow 11:59pm!
 
     (Consider the snippet above)
 
@@ -35,6 +36,8 @@
     F. P and/or Q involve complex statements using recursive functions or arrays.
     G. Q involves Dafny methods rather than only functions/expressions
     H. Q is true, but not provable from P.
+
+    https://forms.gle/9H2cSPUyRiJD6nHSA
 
     === Example ===
 
