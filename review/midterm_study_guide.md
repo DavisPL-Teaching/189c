@@ -1,4 +1,4 @@
-# Course Review and Study Guide
+# Midterm Review and Study Guide
 
 ## Covered for Midterm
 
@@ -161,90 +161,10 @@ Z3:
 - Which of the following are reasons Z3 may return unknown / timeout?
 - Which of the following are limitations of Z3?
 
-## Post-midterm
-
-### Lecture 3: Dafny and formal verification
-
-What is formal verification?
-- Reasons you might want to use formal verification
-
-Abstraction in Dafny and how Dafny works
-- What is abstraction in Dafny?
-- function/method distinction
-- unit tests and what they do
-- what gets compiled out of the code?
-    + preconditions
-    + postconditions
-    + assume/assert
-- why assume is dangerous
-    + assume false anywhere, and then prove and assertion/postcondition
-- verification phase vs run/build phase
-- Dafny can compile to other languages (e.g., Python)
-
-Dafny advantages/disadvantages
-
-More advanced concepts:
-
-Weakest preconditions and strongest postconditions
-- Definition
-- What it means to be "weaker" or "stronger"
-    + of a precondition or postcondition
-        weaker = true for more inputs/outputs
-        stronger = true for fewer inputs/outputs
-        weakest of ALL conditions? = true
-        strongest of ALL conditions? = false
-    + of a specification?
-        weaker = true for more programs
-        stronger = true for fewer programs
-    + counterintuitive fact that came up in the Hypothesis Lecture:
-        weaker precondition ==> stronger spec
-        stronger precondition ==> weaker spec
-        weaker postcondition ==> weaker spec
-        stronger postcondition ==> stronger spec
-
-Weakest precondition =
-    "Describe the (set) of all inputs such that after running the program,
-    the postcondition holds"
-
-Strongest postcondition =
-    "Describe the (set) of all outputs that are possible after running
-     the program on an input satisfying the precondition"
-
-Loop invariants
-- Three properties of a loop invariant
-- Who writes the loop invariant? (The user)
-- Dafny infers weakest preconditions / strongest postconditions
-  in order to prove assertions, but does not infer loop invariants
-
-### Example question formats:
-
-Here is a precondition, write the strongest postcondition
-    Note: syntax not important here, your answer doesn't need to compile
-    but it should be conceptually right
-Here is a postcondition, write the weakest precondition
-    (Same note as above)
-
-Here are two preconditions/postconditions, which is weaker/stronger?
-
-Here are two specifications, which is weaker/stronger?
-
-Which of the following are potential disadvantages of Dafny?
-
-Which of the following are reasons Dafny may fail to prove a program?
-
-Harder questions (towards the end of the test):
-Which of the following is a valid loop invariant?
-    Note: I don't expect you to know what Dafny is/isn't able to prove, you
-    only have to know conceptually the three properties (i)-(iii) of a loop
-    invariant and be able to look at the code to see whether they are satisfied
-
-Write a loop invariant for this piece of code.
-    (Same notes as above)
-
 ### General
 
 Best fit tools for the task?
-- Here is an example task/program, would Hypothesis, Z3, or Dafny
+- Here is an example task/program, would Hypothesis or Z3
   be a better fit for this task?
 
 For example:

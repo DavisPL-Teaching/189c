@@ -22,13 +22,20 @@
 
 7. True
 
-8. D (Dafny)
+8. Z3 sees a formula or piece of syntax that it knows it is unable to solve,
+   rather than believing that it can make progress.
 
-9. Valid answers include:
+9. C
+
+10. E (branching can be applied here on either x or y, as neither of unit propagation or pure literal elim applies).
+
+11. D (Dafny)
+
+12. Valid answers include:
 - x >= 3
 - x + x >= 5
 (these preconditions are equivalent; should be equivalent to one of the above)
 
-10.
+13.
 (a) satisfies (i), (ii) but not (iii)
 (b) satisfies (i), (iii) but not (ii)

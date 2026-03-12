@@ -72,20 +72,38 @@ stronger than spec2.
 
 ### Lecture 3: Advanced Z3
 
-TBD
+8. Explain in plain human terms why Z3 might return UNKNOWN, rather than crashing or hanging indefinitely.
+
+9. The expression z3.InRe(s, z3.Union(R1, R2)) is written in a specification to help match strings
+that are either 1- or 2-digit numbers.
+Which of the following is this equivalent to?
+
+A. z3.Re(s) == z3.Union(R1, R2)
+B. z3.And(z3.Re(s), z3.Union(R1, R2))
+C. z3.Or(z3.InRe(s, R1), z3.InRe(s, R2))
+D. z3.And(z3.InRe(s, R1), z3.InRe(s, R2))
+
+10. The DPLL algorithm is applied to the following Boolean formula. Which step is applied first?
+
+    (x or y) and (not x or not y)
+
+A. Unit propagation on x
+B. Unit propagation on y
+C. Pure literal elimination on x
+D. Pure literal elimination on y
+E. Branching on x or y
 
 ### Lecture 4: Dafny and interactive verification
 
-8. Which of the following is likely the most effort-intensive tool to use
+11. Which of the following is likely the most effort-intensive tool or technique
 for providing some validation that a program is correct?
 
 A. Writing some unit tests
 B. Hypothesis
 C. Z3
 D. Dafny
-E. Rust
 
-9. Fill in the weakest precondition for the following function,
+12. Fill in the weakest precondition for the following function,
 given the postcondition.
 It can be anything that is equivalent to the correct answer.
 You won't be graded on syntax; only on whether your answer is conceptually correct.
@@ -98,7 +116,7 @@ method Double(x: int) returns (y: int)
 }
 ```
 
-10. The following is a function with a missing loop invariant.
+13. The following is a function with a missing loop invariant.
 For the possible loop invariants (a) and (b),
 which of the three loop invariant properties (i)-(iii)
 does it satisfy?
