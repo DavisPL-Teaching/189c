@@ -293,7 +293,7 @@ method AddOne(a: nat) returns (b: nat)
 */
 
 /*
-    ===== Recap and precise definition of conditions (i)-(iii) =====
+    ===== Recap and definition of loop invariant conditions (i)-(iii) =====
 
     Definition:
     A loop invariant is any formula satisfying conditions (i)-(iii).

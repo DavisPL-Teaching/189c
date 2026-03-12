@@ -1,8 +1,10 @@
 /*
-    Lecture 4, Part 6:
+    Lecture 4, Part 5:
     Conclusions
 
     === A problem: when assertions do not pass ===
+
+    Consider the following snippet of a program:
 
         assert P;
         assert Q;
@@ -13,7 +15,31 @@
     This can happen!
     Sometimes, Dafny assertions do not pass.
 
-    What happens when we try a more complicated unit test?
+    === Poll ===
+
+    This is the last in-class poll!
+
+    (Consider the snippet above)
+
+    Suppose that P implies Q (logically) but Dafny verification passes
+    only for P, and not Q.
+    Which of the following is a possible reason for this? (Select all that apply)
+
+    Assume that P and Q are syntactically correct Dafny expressions.
+
+    A. Q is equivalent to false.
+    B. P is equivalent to true.
+    C. Q is equal to P, they are syntactically the same formula.
+    D. The proof that arrives at Q from P uses steps that are too complicated to quickly check for a computationally bounded verifier.
+    E. P and/or Q involve complex statements using quantifiers.
+    F. P and/or Q involve complex statements using recursive functions or arrays.
+    G. Q involves Dafny methods rather than only functions/expressions
+    H. Q is true, but not provable from P.
+
+    === Example ===
+
+    Let's see how this can show up in practice by trying to write a unit test
+    for the following function, MinList.
 */
 
 // Here is a MinList function to calculate the minimum of a list
@@ -46,20 +72,6 @@ method MinList(a: array<int>) returns (min: int)
     // return min;
 }
 
-lemma MissingStep(
-    a: array<int>,
-    result: int
-)
-    requires a.Length > 3
-    requires a[1] == 2
-    requires a[2] == 3
-    requires a[3] == 4
-    ensures result == 1
-{
-    // Omit for now
-    assume{:axiom} false;
-}
-
 method TestMinList2() {
     // previous test:
     var a0 := new int[][1];
@@ -74,29 +86,62 @@ method TestMinList2() {
     // var a1 := new int[][1, 2, 3, 4, 0];
     var result2 := MinList(a1);
 
-    // (Us trying to figure out what Dafny knows)
-    var a2 := new int[][1, 2, 3, 4, 5];
-    // assert a1 == a2;
+    // Uncomment to try
+    // assert result2 == 1;
+
+    // Debugging?
+    // Try to figure out what Dafny knows:
     // assert a1[0] == 1;
-    assert a1[1] == 2;
-    assert a1[2] == 3;
-    assert a1[3] == 4;
+    // assert a1[1] == 2;
+    // assert a1[2] == 3;
+    // assert a1[3] == 4;
     // assert a1[4] == 0;
 
-    MissingStep(a1, result2);
+    // MissingStep(a1, result2);
 
-    assert result2 == 1;
+    // assert result2 == 1;
 
-    // Why did first unit test pass, but second unit test failed?
-    // Dafny is a "computationally bounded verifier"
-    // Dafny is not executing the unit test, it's verifying that it's
-    // logically provable.
-    // So?
-    // Does Dafny even know the array is [1, 2, 3, 4, 5]?
-    // Evaluating the array a1 is doing computation!
-    // What's happening - 1 is below the length of an array that Dafny
-    // is willing to evaluate; 5 is above that amount.
+    // An even simpler example :-)
+    // var a2 := new int[][1, 2, 3, 4, 5];
+    // assert a1 == a2;
 }
+
+// Missing step for the verification above
+lemma MissingStep(
+    a: array<int>,
+    result: int
+)
+    requires a.Length > 3
+    requires a[1] == 2
+    requires a[2] == 3
+    requires a[3] == 4
+    ensures result == 1
+{
+    // Omit for now
+    assume{:axiom} false;
+}
+
+/*
+    === Dafny as a "computationally bounded verifier" ===
+
+    Why did first unit test pass, but second unit test failed?
+    Dafny is a "computationally bounded verifier"!
+    Dafny is not executing the unit test, it's verifying that it's
+    logically provable.
+    So?
+    Does Dafny even know the array is [1, 2, 3, 4, 5]?
+    Evaluating the array a1 is doing computation!
+    What's happening - 1 is below the length of an array that Dafny
+    is willing to evaluate; 5 is above that amount.
+
+    This is more generally, a highly productive way to view
+    Dafny and what it does/does not do!
+    Recall loop invariants and strongest postconditions/weakest preconditions.
+
+    Why might Dafny give up when it sees a loop and ask the user for input?
+
+    It's the same reason with the assertions above :-)
+*/
 
 /*
     === Tips when you get stuck ===

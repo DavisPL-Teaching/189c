@@ -1,5 +1,5 @@
 /*
-    Lecture 4, Part 5:
+    Lecture 4, Part 6:
     Selection of other/advanced concepts
 
     === Contents ===
